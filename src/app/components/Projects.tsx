@@ -436,7 +436,7 @@ export function Projects() {
             margin: 0,
           }}
         >
-          Things I\'ve built & shipped.
+          Things I've built & shipped.
         </motion.h2>
       </div>
 
