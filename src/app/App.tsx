@@ -17,7 +17,6 @@ export default function App() {
         position: "relative",
         minHeight: "100vh",
         cursor: isMobile ? "auto" : "none",
-        overflowX: "hidden",
       }}
     >
       <Cursor />

@@ -116,7 +116,7 @@ export function Skills() {
         <div
           style={{
             position: isMobile ? "relative" : "sticky",
-            top: "6rem",
+            top: isMobile ? "0" : "6rem",
             marginBottom: isMobile ? "2rem" : "0",
           }}
         >
@@ -209,10 +209,16 @@ export function Skills() {
         </div>
 
         {/* RIGHT — 3D capability cards from doc */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
           {capabilities.map((cap, gi) => (
             <motion.div
-              key={gi}
+              key={cap.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
