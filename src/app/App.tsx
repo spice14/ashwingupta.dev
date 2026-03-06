@@ -4,6 +4,7 @@ import { Skills } from './components/Skills';
 import { Projects } from './components/Projects';
 import { Contact } from './components/Contact';
 import { Cursor } from './components/Cursor';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Projects />
         <Contact />
       </div>
+      <Analytics />
     </div>
   );
 }
