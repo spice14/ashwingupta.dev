@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { TiltCard } from "./TiltCard";
 import { Mail, Github, Linkedin, MapPin, Send } from "lucide-react";
@@ -19,6 +19,20 @@ export function Contact() {
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
   >("idle");
+  const [copyToastMessage, setCopyToastMessage] = useState<string | null>(null);
+
+  const copyEmailToClipboard = async () => {
+    try {
+      await globalThis.navigator.clipboard.writeText(
+        "ashwingupta3012@gmail.com",
+      );
+      setCopyToastMessage("Email copied to clipboard!");
+      setTimeout(() => setCopyToastMessage(null), 1600);
+    } catch {
+      setCopyToastMessage("Could not copy email");
+      setTimeout(() => setCopyToastMessage(null), 1800);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -210,12 +224,22 @@ export function Contact() {
                 key={i}
                 href={href}
                 target={href.startsWith("http") ? "_blank" : undefined}
-                rel="noopener noreferrer"
+                rel={
+                  href.startsWith("http") ? "noopener noreferrer" : undefined
+                }
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
                 whileHover={{ x: 4 }}
+                onClick={
+                  label === "Email"
+                    ? (e) => {
+                        e.preventDefault();
+                        void copyEmailToClipboard();
+                      }
+                    : undefined
+                }
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -259,6 +283,36 @@ export function Contact() {
                   >
                     {value}
                   </p>
+                  {label === "Email" && (
+                    <AnimatePresence mode="wait">
+                      {copyToastMessage && (
+                        <motion.p
+                          key={copyToastMessage}
+                          initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -4, scale: 0.98 }}
+                          transition={{
+                            duration: 0.75,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
+                          style={{
+                            fontFamily: FONT_SANS,
+                            fontSize: "0.78rem",
+                            color: "#4ade80",
+                            border: "1px solid rgba(74,222,128,0.35)",
+                            background: "rgba(74,222,128,0.06)",
+                            borderRadius: "999px",
+                            padding: "4px 10px",
+                            marginTop: "8px",
+                            display: "inline-block",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {copyToastMessage}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  )}
                 </div>
                 <span
                   style={{

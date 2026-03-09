@@ -470,7 +470,7 @@ export function Projects() {
           const isOpen = openCard === i;
           const isAwardStatus = p.status === "Best Outgoing Project · 2022–23";
           const statusColor = isAwardStatus
-            ? "#c9a84c"
+            ? "#facc15"
             : p.status === "Production"
               ? "#22d3ee"
               : p.devStatus === "completed"
@@ -479,7 +479,7 @@ export function Projects() {
                   ? "#facc15"
                   : "rgba(255,255,255,0.35)";
           const statusBorder = isAwardStatus
-            ? "rgba(201,168,76,0.45)"
+            ? "rgba(250,204,21,0.35)"
             : p.status === "Production"
               ? "rgba(34,211,238,0.4)"
               : p.devStatus === "completed"
@@ -488,7 +488,7 @@ export function Projects() {
                   ? "rgba(250,204,21,0.35)"
                   : "rgba(255,255,255,0.12)";
           const statusBg = isAwardStatus
-            ? "rgba(201,168,76,0.12)"
+            ? "rgba(250,204,21,0.06)"
             : p.status === "Production"
               ? "rgba(34,211,238,0.1)"
               : p.devStatus === "completed"

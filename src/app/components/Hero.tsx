@@ -1,10 +1,11 @@
 import { Github, Linkedin, Mail, ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
-import { useRef, useCallback } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useRef, useCallback, useState } from "react";
 import { useIsMobile, useIsTouchDevice } from "../../hooks/useMediaQuery";
 import profilePicture from "../../assets/profilePicture.jpeg";
 
 const PROFILE_IMAGE = profilePicture;
+const CONTACT_EMAIL = "ashwingupta3012@gmail.com";
 
 export function Hero() {
   const isMobile = useIsMobile();
@@ -12,6 +13,18 @@ export function Hero() {
   const layerText = useRef<HTMLDivElement>(null);
   const layerPhoto = useRef<HTMLDivElement>(null);
   const layerPills = useRef<HTMLDivElement>(null);
+  const [copyToastMessage, setCopyToastMessage] = useState<string | null>(null);
+
+  const copyEmailToClipboard = useCallback(async () => {
+    try {
+      await globalThis.navigator.clipboard.writeText(CONTACT_EMAIL);
+      setCopyToastMessage("Email copied to clipboard!");
+      setTimeout(() => setCopyToastMessage(null), 1600);
+    } catch {
+      setCopyToastMessage("Could not copy email");
+      setTimeout(() => setCopyToastMessage(null), 1800);
+    }
+  }, []);
 
   const onMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
     const W = window.innerWidth,
@@ -359,11 +372,36 @@ export function Hero() {
                 gap: "12px",
                 width: isMobile ? "100%" : "auto",
                 justifyContent: isMobile ? "center" : "flex-start",
+                alignItems: "center",
               }}
             >
+              <AnimatePresence mode="wait">
+                {copyToastMessage && (
+                  <motion.div
+                    key={copyToastMessage}
+                    initial={{ opacity: 0, x: -8, scale: 0.98 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -4, scale: 0.98 }}
+                    transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                    style={{
+                      fontFamily: '"DM Sans", sans-serif',
+                      fontSize: "0.78rem",
+                      color: "#4ade80",
+                      border: "1px solid rgba(74,222,128,0.35)",
+                      background: "rgba(74,222,128,0.06)",
+                      borderRadius: "999px",
+                      padding: "6px 12px",
+                      whiteSpace: "nowrap",
+                      boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
+                    }}
+                  >
+                    {copyToastMessage}
+                  </motion.div>
+                )}
+              </AnimatePresence>
               {[
                 {
-                  href: "mailto:ashwingupta3012@gmail.com",
+                  href: `mailto:${CONTACT_EMAIL}`,
                   icon: <Mail size={15} />,
                   label: "Email",
                 },
@@ -396,7 +434,17 @@ export function Hero() {
                   key={label}
                   href={href}
                   target={href.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener noreferrer"
+                  rel={
+                    href.startsWith("http") ? "noopener noreferrer" : undefined
+                  }
+                  onClick={
+                    href.startsWith("mailto:")
+                      ? (e) => {
+                          e.preventDefault();
+                          void copyEmailToClipboard();
+                        }
+                      : undefined
+                  }
                   whileHover={{ y: -2 }}
                   style={{
                     width: "38px",
