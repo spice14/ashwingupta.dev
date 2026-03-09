@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Phone, ArrowRight } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { useRef, useCallback } from "react";
 import { useIsMobile, useIsTouchDevice } from "../../hooks/useMediaQuery";
@@ -376,11 +376,6 @@ export function Hero() {
                   href: "https://www.linkedin.com/in/ashwingupta3012/",
                   icon: <Linkedin size={15} />,
                   label: "LinkedIn",
-                },
-                {
-                  href: "tel:+917996601575",
-                  icon: <Phone size={15} />,
-                  label: "Phone",
                 },
                 {
                   href: "https://www.kaggle.com/ashwingupta3012",

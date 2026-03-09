@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import { TiltCard } from "./TiltCard";
-import { Mail, Phone, Github, Linkedin, MapPin, Send } from "lucide-react";
+import { Mail, Github, Linkedin, MapPin, Send } from "lucide-react";
 import { useIsMobile } from "../../hooks/useMediaQuery";
 
 const KaggleIcon = () => (
@@ -51,12 +51,6 @@ export function Contact() {
       value: "ashwingupta3012@gmail.com",
       href: "mailto:ashwingupta3012@gmail.com",
       icon: <Mail size={14} />,
-    },
-    {
-      label: "Phone",
-      value: "+91 79966 01575",
-      href: "tel:+917996601575",
-      icon: <Phone size={14} />,
     },
     {
       label: "GitHub",
