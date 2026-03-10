@@ -21,6 +21,7 @@ const timeline = [
     awards: [
       "Best Team Award — HSBC Account",
       "Pat on the Back — Think Customer Award (Individual Excellence)",
+      "Trained a cohort of 130+ colleagues in AI/ML as part of the Java Spring AI training program",
     ],
   },
   {
@@ -385,28 +386,36 @@ export function About() {
                           gap: "4px",
                         }}
                       >
-                        {awards.map((award, j) => (
-                          <div
-                            key={j}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "6px",
-                            }}
-                          >
-                            <span style={{ fontSize: "0.75rem" }}>🏆</span>
-                            <span
+                        {awards.map((award, j) => {
+                          const isTrainingHighlight = award.startsWith(
+                            "Trained a cohort of 130+ colleagues",
+                          );
+
+                          return (
+                            <div
+                              key={j}
                               style={{
-                                fontFamily: FONT_SANS,
-                                fontSize: "0.78rem",
-                                color: "#c9a84c",
-                                lineHeight: 1.4,
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "6px",
                               }}
                             >
-                              {award}
-                            </span>
-                          </div>
-                        ))}
+                              <span style={{ fontSize: "0.75rem" }}>
+                                {isTrainingHighlight ? "🎓" : "🏆"}
+                              </span>
+                              <span
+                                style={{
+                                  fontFamily: FONT_SANS,
+                                  fontSize: "0.78rem",
+                                  color: "#c9a84c",
+                                  lineHeight: 1.4,
+                                }}
+                              >
+                                {award}
+                              </span>
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
