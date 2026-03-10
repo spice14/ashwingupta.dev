@@ -44,7 +44,10 @@ const timeline = [
     year: "2019–2023",
     role: "B.E. Mechanical",
     company: "BMS College of Engineering",
-    detail: "Best Outgoing Project · Published @ NCISCT 2022",
+    awards: [
+      "Best Outgoing Project - Mechanical Engineering '23",
+      "Published @ NCISCT 2022",
+    ],
     logo: bmsceLogoImg,
     logoH: 55,
   },
@@ -363,18 +366,20 @@ export function About() {
                         </span>
                       </p>
                     </div>
-                    <p
-                      style={{
-                        fontFamily: FONT_SANS,
-                        fontSize: "0.82rem",
-                        color: "rgba(255,255,255,0.48)",
-                        lineHeight: 1.5,
-                        paddingLeft: logo ? "62px" : "0",
-                        marginBottom: awards ? "0.6rem" : 0,
-                      }}
-                    >
-                      {detail}
-                    </p>
+                    {detail && (
+                      <p
+                        style={{
+                          fontFamily: FONT_SANS,
+                          fontSize: "0.82rem",
+                          color: "rgba(255,255,255,0.48)",
+                          lineHeight: 1.5,
+                          paddingLeft: logo ? "62px" : "0",
+                          marginBottom: awards ? "0.6rem" : 0,
+                        }}
+                      >
+                        {detail}
+                      </p>
+                    )}
 
                     {/* Awards */}
                     {awards && (
@@ -390,6 +395,14 @@ export function About() {
                           const isTrainingHighlight = award.startsWith(
                             "Trained a cohort of 130+ colleagues",
                           );
+                          const isPublicationHighlight =
+                            award.includes("Published @ NCISCT");
+                          let awardIcon = "🏆";
+                          if (isPublicationHighlight) {
+                            awardIcon = "📄";
+                          } else if (isTrainingHighlight) {
+                            awardIcon = "🎓";
+                          }
 
                           return (
                             <div
@@ -401,7 +414,7 @@ export function About() {
                               }}
                             >
                               <span style={{ fontSize: "0.75rem" }}>
-                                {isTrainingHighlight ? "🎓" : "🏆"}
+                                {awardIcon}
                               </span>
                               <span
                                 style={{
