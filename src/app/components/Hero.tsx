@@ -105,7 +105,7 @@ export function Hero() {
           zIndex: 5,
         }}
       >
-        Ashwin Gupta — Portfolio 2025
+        Ashwin Gupta — Portfolio 2026
       </motion.div>
 
       {/* Nav-style label top right */}
