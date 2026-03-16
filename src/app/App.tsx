@@ -9,6 +9,7 @@ import { ParticleField } from "./components/ParticleField";
 import { HologramInterface } from "./components/HologramInterface";
 import { useIsMobile } from "../hooks/useMediaQuery";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export default function App() {
   const isMobile = useIsMobile();
@@ -29,6 +30,7 @@ export default function App() {
         <Contact />
       </HologramInterface>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
