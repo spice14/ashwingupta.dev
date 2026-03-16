@@ -56,15 +56,15 @@ const timeline = [
 const pillars = [
   {
     title: "Inference Infrastructure",
-    desc: "SIP-to-LLM pipelines, async concurrency design, distributed inference, infra density optimization, SLA-bound monitoring.",
+    desc: "Built SIP-to-LLM pipelines with bounded concurrency, distributed inference workers, and SLA monitoring under live traffic.",
   },
   {
-    title: "Execution & Observability",
-    desc: "Cross-service log correlation, bounded async runtimes, provider-agnostic execution layers, failure isolation, rapid MTTR reduction.",
+    title: "Observability & Failure Isolation",
+    desc: "Correlated logs across services, isolated failure domains, and reduced MTTR with traceable incident workflows.",
   },
   {
-    title: "Structured Reasoning Systems",
-    desc: "Tree-based retrieval, graph-backed pipelines, provenance-aware workflows, physics-informed representations, deterministic multi-runtime execution.",
+    title: "Retrieval & Orchestration Systems",
+    desc: "Built tree and graph retrieval pipelines with evidence traceability and deterministic orchestration across runtimes.",
   },
 ];
 
@@ -136,7 +136,7 @@ export function About() {
                 margin: 0,
               }}
             >
-              Designing Scalable, Observable, Production-Grade Intelligence.
+              Building AI Infrastructure That Survives Production Load.
             </motion.h2>
           </div>
 
@@ -154,14 +154,8 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            I design high-throughput, constraint-aware intelligent systems that
-            operate predictably under real-world constraints — from runtime
-            execution surfaces to structured reasoning pipelines. My work spans
-            distributed inference and retrieval infrastructure, local-first
-            tree-based indexing with reproducible execution, modular
-            orchestrators with traceable evidence flow, and interpretable
-            representation layers that isolate semantic understanding from
-            numerical computation.
+            I build AI systems for production environments with strict latency,
+            concurrency, and reliability constraints.
           </motion.p>
 
           <motion.p
@@ -178,12 +172,8 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            My focus is structural:{" "}
-            <span style={{ color: "#e8e0d0", fontStyle: "italic" }}>
-              defining execution boundaries, observability surfaces, failure
-              domains, and data provenance so complex systems behave predictably
-              at scale and under production load.
-            </span>
+            My work covers inference infrastructure, retrieval systems, and
+            observability for large-scale ML services.
           </motion.p>
 
           <motion.p

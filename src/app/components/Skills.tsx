@@ -9,38 +9,38 @@ const FONT_SANS = '"DM Sans", sans-serif';
 // Directly from the doc — Core Capabilities
 const capabilities = [
   {
-    title: "AI Systems Architecture",
-    desc: "Designing production-grade, observable, and scalable intelligent systems under performance, reliability, and cost constraints.",
+    title: "Production AI Infrastructure",
+    desc: "Built and operated inference systems under latency SLOs, reliability targets, and strict cost limits.",
     tags: [
       "latency budgets",
       "SLA design",
       "cost modeling",
-      "observability surfaces",
+      "service observability",
     ],
   },
   {
-    title: "Distributed Inference & Real-Time ML",
-    desc: "Concurrency scaling, async execution, resource efficiency, SLA preservation, and throughput guarantees.",
+    title: "Distributed Inference Systems",
+    desc: "Scaled async inference workers, controlled contention, and sustained throughput under high concurrency.",
     tags: [
       "async runtimes",
       "batching",
       "capacity planning",
-      "low-latency pipelines",
+      "tail-latency control",
     ],
   },
   {
     title: "Retrieval & Indexing Infrastructure",
-    desc: "High-throughput retrieval design, embedding pipelines, index construction, and grounding strategies with deterministic performance.",
+    desc: "Built retrieval pipelines and index services with traceable evidence and predictable query latency.",
     tags: [
       "FAISS/HNSW",
       "chunking strategies",
       "embedding maintenance",
-      "hallucination bounding",
+      "retrieval grounding",
     ],
   },
   {
     title: "Monitoring, Telemetry & Failure Isolation",
-    desc: "Designing metric spaces, anomaly detection, trace correlation, and rapid root-cause workflows for distributed services.",
+    desc: "Correlated traces and logs across services to isolate failures and reduce production incident recovery time.",
     tags: [
       "SLA monitoring",
       "log correlation",
@@ -49,17 +49,17 @@ const capabilities = [
     ],
   },
   {
-    title: "Graph & Structural Systems",
-    desc: "Directed graph modeling, hierarchy scoring, optimized traversal, and real-time reasoning substrates.",
+    title: "Graph-Based Retrieval Systems",
+    desc: "Implemented graph traversal and weighted ranking for real-time recommendations under tight response budgets.",
     tags: ["graph traversal", "weighted scoring", "sub-50ms inference loops"],
   },
   {
-    title: "Physics-Aware / Constraint-Bound Modeling",
-    desc: "Structured representation layers, regime identification, differential system constraints, and interpretability bridges.",
+    title: "Scientific ML Systems",
+    desc: "Built physics-constrained ML workflows for regime classification and stable behavior under sparse data.",
     tags: [
-      "physics-informed representations",
-      "constraint embedding",
-      "alignment structures",
+      "physics-informed models",
+      "physics-constrained training",
+      "regime classification",
     ],
   },
 ];

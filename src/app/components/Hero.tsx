@@ -170,7 +170,7 @@ export function Hero() {
                   textTransform: "uppercase",
                 }}
               >
-                Inside the Architecture of Intelligence
+                Engineering Reliable AI Systems
               </span>
             </motion.div>
           </div>
@@ -269,7 +269,7 @@ export function Hero() {
               >
                 AI Systems Engineer
                 <br />
-                Production-Grade Intelligence
+                Inference, Retrieval, Observability
               </p>
             </div>
             <div>
@@ -314,9 +314,8 @@ export function Hero() {
               marginBottom: isMobile ? "2rem" : "2.5rem",
             }}
           >
-            Systems-focused AI engineer building high-throughput, fault-tolerant
-            inference infrastructure. Architected concurrency and observability
-            layers enabling{" "}
+            I build AI systems that stay stable under production load.
+            Architected concurrency and observability layers enabling{" "}
             <span style={{ color: "#e8e0d0" }}>1,600+ concurrent sessions</span>
             , <span style={{ color: "#e8e0d0" }}>7× capacity expansion</span>,{" "}
             <span style={{ color: "#e8e0d0" }}>
