@@ -2,7 +2,7 @@ import { Github, Linkedin, Mail, ArrowRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useCallback, useState } from "react";
 import { useIsMobile, useIsTouchDevice } from "../../hooks/useMediaQuery";
-import profilePicture from "../../assets/profilePicture.jpeg?url";
+import profilePicture from "../../assets/profilePicture.webp?url";
 
 const PROFILE_IMAGE = profilePicture;
 const CONTACT_EMAIL = "ashwingupta3012@gmail.com";
@@ -13,6 +13,7 @@ export function Hero() {
   const layerText = useRef<HTMLDivElement>(null);
   const layerPhoto = useRef<HTMLDivElement>(null);
   const layerPills = useRef<HTMLDivElement>(null);
+  const pendingRaf = useRef(0);
   const [copyToastMessage, setCopyToastMessage] = useState<string | null>(null);
 
   const copyEmailToClipboard = useCallback(async () => {
@@ -27,16 +28,20 @@ export function Hero() {
   }, []);
 
   const onMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    const W = window.innerWidth,
-      H = window.innerHeight;
-    const x = (e.clientX / W - 0.5) * 2;
-    const y = (e.clientY / H - 0.5) * 2;
-    if (layerText.current)
-      layerText.current.style.transform = `translate(${x * 8}px, ${y * 5}px)`;
-    if (layerPhoto.current)
-      layerPhoto.current.style.transform = `perspective(1000px) rotateY(${x * 7}deg) rotateX(${-y * 5}deg) translate(${x * 18}px, ${y * 12}px)`;
-    if (layerPills.current)
-      layerPills.current.style.transform = `translate(${x * 14}px, ${y * 9}px)`;
+    if (pendingRaf.current) return;
+    const cx = e.clientX, cy = e.clientY;
+    pendingRaf.current = requestAnimationFrame(() => {
+      pendingRaf.current = 0;
+      const W = window.innerWidth, H = window.innerHeight;
+      const x = (cx / W - 0.5) * 2;
+      const y = (cy / H - 0.5) * 2;
+      if (layerText.current)
+        layerText.current.style.transform = `translate(${x * 8}px, ${y * 5}px)`;
+      if (layerPhoto.current)
+        layerPhoto.current.style.transform = `perspective(1000px) rotateY(${x * 7}deg) rotateX(${-y * 5}deg) translate(${x * 18}px, ${y * 12}px)`;
+      if (layerPills.current)
+        layerPills.current.style.transform = `translate(${x * 14}px, ${y * 9}px)`;
+    });
   }, []);
 
   const onMouseLeave = useCallback(() => {
@@ -191,12 +196,11 @@ export function Hero() {
                 fontSize: isMobile
                   ? "clamp(3.2rem, 11.8vw, 10rem)"
                   : "clamp(4.5rem, 11.8vw, 10rem)",
-                fontWeight: 300,
+                fontWeight: 800,
                 lineHeight: 0.9,
-                letterSpacing: "-0.03em",
+                letterSpacing: "-0.04em",
                 color: "#fafaf8",
                 margin: 0,
-                fontStyle: "italic",
               }}
             >
               Ashwin
@@ -502,6 +506,10 @@ export function Hero() {
               <img
                 src={PROFILE_IMAGE}
                 alt="Ashwin Gupta"
+                width={800}
+                height={1734}
+                fetchPriority="high"
+                decoding="async"
                 style={{
                   width: "100%",
                   height: "100%",
@@ -588,12 +596,6 @@ export function Hero() {
         </span>
       </div>
 
-      {/* Font imports */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,800;1,300&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap"
-        rel="stylesheet"
-      />
     </section>
   );
 }

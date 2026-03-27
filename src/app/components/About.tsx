@@ -1,10 +1,10 @@
 import { motion } from "motion/react";
 import { TiltCard } from "./TiltCard";
 import { useIsMobile } from "../../hooks/useMediaQuery";
-import coforgeLogoImg from "../../assets/coforgeLogo.jpeg?url";
-import gidaLogoImg from "../../assets/gidaLogo.jpeg?url";
-import bmsceLogoImg from "../../assets/BMSlogo.jpeg?url";
-import iiitbLogoImg from "../../assets/IIITlogo.jpeg?url";
+import coforgeLogoImg from "../../assets/coforgeLogo.webp?url";
+import gidaLogoImg from "../../assets/gidaLogo.webp?url";
+import bmsceLogoImg from "../../assets/BMSlogo.webp?url";
+import iiitbLogoImg from "../../assets/IIITlogo.webp?url";
 
 const FONT_SERIF = '"Playfair Display", Georgia, serif';
 const FONT_MONO = '"DM Mono", monospace';
@@ -121,8 +121,7 @@ export function About() {
           <div style={{ overflow: "hidden", marginBottom: "2.5rem" }}>
             <motion.h2
               initial={{ y: "100%" }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true }}
+              animate={{ y: 0 }}
               transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
               style={{
                 fontFamily: FONT_SERIF,
@@ -142,8 +141,7 @@ export function About() {
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
             style={{
               fontFamily: FONT_SANS,
@@ -160,8 +158,7 @@ export function About() {
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.22 }}
             style={{
               fontFamily: FONT_SANS,
@@ -178,8 +175,7 @@ export function About() {
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.28 }}
             style={{
               fontFamily: FONT_SANS,
@@ -199,12 +195,8 @@ export function About() {
             style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}
           >
             {pillars.map(({ title, desc }, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 * i }}
               >
                 <TiltCard
                   intensity={8}
@@ -253,7 +245,7 @@ export function About() {
                     </p>
                   </div>
                 </TiltCard>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -275,12 +267,8 @@ export function About() {
           <div>
             {timeline.map(
               ({ year, role, company, detail, logo, awards }, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
                   style={{
                     display: "grid",
                     gridTemplateColumns: isMobile ? "1fr" : "110px 1fr",
@@ -422,7 +410,7 @@ export function About() {
                       </div>
                     )}
                   </div>
-                </motion.div>
+                </div>
               ),
             )}
           </div>
@@ -461,11 +449,6 @@ export function About() {
         </div>
       </div>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap"
-        rel="stylesheet"
-      />
     </section>
   );
 }

@@ -1,14 +1,16 @@
+import { lazy, Suspense } from "react";
 import { Hero } from "./components/Hero";
-import { About } from "./components/About";
-import { Skills } from "./components/Skills";
-import { Projects } from "./components/Projects";
-import { Contact } from "./components/Contact";
 import { Cursor } from "./components/Cursor";
 import { EnvironmentLayer } from "./components/EnvironmentLayer";
-import { ParticleField } from "./components/ParticleField";
+import { AIBackground } from "./components/AIBackground";
 import { HologramInterface } from "./components/HologramInterface";
 import { useIsMobile } from "../hooks/useMediaQuery";
 import { Analytics } from "@vercel/analytics/react";
+
+const About = lazy(() => import("./components/About").then((m) => ({ default: m.About })));
+const Skills = lazy(() => import("./components/Skills").then((m) => ({ default: m.Skills })));
+const Projects = lazy(() => import("./components/Projects").then((m) => ({ default: m.Projects })));
+const Contact = lazy(() => import("./components/Contact").then((m) => ({ default: m.Contact })));
 
 export default function App() {
   const isMobile = useIsMobile();
@@ -19,14 +21,16 @@ export default function App() {
       style={{ cursor: isMobile ? "auto" : "none" }}
     >
       <EnvironmentLayer />
-      <ParticleField />
+      <AIBackground />
       <Cursor />
       <HologramInterface>
         <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
+        <Suspense fallback={null}>
+          <About />
+          <Skills />
+          <Projects />
+          <Contact />
+        </Suspense>
       </HologramInterface>
       <Analytics />
     </div>

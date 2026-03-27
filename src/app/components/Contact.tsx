@@ -142,8 +142,7 @@ export function Contact() {
           <div style={{ overflow: "hidden", marginBottom: "2rem" }}>
             <motion.h2
               initial={{ y: "100%" }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true }}
+              animate={{ y: 0 }}
               transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
               style={{
                 fontFamily: FONT_SERIF,
@@ -163,8 +162,7 @@ export function Contact() {
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             style={{
               fontFamily: FONT_SANS,
@@ -182,8 +180,7 @@ export function Contact() {
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
             style={{
               display: "inline-flex",
@@ -227,10 +224,6 @@ export function Contact() {
                 rel={
                   href.startsWith("http") ? "noopener noreferrer" : undefined
                 }
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
                 whileHover={{ x: 4 }}
                 onClick={
                   label === "Email"
@@ -588,11 +581,6 @@ export function Contact() {
         </span>
       </div>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=DM+Sans:wght@400;600&family=DM+Mono:wght@400&display=swap"
-        rel="stylesheet"
-      />
     </section>
   );
 }

@@ -142,8 +142,7 @@ export function Skills() {
           <div style={{ overflow: "hidden" }}>
             <motion.h2
               initial={{ y: "100%" }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true }}
+              animate={{ y: 0 }}
               transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
               style={{
                 fontFamily: FONT_SERIF,
@@ -162,8 +161,7 @@ export function Skills() {
           </div>
           <motion.p
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
             style={{
               fontFamily: FONT_SANS,
@@ -191,18 +189,13 @@ export function Skills() {
           </p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}
           >
-            {techStack.map((t, i) => (
+            {techStack.map((t) => (
               <motion.span
                 key={t}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.03 * i }}
                 whileHover={{
                   color: "#e8e0d0",
                   borderColor: "rgba(255,255,255,0.42)",
@@ -236,12 +229,8 @@ export function Skills() {
           }}
         >
           {capabilities.map((cap, gi) => (
-            <motion.div
+            <div
               key={cap.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: gi * 0.08 }}
             >
               <TiltCard
                 intensity={7}
@@ -314,16 +303,11 @@ export function Skills() {
                   ))}
                 </div>
               </TiltCard>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=DM+Sans:wght@400;600&family=DM+Mono:wght@400&display=swap"
-        rel="stylesheet"
-      />
     </section>
   );
 }
