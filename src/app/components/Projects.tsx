@@ -67,10 +67,11 @@ const projects = [
     impact:
       "Live at ashwingupta.dev · 90% image reduction · 72% JS bundle cut · 400 CSS DOM nodes eliminated",
     bullets: [
-      "A designer-submitted baseline — **400 CSS-animated DOM particles**, a **2 MB JPEG hero image**, Google Fonts loaded per-component, and **72 unvetted dependencies** — needed a full E2E transformation into a production-grade personal brand site that communicates technical depth and system-level thinking.",
-      "Rebuilt end-to-end: introduced a **three-layer spatial architecture** (fixed environment, canvas particle field, scrollable hologram interface); replaced CSS particles with a **unified Canvas 2D engine** absorbing dust motes, network graph, scanlines, and data packets into a single RAF loop; migrated images to WebP with fetchpriority preloading; bundled fonts via @fontsource; split below-fold sections with **React.lazy and Suspense**; deployed on Vercel with domain and DNS on Cloudflare.",
-      "Pre-rendered scanline texture (**1 drawImage vs 270 fillRect/frame**), squared-distance edge cache rebuilt **every 3 frames**, visibility-change RAF pausing, and RAF-gated mouse tracking maintained **stable 60 FPS** under CPU throttle across desktop and mobile.",
-      "Profile image reduced **90% (2 MB → 211 KB)**; JS bundle cut **72%**; **400 CSS-animated DOM nodes** eliminated; font HTTP requests dropped from **3 to 0**; per-frame canvas time cut from **~18–25 ms to ~4–6 ms**.",
+      "A portfolio site is its own proof unit. The designer baseline was self-defeating — the first thing a hiring manager measured was a **performance failure on the site claiming performance engineering**.",
+      "Designer baseline: **400 CSS-animated DOM particles**, **2 MB JPEG** hero, Google Fonts loaded per-component, **72 unvetted dependencies**. The site needed to signal systems thinking — and was doing the opposite.",
+      "Rebuilt end-to-end. **Three-layer spatial architecture** (environment, canvas particle field, hologram interface). All visual effects collapsed into a **single Canvas 2D RAF loop**. Images to WebP with fetchpriority preload. Below-fold sections split via **React.lazy + Suspense**.",
+      "Scanline texture pre-rendered to offscreen canvas (**1 drawImage vs 270 fillRect/frame**). Edge cache rebuilt every 3 frames. RAF paused on visibility change. Mouse tracking gated behind RAF. **Stable 60 FPS under CPU throttle**.",
+      "Image: **2 MB → 211 KB (90%)**. JS bundle: **72% cut**. DOM nodes: **400 CSS-animated eliminated**. Font requests: **3 → 0**. Canvas frame time: **18–25 ms → 4–6 ms**.",
     ],
     github: "https://github.com/spice14/ashwingupta.dev",
   },
@@ -94,10 +95,11 @@ const projects = [
     impact:
       "Fully offline tree-RAG execution · vendor lock-in eliminated · provider-agnostic runtime",
     bullets: [
-      "PageIndex's tree-based RAG reasoning was tightly coupled to **OpenAI's API contract** — hardcoded inference calls, inline prompt strings, and non-normalized completion handling made **local or offline deployment impossible** and increased regression risk across any provider change.",
-      "Forked and refactored the full runtime layer with a **provider-routing abstraction** that resolves LLM_PROVIDER from environment variables and dispatches through provider-specific wrappers; added a **finish-reason normalization layer** to stabilize recursive tree traversal across model outputs; externalized all prompts into a registry-driven loader system; introduced **bounded async concurrency** across TOC generation and summarization stages; implemented adaptive chunking and hierarchical fallback paths for large-document robustness.",
-      "Normalized completion contracts prevent provider-specific finish-reason variations from corrupting **recursive traversal state**; fallback chunk policies ensure long-document execution completes on **constrained VRAM and RAM**; structured-output hardening handles imperfect model responses without pipeline failure.",
-      "**Fully offline tree-RAG execution** with Ollama backends — no API keys, no external inference services; **stable internal contracts** enable seamless provider switching; regression risk reduced through hardened e2e test coverage across document types and model sizes.",
+      "All inference required a **live OpenAI API key** — offline or air-gapped execution was blocked entirely; **provider switches corrupted traversal silently** with no error surface; token encoding differences across providers produced inconsistent chunk boundaries with no visible signal.",
+      "PageIndex's tree RAG was hardcoded to **OpenAI's API contract** — inline prompt strings, non-normalized completion handling. **Local or offline deployment was impossible**. Any provider change broke traversal.",
+      "Forked and refactored: **provider-routing abstraction** resolved via env vars. **Finish-reason normalization layer** stabilizes recursive traversal across model outputs. Prompts externalized into a registry loader. **Bounded async concurrency** across TOC generation and summarization. Hierarchical fallback for large-document robustness.",
+      "Normalized completion contracts prevent finish-reason variations from corrupting **recursive traversal state**. Fallback chunk policies handle **constrained VRAM and RAM**. Structured-output hardening absorbs imperfect model responses without pipeline failure.",
+      "**Fully offline tree-RAG** with Ollama — no API keys. Seamless provider switching via stable internal contracts. Regression risk reduced through e2e coverage across document types and model sizes.",
     ],
     github: "https://github.com/spice14/PageIndexOllama",
   },
@@ -120,10 +122,11 @@ const projects = [
     impact:
       "Fully offline academic document QA · reproducible HNSW indexes · zero API dependency",
     bullets: [
-      "Researchers working with sensitive or proprietary papers had no production-quality RAG system that could operate **entirely offline** across mixed sources — local PDFs, arXiv URLs, directory trees — without exposing data to external inference APIs or cloud indexing services.",
-      "Built a fully local RAG pipeline using **LEANN/HNSW vector indexing** with dense embeddings (facebook/contriever via sentence-transformers), Ollama-backed LLM inference, and a multi-source ingestion layer supporting local PDFs, academic HTML pages (arXiv, NeurIPS, ResearchGate), and entire paper directories; implemented smart chunking with overlap, **configurable Top-K retrieval**, and quantized model support for CPU-only operation; shipped a Streamlit chat UI and Typer CLI for batch ingestion workflows.",
-      "Reproducible vector index artifacts enable **air-gapped and offline-first operation**; configurable context-window **(1024–1536 tokens)** and Top-K **(3–4)** settings stabilize inference on **low-VRAM and CPU-only hardware**; PyMuPDF and BeautifulSoup parsing handles varied PDF quality and web content formats before indexing.",
-      "**Deterministic, API-free document QA** across academic sources — all compute, indexing, and inference runs locally with **zero external dependency**; supports **sub-1GB quantized models** for resource-constrained environments; designed for air-gapped institutional research operation.",
+      "Sensitive academic papers had **no private processing path** — all RAG required external inference APIs; researchers on **CPU-only or low-VRAM hardware** had no viable local inference option; institutions with air-gap requirements were blocked by all existing tooling.",
+      "Researchers with sensitive papers had no offline RAG that handled mixed sources — local PDFs, arXiv URLs, paper directories — without exposing data to external inference APIs or cloud indexing.",
+      "Fully local RAG: **LEANN/HNSW vector indexing** with dense embeddings (facebook/contriever), Ollama-backed inference, multi-source ingestion (PDFs, academic HTML, directories). Smart chunking with overlap, **configurable Top-K (3–4)** and **context windows (1024–1536 tokens)**. Quantized model support for CPU-only hardware.",
+      "Reproducible index artifacts enable **air-gapped operation**. Context-window and Top-K settings tuned for recall vs. coherence tradeoff. PyMuPDF + BeautifulSoup handle varied PDF quality before indexing — not at query time.",
+      "**API-free document QA** across academic sources. Runs on **sub-1GB quantized models**. Designed for air-gapped institutional research.",
     ],
     github: "https://github.com/spice14/research-it",
   },
@@ -146,10 +149,11 @@ const projects = [
     impact:
       "10 inference backends orchestrated · execution-aware scheduling · adaptive routing over time",
     bullets: [
-      "Modern local AI systems are fragmented across **incompatible inference backends** — vLLM, Ollama, llama.cpp, TensorRT-LLM, and others — with **no shared scheduling layer**, static routing decisions that ignore hardware state and task complexity, and no feedback mechanism to improve dispatch over time; existing gateways proxy requests but do not control execution.",
-      "Building Controla as a **10-stage execution pipeline** (Request Analyzer → Execution Planner → Routing Engine → Scheduler → Batch Engine → Backend Adapters) that treats inference as a **system-level workload**, not a function call; **task classification** (reasoning, extraction, summarization, multimodal) drives an execution plan before backend selection; a **priority-queue scheduler** with deadline awareness, fairness enforcement, and starvation prevention dispatches across **10 supported backends** (vLLM, Ollama, llama.cpp, SGLang, TGI, TensorRT-LLM, MLX-LM, AirLLM, LocalAI, ExLlamaV2); **VRAM-aware routing** handles dynamic model loading/unloading and GPU/CPU-aware dispatch.",
-      "**Feedback loop** records latency, throughput, failure rate, and token efficiency per backend, continuously updating routing policy to prevent static dispatch degradation; **starvation prevention and load-aware dispatch** prevent queue saturation under concurrent workloads; multi-GPU, CPU-only, and Apple Silicon execution paths designed for correctness across hardware configurations.",
-      "Unified control plane orchestrating **10 inference backends** across heterogeneous hardware; **multi-step execution** routes individual pipeline stages to the optimal backend (retrieval → llama.cpp, reasoning → vLLM, summarization → Ollama); **adaptive routing reduces inference cost and latency over time** through performance feedback; designed for local AI systems, research platforms, multi-agent orchestration, and on-prem enterprise deployments.",
+      "Each inference backend required **separate manual routing configuration** with no shared scheduling layer; all requests went to a **single static backend** regardless of task type or hardware state; routing decisions **never improved over time** — degradation went undetected with no feedback mechanism.",
+      "Local AI runs across **incompatible inference backends** — vLLM, Ollama, llama.cpp, TensorRT-LLM — with no shared scheduling layer. Routing is static, ignores hardware state, and has no feedback to improve over time.",
+      "Building a **10-stage execution pipeline** (Request Analyzer → Execution Planner → Routing Engine → Scheduler → Batch Engine → Backend Adapters). **Task classification** (reasoning, extraction, summarization, multimodal) produces an execution plan before backend selection. **Priority-queue scheduler** with deadline awareness and starvation prevention across **10 backends**. **VRAM-aware routing** handles dynamic model loading and GPU/CPU dispatch.",
+      "**Feedback loop** records latency, throughput, failure rate, and token efficiency per backend — routing policy updates continuously to prevent static dispatch degradation. Starvation prevention and load-aware dispatch prevent queue saturation under concurrent workloads.",
+      "Unified control plane across **10 inference backends**. Per-stage routing (retrieval → llama.cpp, reasoning → vLLM). **Adaptive routing reduces cost and latency over time** through performance feedback.",
     ],
     github: "https://github.com/spice14/controla",
   },
@@ -171,10 +175,11 @@ const projects = [
     impact:
       "Structured research execution · adversarial hypothesis critique · provenance-tracked evidence extraction",
     bullets: [
-      "Existing AI research tools generate plausible-sounding outputs that **cannot be reproduced, audited, or traced back** to source evidence — making them unsuitable for real academic workflows where contradiction detection, hypothesis validation, and scholarly rigor are required, not just text generation.",
-      "Building ScholarOS as a modular research execution system with a central orchestrator coordinating **five locked capability services**: contextual literature mapping, contradiction and consensus detection, multi-agent adversarial hypothesis critique, multimodal evidence extraction with provenance tracking, and a grant/proposal assistant; all tool services expose uniform **Model Context Protocol (MCP)** interfaces; agentic reasoning applied selectively only for adversarial critique loops.",
-      "**Deterministic tool services** with schema-defined MCP interfaces eliminate hidden coupling between pipeline stages; **evidence-bound outputs enforce source provenance tracking** on every generated claim; isolated tool execution prevents cross-stage state contamination and maintains consistent outputs across identical runs.",
-      "Research workflows produce **fully auditable execution traces** with clear evidence links for every insight; **contradiction and consensus detection** surfaces where scholarly agreement exists, breaks down, or remains contested; composable architecture allows capability extension without disrupting validated pipeline stages.",
+      "AI research outputs had **no traceable link to source evidence** — generated claims couldn't be audited or reproduced; **scholarly contradictions and consensus** across the literature were invisible to the researcher; extending research tooling with new capability routinely broke previously validated pipeline behavior.",
+      "AI research tools produce plausible outputs that **can't be reproduced, audited, or traced** to source evidence. Unsuitable for academic workflows where contradiction detection and hypothesis validation are required — not just text generation.",
+      "Building ScholarOS as a modular research execution system: central orchestrator coordinating **five locked capability services** — literature mapping, contradiction detection, adversarial hypothesis critique, multimodal evidence extraction with provenance tracking, and grant/proposal assistance. All services expose uniform **MCP interfaces**. Agentic reasoning applied selectively — only for adversarial critique loops.",
+      "**Deterministic tool services** with schema-defined MCP interfaces eliminate hidden coupling. Evidence-bound outputs enforce provenance tracking on every claim. Isolated tool execution prevents cross-stage state contamination.",
+      "**Auditable execution traces** with evidence links for every insight. **Contradiction and consensus detection** surfaces where scholarly agreement breaks down. Composable — capability extension without disrupting validated stages.",
     ],
     github: "https://github.com/spice14/ScholarOS",
   },
@@ -198,10 +203,11 @@ const projects = [
     impact:
       "Deterministic regime gating before compute dispatch · stable under sparse and noisy measurements",
     bullets: [
-      "Runtime control stacks for physics-governed systems require reliable regime identification before routing to **expensive downstream solvers** — but purely data-driven classifiers **fail under sparse measurements, noisy sensor readings, or partially missing physical state**, producing unstable gating that propagates errors into downstream computation.",
-      "Designing PHYSCLIP as a **contrastive dual-encoder regime classifier** that aligns symbolic physics descriptors — governing equations and physical law representations — with observed field-solution behavior — simulation outputs and sensor measurements — through contrastive representation learning; alignment between symbolic and observed domains grounds classification in **physical constraints rather than statistical correlations**.",
-      "**Physics-constrained training** enforces consistency between symbolic and observed representation spaces, preventing regime misclassification under sparse or partially missing measurements; **deterministic routing logic** avoids stochastic assignment at inference time, producing stable and reproducible gating behavior across variable operating conditions.",
-      "**Stable regime selection layer** upstream of expensive numerical solvers and compute dispatch pipelines; improves downstream decision consistency **without replacing validated numerical methods**; designed for environments where **measurement coverage is incomplete and misclassification has high downstream cost**.",
+      "Purely data-driven classifiers produced **unstable regime gating** under sparse measurements or noisy sensor readings; **stochastic assignment** at inference time meant identical physical states could be routed differently across runs; misclassification propagated unchecked into **expensive downstream solvers** with no isolation layer.",
+      "Physics-governed control stacks need reliable regime identification before routing to **expensive downstream solvers**. Purely data-driven classifiers **fail under sparse measurements, noisy sensors, or partially missing physical state** — misclassification propagates through the entire compute stack.",
+      "Designing PHYSCLIP as a **contrastive dual-encoder regime classifier**: symbolic encoder aligns governing equations and physical law representations; observed encoder aligns field-solution behavior and sensor measurements. **Contrastive training** grounds classification in physical constraints, not statistical correlations.",
+      "Physics-constrained training enforces consistency between symbolic and observed spaces — preventing misclassification under sparse inputs. **Deterministic routing at inference time** — no stochastic assignment, producing stable and reproducible gating across variable operating conditions.",
+      "**Stable regime gating** upstream of expensive numerical solvers. Downstream decision consistency without replacing validated numerical methods. Designed for environments where **misclassification has high downstream cost**.",
     ],
     github: "https://github.com/spice14/PHYSCLIP",
   },
@@ -224,10 +230,11 @@ const projects = [
     impact:
       "1,600+ concurrent sessions · 7× VM capacity · ~$1.3M annualized savings · MTTR ~1–2 hrs → ~5 min",
     bullets: [
-      "HSBC's banking voice AI operations were constrained by a thread-based architecture capped at **20 concurrent calls per VM**, post-call documentation averaging **10–15 minutes per interaction**, inference costs at **~$118K/month**, and incident recovery times of **1–2 hours** caused by fragmented cross-service logs with no unified observability layer.",
-      "Led a **4-engineer team** designing and shipping the enterprise SIP integration stack across Packer-automated GCE workloads and core signaling services **(SBC → STT → LLM inference)**; drove an architectural refactor from thread-based to **asyncio + uvloop**, eliminating GIL contention; built a **SIPp-based load test suite** simulating up to 2,000 concurrent users; architected a **cross-stack log-correlation layer** over GCP Logging APIs reconstructing **250K+ log lines in under 5 seconds**.",
-      "Sustained **<2s E2E transcription latency** and **<5% packet loss** under 1,600+ concurrent sessions; in-transit security enforced via libsrtp with DTLS/SRTP; Grafana-Prometheus dashboards with MACD triggers provided real-time infra and model monitoring; infrastructure density optimization enabled migration from **n2-standard-32 → c2-standard-8** while improving transcript length **30–40% under load**.",
-      "Per-VM capacity increased **7× (20 → 140–160 calls)**; **1,600+ sessions** sustained in production; post-call documentation reduced from **10–15 min → 2–3 min** per interaction; compute spend reduced from **~$118K → ~$8K/month (~$1.3M annualized savings)**; MTTR reduced from **~1–2 hours → ~5 minutes** through unified log correlation.",
+      "**Thread-based GIL contention** concurrent sessions saturated at 20 per VM — before packet loss rose above 10%; available hardware capacity was highly under-utilised; post-call documentation required **10–15 minutes of manual effort** per interaction with no automated path; fragmented cross-service logs with no correlation layer meant incidents required **1–2 hours of manual reconstruction** to identify root cause.",
+      "HSBC voice AI was thread-based, capped at **20 concurrent calls per VM**. Post-call documentation: **10–15 min per interaction**. Inference cost: **~$118K/month**. Incident recovery: **1–2 hours** — fragmented logs, no unified observability layer.",
+      "Led a **4-engineer team**. Owned **Packer automation across all project modules** — standardizing GCE image builds for the full SIP stack **(SBC → STT → LLM inference)**. Refactored thread-based to **asyncio + uvloop**, eliminating GIL contention. Built **SIPp load test suite** (2,000 concurrent users). Architected **cross-stack log-correlation** over GCP Logging APIs — **250K+ log lines in under 5 seconds**.",
+      "**<2s E2E transcription latency**, <5% packet loss at 1,600+ concurrent sessions. libsrtp + DTLS/SRTP for in-transit security. Grafana-Prometheus with MACD triggers. Migrated **n2-standard-32 → c2-standard-8**, improving transcript length **30–40% under load**.",
+      "**7× per-VM capacity (20 → 140–160 calls)**. **1,600+ sessions** sustained. Documentation: **10–15 min → 2–3 min**. Compute: **$118K → $8K/month (~$1.3M annualized savings)**. MTTR: **1–2 hours → ~5 minutes**.",
     ],
     github: null,
   },
@@ -249,10 +256,11 @@ const projects = [
     impact:
       "~2–3 days → ~2–3 hours documentation turnaround · 104 resource groups/project · zero fabricated components",
     bullets: [
-      "Enterprise infrastructure documentation required manual extraction from Azure subscription data — a process taking **2–3 days per project** that produced stale architecture views, delayed governance reviews, and created discrepancies between documented and live infrastructure state.",
-      "Built a Streamlit-based engine that accepts a **subscription ID** and auto-generates SDDs and **PlantUML architecture diagrams** through an automated pipeline of inventory extraction, network flow mapping, security configuration analysis, and dependency graph construction; applied **few-shot LLM prompting** for architecture rationale grounded in live state; integrated Azure Backbone topology exploration; explicit **validation guardrails** cross-check generated components against extracted inventory to prevent fabricated resources from appearing in outputs.",
-      "**Guardrail layer enforces** that every generated component maps to a verified resource in the live Azure state, preventing hallucinated topology from reaching governance documentation; outputs regenerated from **live subscription state** rather than cached snapshots, preventing documentation drift; topology validation directly accelerated GCP infrastructure debugging in subsequent projects.",
-      "Documentation turnaround reduced from **2–3 days → ~2–3 hours** across an average of **104 resource groups per project**; automated diagram generation eliminated manual PlantUML authoring; **materially improved architectural fidelity** through live-state grounding rather than manual transcription.",
+      "Infrastructure documentation required **manual extraction from Azure** — 2–3 days per project; **PlantUML diagrams were authored by hand** from memory or stale exports; documented architecture drifted from live infrastructure state with **no mechanism to detect or correct divergence**.",
+      "Enterprise infrastructure documentation required manual Azure subscription extraction — **2–3 days per project**. Produced stale views, delayed governance reviews, and documented state that drifted from live infrastructure.",
+      "Built a Streamlit engine accepting a **subscription ID**, auto-generating SDDs and **PlantUML diagrams** via automated inventory extraction, network flow mapping, security config analysis, and dependency graph construction. **Few-shot LLM prompting** grounds architecture rationale in live state. **Validation guardrails** cross-check every generated component against extracted inventory.",
+      "Guardrail layer enforces that every generated component maps to a **verified live resource** — hallucinated topology can't reach governance docs. Outputs regenerated from live subscription state — no cached snapshots, no documentation drift.",
+      "Documentation: **2–3 days → ~2–3 hours**. Average **104 resource groups per project**. Eliminated manual PlantUML authoring. Live-state grounding replaced manual transcription.",
     ],
     github: null,
   },
@@ -273,10 +281,11 @@ const projects = [
     impact:
       "~96% extraction accuracy · automated normalization across varied airline PDF schemas",
     bullets: [
-      "Airline contract PDFs for AMEX GBT contained tables in **inconsistent formats** — some rendered as embedded images, others as readable structured text — with varied schemas, nested table layouts, and **template drift across carriers**; manual review was slow, error-prone, and could not scale to the volume of agreement processing required.",
-      "Built a document intelligence pipeline using **Camelot and Ghostscript** to extract tables from both image-embedded and programmatically-readable PDF sources, normalizing them to clean structured output regardless of source format; applied **GPT-4o with one-shot prompting** to maintain contextual accuracy across diverse contract formats, handling clause normalization, table structuring, and schema-consistent output generation.",
-      "**One-shot prompting** preserved contextual coherence across varied airline contract templates **without requiring per-carrier fine-tuning** or schema-specific rule authoring; Camelot and Ghostscript in combination covered the full range of airline PDF formats — from scan-quality images to programmatically-generated nested tables.",
-      "**~96% extraction accuracy** across airline contract Q&A; **automated normalization pipeline** replaced manual contract review steps, significantly accelerating commercial analysis cycles and enabling real-time query resolution for sales and customer support teams.",
+      "Airline contract tables were **reviewed manually** — slow, error-prone, and couldn't scale to the volume of carrier agreements; **template drift across carriers** meant each format required separate handling logic; sales and support queries on contract terms had **no real-time resolution path**.",
+      "Airline contract PDFs for AMEX GBT mixed **image-embedded and readable tables**, with varied schemas and template drift across carriers. Manual review was slow, error-prone, and couldn't scale.",
+      "Document intelligence pipeline: **Camelot + Ghostscript** extract tables from both image-embedded and readable PDF sources. **GPT-4o with one-shot prompting** normalizes across diverse contract formats — clause normalization, table structuring, schema-consistent output.",
+      "One-shot prompting maintains contextual coherence across carrier templates **without per-carrier fine-tuning**. Camelot + Ghostscript in combination covers the full format range — from scan-quality images to nested programmatic tables.",
+      "**~96% extraction accuracy** across airline contract Q&A. Automated normalization replaced manual review. Real-time query resolution for sales and customer support.",
     ],
     github: null,
   },
@@ -299,10 +308,11 @@ const projects = [
     impact:
       "~97% factual accuracy · 163 languages · reduced manual escalation on specification queries",
     bullets: [
-      "HDFC Bank's vehicle intelligence operations required accurate, real-time answers to specification-heavy queries across India's **diverse linguistic landscape** — but standard chatbots lacked multilingual coverage and consistently failed on structured vehicle data, generating **inconsistent answers that eroded user trust** and increased manual support escalation.",
-      "Developed a **RAG-based vehicle intelligence assistant** grounded in a curated database of vehicle specifications and image-linked attributes; built a **QA-tested retrieval pipeline** with dynamic data lookup resolving queries across **163 languages**, ensuring localized responses are grounded in the same structured specification data regardless of input language — not translated post-hoc.",
-      "**QA-gated retrieval and inference paths** enforce factual grounding before responses are served, preventing speculative answers on specification queries; **structured specification database** acts as a single source of truth that prevents variant answers from emerging across language boundaries; validated accuracy across the **full 163-language coverage** before production deployment.",
-      "**~97% factual accuracy** on vehicle queries across **163 languages**; measurably **reduced manual escalation** for specification-heavy support cases; enabled consistent vehicle intelligence at scale across India's multilingual user base.",
+      "Vehicle spec chatbots produced **inconsistent and factually unreliable answers** — the same query in different languages could return contradictory results; **manual support escalation** was the only fallback for spec-heavy queries, creating volume bottlenecks at scale.",
+      "HDFC Bank's vehicle intelligence required accurate answers on structured specification data across **163 languages**. Standard chatbots failed on spec queries — generating inconsistent answers that increased manual support escalation.",
+      "**RAG-based vehicle intelligence assistant** grounded in a curated specification database with image-linked attributes. **QA-tested retrieval pipeline** with dynamic data lookup across **163 languages** — localized responses grounded in the same structured data, not translated post-hoc.",
+      "QA-gated retrieval enforces factual grounding before responses are served — no speculative answers on spec queries. Structured specification database acts as a single source of truth across all 163 language boundaries. Accuracy validated across full coverage before production.",
+      "**~97% factual accuracy** across **163 languages**. Reduced manual support escalation on spec-heavy queries.",
     ],
     github: null,
   },
@@ -324,10 +334,11 @@ const projects = [
     impact:
       "Three interlinked AI tools · 163-language content generation · cURL-to-20+ language API conversion",
     bullets: [
-      "Development teams building multilingual web products, chatbots, and API integrations were operating with **fragmented tooling** — content generation, bot deployment, and API code conversion each required separate workflows and bespoke engineering effort, slowing cross-functional delivery and producing **inconsistent output quality**.",
-      "Designed and shipped **three interlinked AI tools** as a unified delivery toolchain: **Laminar** — AI-powered CMS for multilingual content generation across **163+ languages** with AI-driven visuals and multi-format media export; **Metamorph** — no-code chatbot builder constructing deployment-ready bots from user prompts or documentation; **Polymorph** — API utility engine converting cURL to **20+ programming languages**, generating sample endpoints and scaffolding integration boilerplate.",
-      "**Standardized output artifacts** across all three tools ensured deployable outputs rather than drafts requiring manual cleanup; **163+ language content generation** maintained consistent quality without per-language customization; AI-generated visuals and titles produced brand-consistent outputs from text prompts across client deployments.",
-      "**Unified toolchain replaced three fragmented workflows** with standardized, production-ready artifacts; enabled **163-language content generation at scale**; **no-code bot deployment** removed engineering dependency from chatbot delivery and significantly accelerated API integration velocity.",
+      "Content generation, bot deployment, and API conversion each required **separate tools and manual handoff steps** — inconsistent output quality across every client engagement; **multilingual content at scale** had no standardized generation path; chatbot delivery required **engineering involvement** for every new deployment or update.",
+      "Teams building multilingual products, chatbots, and API integrations operated with **fragmented tooling** — content generation, bot deployment, and API code conversion each required separate workflows and produced inconsistent output quality.",
+      "Designed and shipped **three interlinked AI tools**: **Laminar** — AI CMS for multilingual content generation across **163+ languages** with AI-generated visuals and multi-format export; **Metamorph** — no-code chatbot builder from prompts or documentation; **Polymorph** — cURL-to-**20+ language** API converter with endpoint scaffolding.",
+      "**Standardized output artifacts** across all three tools produce deployable outputs — not drafts. 163+ language generation maintains consistent quality without per-language customization. AI-generated visuals produce brand-consistent outputs from prompts across client deployments.",
+      "**Three fragmented workflows replaced** by a unified toolchain. **163-language content generation at scale**. No-code bot deployment removed engineering dependency from chatbot delivery.",
     ],
     github: null,
   },
@@ -349,10 +360,11 @@ const projects = [
     impact:
       "+30% recommendation relevance · sub-50ms latency · single NVIDIA T4 under production load",
     bullets: [
-      "Prismforce's workforce intelligence platform needed real-time skill recommendations against a **large, constantly evolving taxonomy** — but the existing system **failed to model hierarchical skill relationships**, produced stale recommendations under frequent profile updates, and could not meet **sub-50ms latency requirements** for live platform use.",
-      "Built a real-time recommendation engine using a **weighted directed graph** that encodes multi-level skill hierarchy relationships as typed edges with dynamic weight updates; implemented optimized graph traversal using **lightweight mathematical scoring heuristics** to minimize computational overhead per inference call; designed the update model to handle **dynamic node additions and taxonomy changes without full graph recomputation**.",
-      "**Deterministic traversal logic** preserved consistent recommendation outputs under frequent profile and taxonomy updates; lightweight heuristics kept inference paths predictable and bounded rather than relying on probabilistic model outputs; **latency profiled under realistic production concurrency** on a single NVIDIA T4 GPU to validate real-time SLA compliance before deployment.",
-      "**~30% improvement** in recommendation relevance through hierarchical skill modeling; sustained **sub-50ms inference latency** on a single NVIDIA T4 GPU under production load; **dynamic update model eliminated batch retraining cycles** when the skill taxonomy expanded.",
+      "The recommendation system **ignored hierarchical skill relationships** — related skills treated as independent nodes with no structural modeling; **every taxonomy expansion triggered full batch retraining**, blocking updates until recompute completed; inference latency under production concurrency **exceeded the sub-50ms SLA** required for live platform use.",
+      "Prismforce needed real-time skill recommendations against a **large, evolving taxonomy**. The existing system missed hierarchical skill relationships, went stale under profile updates, and couldn't hit **sub-50ms latency** for live platform use.",
+      "Real-time recommendation engine using a **weighted directed graph** encoding multi-level skill hierarchy relationships as typed edges with dynamic weight updates. **Lightweight mathematical scoring heuristics** minimize computational overhead per inference call. Update model handles **dynamic node additions without full graph recomputation**.",
+      "**Deterministic traversal logic** produces consistent outputs under frequent profile and taxonomy updates. Heuristics keep inference paths predictable and bounded. **Latency profiled under realistic production concurrency** on NVIDIA T4 before deployment.",
+      "**~30% improvement** in recommendation relevance. **Sub-50ms inference** on NVIDIA T4 under production load. **Dynamic updates eliminated batch retraining** on taxonomy expansion.",
     ],
     github: null,
   },
@@ -375,17 +387,18 @@ const projects = [
     impact:
       "Best Outgoing Project · BMSCE 2022–23 · 6 validated benchmarks across fluid, structural, and thermal domains",
     bullets: [
-      "Physics simulation domains — fluid dynamics, structural mechanics, heat transfer — are **unstable under purely data-driven approaches**, requiring **large labeled datasets that are expensive or impossible to generate** in experimental settings, and producing physically implausible solutions when training data is sparse.",
-      "Built a **dual-loss PINN framework** that embeds governing **PDE/ODE constraints directly into the optimization objective** alongside the standard data loss, enforcing physical law compliance throughout training; implemented and validated across **six benchmark problems**: Burgers' equation (nonlinear fluid dynamics), 1D heat conduction via pin fin, fixed-fixed column deflection, cantilever tip deflection, and 1D transient cooling under both **Neumann flux and Dirichlet boundary conditions**.",
-      "**Dual-loss formulation uses physics constraints as a regularizer**, stabilizing convergence under sparse labeled data by preventing physically implausible solutions from satisfying the data loss alone; **Neumann and Dirichlet boundary condition variants** validated generalizability across different physical constraint types and problem geometries.",
-      "**Stable convergence validated across six physics benchmarks** spanning fluid, structural, and thermal domains with limited labeled data; proposed applied use cases in **HVAC optimization via real-time thermal feedback** and **predictive server cooling for direct-to-chip systems**; awarded **Best Outgoing Project at BMSCE 2022–23**.",
+      "Purely data-driven physics simulation required **large labeled datasets** expensive or impossible to generate experimentally; sparse training data produced **physically implausible solutions** — the model could satisfy the data loss while violating governing equations; no unified framework existed that validated across multiple physics domains simultaneously.",
+      "Physics simulation (fluid dynamics, structural mechanics, heat transfer) is **unstable under purely data-driven approaches** — requires large labeled datasets that are expensive or impossible to generate, and produces physically implausible solutions under sparse data.",
+      "**Dual-loss PINN framework** embedding governing **PDE/ODE constraints directly into the optimization objective** alongside data loss. Validated across **six benchmarks**: Burgers' equation, 1D heat conduction via pin fin, fixed-fixed column deflection, cantilever tip deflection, 1D transient cooling under **Neumann flux and Dirichlet boundary conditions**.",
+      "Physics constraints act as a **regularizer** — preventing physically implausible solutions from satisfying data loss alone. Neumann and Dirichlet boundary condition variants validated generalizability across constraint types and problem geometries.",
+      "**Stable convergence across 6 physics benchmarks** — fluid, structural, thermal — with limited labeled data. Applied use cases in HVAC thermal feedback and server cooling. **Best Outgoing Project — BMSCE 2022–23**.",
     ],
     github: null,
   },
 ];
 
 // ── Bullet icon map — keyed on first matching keyword ──────────
-const BULLET_STAGE_ICONS = ["⚠️", "⚙️", "🛡️", "🚀"] as const;
+const BULLET_STAGE_ICONS = ["⚡", "⚠️", "⚙️", "🛡️", "🚀"] as const;
 
 function bulletIcon(index: number): string {
   return BULLET_STAGE_ICONS[index] ?? "▸";
@@ -468,7 +481,7 @@ export function Projects() {
             margin: 0,
           }}
         >
-          Systems, Realized.
+          Built Under Constraint.
         </motion.h2>
       </div>
 

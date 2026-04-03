@@ -175,7 +175,7 @@ export function Hero() {
                   textTransform: "uppercase",
                 }}
               >
-                Engineering Reliable AI Systems
+                Inference Infrastructure · Failure Isolation · Production Constraints
               </span>
             </motion.div>
           </div>
@@ -318,14 +318,17 @@ export function Hero() {
               marginBottom: isMobile ? "2rem" : "2.5rem",
             }}
           >
-            I build AI systems that stay stable under production load.
-            Architected concurrency and observability layers enabling{" "}
+            Production AI breaks predictably — under load, on noisy inputs,
+            when latency budgets collapse. I design for those conditions.
+            Refactored thread-blocked voice inference to{" "}
+            <span style={{ color: "#e8e0d0" }}>asyncio + uvloop</span>:{" "}
             <span style={{ color: "#e8e0d0" }}>1,600+ concurrent sessions</span>
-            , <span style={{ color: "#e8e0d0" }}>7× capacity expansion</span>,{" "}
-            <span style={{ color: "#e8e0d0" }}>
-              ~$1.3M annual cost reduction
-            </span>
-            , and rapid root-cause isolation under production load.
+            ,{" "}
+            <span style={{ color: "#e8e0d0" }}>7× VM capacity</span>,{" "}
+            <span style={{ color: "#e8e0d0" }}>~$1.3M annualized savings</span>
+            , MTTR{" "}
+            <span style={{ color: "#e8e0d0" }}>1–2 hours → ~5 minutes</span>{" "}
+            through correlated log infrastructure.
           </motion.p>
 
           {/* CTA row */}

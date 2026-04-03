@@ -15,13 +15,21 @@ const timeline = [
     year: "2024–Present",
     role: "AI Engineer",
     company: "Coforge",
-    detail: "HSBC real-time conversational analytics — $1.3M saved",
+    detail:
+      "asyncio refactor → 140+ calls/VM (was 20) · 1,600+ sessions · $1.3M annualized savings · MTTR 1–2hr → ~5min",
     logo: coforgeLogoImg,
     logoH: 55,
     awards: [
       "Best Team Award — HSBC Account",
       "Pat on the Back — Think Customer Award (Individual Excellence)",
-      "Trained a cohort of 130+ colleagues in AI/ML as part of the Java Spring AI training program",
+      {
+        text: "Led Java Spring AI training for 130+ colleagues",
+        bullets: [
+          "62% were Senior Engineers, Tech Leads & Architects",
+          "81% voted preferred trainer",
+          "Net Promoter Score +50 · 4.4/5 avg satisfaction",
+        ],
+      },
     ],
   },
   {
@@ -56,15 +64,15 @@ const timeline = [
 const pillars = [
   {
     title: "Inference Infrastructure",
-    desc: "Built SIP-to-LLM pipelines with bounded concurrency, distributed inference workers, and SLA monitoring under live traffic.",
+    desc: "asyncio + uvloop replacing thread-blocked workers. Bounded session caps enforced at the orchestration layer. 140+ calls/VM — from a hard ceiling of 20.",
   },
   {
     title: "Observability & Failure Isolation",
-    desc: "Correlated logs across services, isolated failure domains, and reduced MTTR with traceable incident workflows.",
+    desc: "250K+ log lines reconstructed in <5s via GCP Logging APIs. MTTR: 1–2 hours → ~5 minutes. Not from alerts — from correlated trace structure built into the stack.",
   },
   {
     title: "Retrieval & Orchestration Systems",
-    desc: "Built tree and graph retrieval pipelines with evidence traceability and deterministic orchestration across runtimes.",
+    desc: "Finish-reason normalization across LLM providers prevents recursive traversal corruption. Hierarchical fallback paths handle large documents on constrained VRAM without pipeline failure.",
   },
 ];
 
@@ -152,8 +160,9 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            I build AI systems for production environments with strict latency,
-            concurrency, and reliability constraints.
+            I design systems around the constraints they'll actually face: 300ms
+            latency budgets, 1,600+ concurrent sessions, and cost ceilings where
+            every token maps to monthly spend.
           </motion.p>
 
           <motion.p
@@ -169,8 +178,10 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            My work covers inference infrastructure, retrieval systems, and
-            observability for large-scale ML services.
+            Inference without observability is guesswork. I build correlated
+            telemetry alongside the inference stack — 250K+ log lines
+            reconstructed in under 5 seconds — so when something degrades under
+            load, the trace already exists.
           </motion.p>
 
           <motion.p
@@ -186,18 +197,17 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            I treat AI as infrastructure — building for latency budgets,
-            throughput ceilings, transparency, and operational clarity across
-            distributed components.
+            I design around the failure modes others skip: noisy ASR inputs
+            breaking entity extraction, retrieval misses on long-tail queries,
+            hallucinations when model confidence falls below threshold. The
+            system has to hold when those happen.
           </motion.p>
 
           <div
             style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}
           >
             {pillars.map(({ title, desc }, i) => (
-              <div
-                key={i}
-              >
+              <div key={i}>
                 <TiltCard
                   intensity={8}
                   style={{
@@ -370,11 +380,12 @@ export function About() {
                         }}
                       >
                         {awards.map((award, j) => {
-                          const isTrainingHighlight = award.startsWith(
-                            "Trained a cohort of 130+ colleagues",
-                          );
+                          const isObj = typeof award === "object";
+                          const awardText = isObj ? award.text : award;
+                          const isTrainingHighlight =
+                            isObj || awardText.startsWith("Led Java Spring AI");
                           const isPublicationHighlight =
-                            award.includes("Published @ NCISCT");
+                            awardText.includes("Published @ NCISCT");
                           let awardIcon = "🏆";
                           if (isPublicationHighlight) {
                             awardIcon = "📄";
@@ -383,27 +394,71 @@ export function About() {
                           }
 
                           return (
-                            <div
-                              key={j}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "6px",
-                              }}
-                            >
-                              <span style={{ fontSize: "0.75rem" }}>
-                                {awardIcon}
-                              </span>
-                              <span
+                            <div key={j}>
+                              <div
                                 style={{
-                                  fontFamily: FONT_SANS,
-                                  fontSize: "0.78rem",
-                                  color: "#c9a84c",
-                                  lineHeight: 1.4,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "6px",
                                 }}
                               >
-                                {award}
-                              </span>
+                                <span style={{ fontSize: "0.75rem" }}>
+                                  {awardIcon}
+                                </span>
+                                <span
+                                  style={{
+                                    fontFamily: FONT_SANS,
+                                    fontSize: "0.78rem",
+                                    color: "#c9a84c",
+                                    lineHeight: 1.4,
+                                  }}
+                                >
+                                  {awardText}
+                                </span>
+                              </div>
+                              {isObj && award.bullets && (
+                                <div
+                                  style={{
+                                    paddingLeft: "1.4rem",
+                                    marginTop: "3px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "2px",
+                                  }}
+                                >
+                                  {award.bullets.map((bullet, k) => (
+                                    <div
+                                      key={k}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "flex-start",
+                                        gap: "5px",
+                                      }}
+                                    >
+                                      <span
+                                        style={{
+                                          color: "rgba(201,168,76,0.5)",
+                                          fontSize: "0.65rem",
+                                          marginTop: "2px",
+                                          flexShrink: 0,
+                                        }}
+                                      >
+                                        ↳
+                                      </span>
+                                      <span
+                                        style={{
+                                          fontFamily: FONT_SANS,
+                                          fontSize: "0.73rem",
+                                          color: "rgba(201,168,76,0.7)",
+                                          lineHeight: 1.4,
+                                        }}
+                                      >
+                                        {bullet}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
@@ -448,7 +503,6 @@ export function About() {
           </motion.a>
         </div>
       </div>
-
     </section>
   );
 }

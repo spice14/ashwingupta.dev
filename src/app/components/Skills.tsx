@@ -10,7 +10,7 @@ const FONT_SANS = '"DM Sans", sans-serif';
 const capabilities = [
   {
     title: "Production AI Infrastructure",
-    desc: "Built and operated inference systems under latency SLOs, reliability targets, and strict cost limits.",
+    desc: "Operated inference under 300ms latency SLOs, 1,600+ concurrent sessions, and cost ceilings where token spend maps directly to monthly burn — $118K → $8K/month.",
     tags: [
       "latency budgets",
       "SLA design",
@@ -20,7 +20,7 @@ const capabilities = [
   },
   {
     title: "Distributed Inference Systems",
-    desc: "Scaled async inference workers, controlled contention, and sustained throughput under high concurrency.",
+    desc: "asyncio + uvloop replacing thread-blocked GIL-contended workers. 20 → 140+ concurrent calls per VM under sustained production load. Latency profiled at 99th percentile, not average.",
     tags: [
       "async runtimes",
       "batching",
@@ -30,7 +30,7 @@ const capabilities = [
   },
   {
     title: "Retrieval & Indexing Infrastructure",
-    desc: "Built retrieval pipelines and index services with traceable evidence and predictable query latency.",
+    desc: "HNSW indexing with dense embeddings, configurable Top-K (3–4), and 1024–1536 token context windows tuned for recall vs. coherence. Reproducible index artifacts for air-gapped operation.",
     tags: [
       "FAISS/HNSW",
       "chunking strategies",
@@ -40,7 +40,7 @@ const capabilities = [
   },
   {
     title: "Monitoring, Telemetry & Failure Isolation",
-    desc: "Correlated traces and logs across services to isolate failures and reduce production incident recovery time.",
+    desc: "250K+ log lines reconstructed in <5s via GCP Logging APIs. MTTR: 1–2 hours → ~5 minutes. Trace correlation built into the stack — not bolted on after the incident.",
     tags: [
       "SLA monitoring",
       "log correlation",
@@ -50,12 +50,12 @@ const capabilities = [
   },
   {
     title: "Graph-Based Retrieval Systems",
-    desc: "Implemented graph traversal and weighted ranking for real-time recommendations under tight response budgets.",
+    desc: "Weighted directed graph encoding multi-level skill hierarchies as typed edges with dynamic weight updates. Sub-50ms inference on NVIDIA T4 under production concurrency. 30% relevance improvement over flat matching.",
     tags: ["graph traversal", "weighted scoring", "sub-50ms inference loops"],
   },
   {
     title: "Scientific ML Systems",
-    desc: "Built physics-constrained ML workflows for regime classification and stable behavior under sparse data.",
+    desc: "Dual-loss PINN framework embedding PDE/ODE constraints directly into the optimization objective. Stable convergence validated across 6 physics benchmarks with limited labeled data — fluid, structural, and thermal domains.",
     tags: [
       "physics-informed models",
       "physics-constrained training",
@@ -156,7 +156,7 @@ export function Skills() {
                 margin: "0 0 1.2rem",
               }}
             >
-              The stack behind the systems.
+              What runs in production.
             </motion.h2>
           </div>
           <motion.p
@@ -172,7 +172,7 @@ export function Skills() {
               marginBottom: "2.5rem",
             }}
           >
-            Built for production — not notebooks.
+            Profiled under load. Not just imported.
           </motion.p>
 
           <p
