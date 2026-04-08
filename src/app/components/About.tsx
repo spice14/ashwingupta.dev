@@ -81,9 +81,9 @@ const education = [
   {
     from: "Oct 2025",
     to: "Present",
-    role: "Executive Diploma",
+    role: "Ex. Diploma in ML & AI",
     company: "IIIT Bangalore",
-    detail: "Dual specialisation — MLOps, GenAI",
+    detail: "Generative AI & Agentic AI · MLOps",
     logo: iiitbLogoImg,
     logoH: 55,
   },
