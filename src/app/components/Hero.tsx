@@ -29,10 +29,12 @@ export function Hero() {
 
   const onMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
     if (pendingRaf.current) return;
-    const cx = e.clientX, cy = e.clientY;
+    const cx = e.clientX,
+      cy = e.clientY;
     pendingRaf.current = requestAnimationFrame(() => {
       pendingRaf.current = 0;
-      const W = window.innerWidth, H = window.innerHeight;
+      const W = window.innerWidth,
+        H = window.innerHeight;
       const x = (cx / W - 0.5) * 2;
       const y = (cy / H - 0.5) * 2;
       if (layerText.current)
@@ -175,7 +177,8 @@ export function Hero() {
                   textTransform: "uppercase",
                 }}
               >
-                Inference Infrastructure · Failure Isolation · Production Constraints
+                Inference Infrastructure · Failure Isolation · Production
+                Constraints
               </span>
             </motion.div>
           </div>
@@ -318,15 +321,14 @@ export function Hero() {
               marginBottom: isMobile ? "2rem" : "2.5rem",
             }}
           >
-            Production AI breaks predictably — under load, on noisy inputs,
-            when latency budgets collapse. I design for those conditions.
-            Refactored thread-blocked voice inference to{" "}
+            Production AI breaks predictably — under load, on noisy inputs, when
+            latency budgets collapse. I design for those conditions. Refactored
+            thread-blocked voice inference to{" "}
             <span style={{ color: "#e8e0d0" }}>asyncio + uvloop</span>:{" "}
             <span style={{ color: "#e8e0d0" }}>1,600+ concurrent sessions</span>
-            ,{" "}
-            <span style={{ color: "#e8e0d0" }}>7× VM capacity</span>,{" "}
-            <span style={{ color: "#e8e0d0" }}>~$1.3M annualized savings</span>
-            , MTTR{" "}
+            , <span style={{ color: "#e8e0d0" }}>7× VM capacity</span>,{" "}
+            <span style={{ color: "#e8e0d0" }}>~$1.3M annualized savings</span>,
+            MTTR{" "}
             <span style={{ color: "#e8e0d0" }}>1–2 hours → ~5 minutes</span>{" "}
             through correlated log infrastructure.
           </motion.p>
@@ -598,7 +600,6 @@ export function Hero() {
           Scroll
         </span>
       </div>
-
     </section>
   );
 }

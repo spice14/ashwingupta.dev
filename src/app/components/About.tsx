@@ -5,14 +5,18 @@ import coforgeLogoImg from "../../assets/coforgeLogo.webp?url";
 import gidaLogoImg from "../../assets/gidaLogo.webp?url";
 import bmsceLogoImg from "../../assets/BMSlogo.webp?url";
 import iiitbLogoImg from "../../assets/IIITlogo.webp?url";
+import iiscLogoImg from "../../assets/iiscLogo.webp?url";
+import outlawedLogoImg from "../../assets/outlawedLogo.webp?url";
+import cellstratLogoImg from "../../assets/cellstratLogo.webp?url";
 
 const FONT_SERIF = '"Playfair Display", Georgia, serif';
 const FONT_MONO = '"DM Mono", monospace';
 const FONT_SANS = '"DM Sans", sans-serif';
 
-const timeline = [
+const experience = [
   {
-    year: "2024–Present",
+    from: "Jun 2024",
+    to: "Present",
     role: "AI Engineer",
     company: "Coforge",
     detail:
@@ -33,7 +37,8 @@ const timeline = [
     ],
   },
   {
-    year: "2023–2024",
+    from: "Jan 2023",
+    to: "May 2024",
     role: "Data Scientist",
     company: "Gida Technologies",
     detail: "163+ language RAG systems, sub-50ms recommenders",
@@ -41,15 +46,50 @@ const timeline = [
     logoH: 55,
   },
   {
-    year: "2025-Present",
+    from: "Jan 2022",
+    to: "Sep 2022",
+    role: "Head of Machine Learning",
+    company: "IISc",
+    detail:
+      "Founded & led the ML team at NMCAD Lab, Aerospace Engg. — eVTOL design optimisation using ML/DL under Dr Dineshkumar Harursampath. 5 projects delivered in 8 months.",
+    logo: iiscLogoImg,
+    logoH: 55,
+  },
+  {
+    from: "Feb 2021",
+    to: "Dec 2021",
+    role: "AI Product Developer",
+    company: "CellStrat",
+    detail:
+      "Built production-ready AI products based on OpenAI research for cellstrathub.com — 11k+ global AI developers at time of deployment.",
+    logo: cellstratLogoImg,
+    logoH: 55,
+  },
+  {
+    from: "Jan 2020",
+    to: "Oct 2022",
+    role: "Graphic Designer",
+    company: "OutLawed",
+    detail:
+      "Designed social media content and teaching aids to empower underprivileged students through grassroots teaching programs.",
+    logo: outlawedLogoImg,
+    logoH: 55,
+  },
+];
+
+const education = [
+  {
+    from: "Oct 2025",
+    to: "Present",
     role: "Executive Diploma",
     company: "IIIT Bangalore",
-    detail: "Dual specialisation - MLOps, GenAI",
+    detail: "Dual specialisation — MLOps, GenAI",
     logo: iiitbLogoImg,
     logoH: 55,
   },
   {
-    year: "2019–2023",
+    from: "Aug 2019",
+    to: "May 2023",
     role: "B.E. Mechanical",
     company: "BMS College of Engineering",
     awards: [
@@ -124,8 +164,14 @@ export function About() {
           alignItems: "start",
         }}
       >
-        {/* LEFT */}
-        <div>
+        {/* LEFT — sticky */}
+        <div
+          style={{
+            position: isMobile ? "relative" : "sticky",
+            top: isMobile ? "0" : "6rem",
+            alignSelf: "start",
+          }}
+        >
           <div style={{ overflow: "hidden", marginBottom: "2.5rem" }}>
             <motion.h2
               initial={{ y: "100%" }}
@@ -265,38 +311,71 @@ export function About() {
           <p
             style={{
               fontFamily: FONT_MONO,
-              fontSize: "0.62rem",
+              fontSize: "0.68rem",
               letterSpacing: "0.2em",
               color: "rgba(255,255,255,0.4)",
               textTransform: "uppercase",
               marginBottom: "1.8rem",
             }}
           >
-            Experience & Education
+            Experience
           </p>
           <div>
-            {timeline.map(
-              ({ year, role, company, detail, logo, awards }, i) => (
+            {experience.map(
+              ({ from, to, role, company, detail, logo, awards }, i) => (
                 <div
                   key={i}
                   style={{
                     display: "grid",
-                    gridTemplateColumns: isMobile ? "1fr" : "110px 1fr",
+                    gridTemplateColumns: isMobile ? "1fr" : "90px 1fr",
                     gap: isMobile ? "0.5rem" : "1.5rem",
                     padding: "1.3rem 0",
                     borderBottom: "1px solid rgba(255,255,255,0.05)",
                   }}
                 >
-                  <span
+                  <div
                     style={{
-                      fontFamily: FONT_MONO,
-                      fontSize: "0.85rem",
-                      color: "rgba(255,255,255,0.7)",
+                      display: "flex",
+                      flexDirection: isMobile ? "row" : "column",
+                      alignItems: "center",
+                      gap: isMobile ? "4px" : "2px",
                       paddingTop: "3px",
+                      width: "fit-content",
                     }}
                   >
-                    {year}
-                  </span>
+                    <span
+                      style={{
+                        fontFamily: FONT_MONO,
+                        fontSize: "0.85rem",
+                        color: "rgba(255,255,255,0.7)",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {from}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: FONT_MONO,
+                        fontSize: "0.72rem",
+                        color: "rgba(255,255,255,0.28)",
+                      }}
+                    >
+                      {isMobile ? "→" : "to"}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: FONT_MONO,
+                        fontSize: "0.85rem",
+                        color:
+                          to === "Present"
+                            ? "#4ade80"
+                            : "rgba(255,255,255,0.7)",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {to}
+                    </span>
+                  </div>
                   <div>
                     <div
                       style={{
@@ -459,6 +538,192 @@ export function About() {
                                   ))}
                                 </div>
                               )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ),
+            )}
+          </div>
+
+          <p
+            style={{
+              fontFamily: FONT_MONO,
+              fontSize: "0.68rem",
+              letterSpacing: "0.2em",
+              color: "rgba(255,255,255,0.4)",
+              textTransform: "uppercase",
+              marginTop: "3.5rem",
+              marginBottom: "1.8rem",
+            }}
+          >
+            Education
+          </p>
+          <div>
+            {education.map(
+              ({ from, to, role, company, detail, logo, awards }, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: isMobile ? "1fr" : "90px 1fr",
+                    gap: isMobile ? "0.5rem" : "1.5rem",
+                    padding: "1.3rem 0",
+                    borderBottom: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: isMobile ? "row" : "column",
+                      alignItems: "center",
+                      gap: isMobile ? "4px" : "2px",
+                      paddingTop: "3px",
+                      width: "fit-content",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: FONT_MONO,
+                        fontSize: "0.85rem",
+                        color: "rgba(255,255,255,0.7)",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {from}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: FONT_MONO,
+                        fontSize: "0.72rem",
+                        color: "rgba(255,255,255,0.28)",
+                      }}
+                    >
+                      {isMobile ? "→" : "to"}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: FONT_MONO,
+                        fontSize: "0.85rem",
+                        color:
+                          to === "Present"
+                            ? "#4ade80"
+                            : "rgba(255,255,255,0.7)",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {to}
+                    </span>
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      {logo && (
+                        <div
+                          style={{
+                            width: "52px",
+                            height: "52px",
+                            borderRadius: "8px",
+                            background: "rgba(255,255,255,0.93)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                            overflow: "hidden",
+                            padding: "5px",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+                          }}
+                        >
+                          <img
+                            src={logo}
+                            alt={company}
+                            style={{
+                              height: "42px",
+                              width: "42px",
+                              objectFit: "contain",
+                              display: "block",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <p
+                        style={{
+                          fontFamily: FONT_SANS,
+                          fontWeight: 600,
+                          fontSize: "0.9rem",
+                          color: "#fafaf8",
+                          margin: 0,
+                        }}
+                      >
+                        {role}{" "}
+                        <span
+                          style={{
+                            color: "rgba(255,255,255,0.48)",
+                            fontWeight: 400,
+                          }}
+                        >
+                          @ {company}
+                        </span>
+                      </p>
+                    </div>
+                    {detail && (
+                      <p
+                        style={{
+                          fontFamily: FONT_SANS,
+                          fontSize: "0.82rem",
+                          color: "rgba(255,255,255,0.48)",
+                          lineHeight: 1.5,
+                          paddingLeft: logo ? "62px" : "0",
+                          marginBottom: awards ? "0.6rem" : 0,
+                        }}
+                      >
+                        {detail}
+                      </p>
+                    )}
+                    {awards && (
+                      <div
+                        style={{
+                          paddingLeft: logo ? "62px" : "0",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "4px",
+                        }}
+                      >
+                        {awards.map((award, j) => {
+                          const awardIcon = award.includes("Published")
+                            ? "📄"
+                            : "🏆";
+                          return (
+                            <div
+                              key={j}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "6px",
+                              }}
+                            >
+                              <span style={{ fontSize: "0.75rem" }}>
+                                {awardIcon}
+                              </span>
+                              <span
+                                style={{
+                                  fontFamily: FONT_SANS,
+                                  fontSize: "0.78rem",
+                                  color: "#c9a84c",
+                                  lineHeight: 1.4,
+                                }}
+                              >
+                                {award}
+                              </span>
                             </div>
                           );
                         })}
