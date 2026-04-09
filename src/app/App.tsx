@@ -6,6 +6,7 @@ import { AIBackground } from "./components/AIBackground";
 import { HologramInterface } from "./components/HologramInterface";
 import { useIsMobile } from "../hooks/useMediaQuery";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const About = lazy(() => import("./components/About").then((m) => ({ default: m.About })));
 const Skills = lazy(() => import("./components/Skills").then((m) => ({ default: m.Skills })));
@@ -33,6 +34,7 @@ export default function App() {
         </Suspense>
       </HologramInterface>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
