@@ -1,6 +1,20 @@
 import { motion } from "motion/react";
 import { useState } from "react";
+import type React from "react";
 import { useIsMobile, useIsTablet } from "../../hooks/useMediaQuery";
+
+function renderBullet(text: string): React.ReactNode {
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} style={{ color: "#e8e0d0", fontWeight: 600 }}>
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
+  );
+}
 // @ts-ignore
 import pinnsPdfUrl from "../../assets/PINNs whitepaper.pdf?url";
 
@@ -25,26 +39,28 @@ const TYPE_META: Record<
 > = {
   paper: {
     label: "Published",
-    color: "#F97316",
-    border: "rgba(249,115,22,0.35)",
-    bg: "rgba(249,115,22,0.08)",
-    glow: "0 0 2px rgba(249,115,22,0.4)",
+    color: "#EAB308",
+    border: "rgba(234,179,8,0.45)",
+    bg: "rgba(234,179,8,0.10)",
+    glow: "0 0 2px rgba(234,179,8,0.35)",
   },
   whitepaper: {
     label: "White Paper",
-    color: "#06B6D4",
-    border: "rgba(6,182,212,0.35)",
-    bg: "rgba(6,182,212,0.08)",
-    glow: "0 0 2px rgba(6,182,212,0.4)",
+    color: "#10B981",
+    border: "rgba(16,185,129,0.45)",
+    bg: "rgba(16,185,129,0.10)",
+    glow: "0 0 2px rgba(16,185,129,0.35)",
   },
   github: {
-    label: "GitHub",
-    color: "#A78BFA",
-    border: "rgba(167,139,250,0.35)",
-    bg: "rgba(167,139,250,0.08)",
-    glow: "0 0 2px rgba(167,139,250,0.4)",
+    label: "Open Source",
+    color: "#60A5FA",
+    border: "rgba(96,165,250,0.45)",
+    bg: "rgba(96,165,250,0.10)",
+    glow: "0 0 2px rgba(96,165,250,0.35)",
   },
 };
+
+const RESEARCH_LABELS = ["Problem", "Method", "System design", "Insight"];
 
 const items: ResearchItem[] = [
   {
@@ -54,10 +70,10 @@ const items: ResearchItem[] = [
     subtitle: "Published Research · IJISET · Vol. 9 Special Issue",
     link: "https://ijiset.com/conference/NCISCT-2022/IJISET-NCISCT-220520.pdf",
     bullets: [
-      "Distractor construction requires semantic reasoning — not just question writing",
-      "BERT summarizes → proper nouns anchor pivots → WordNet/ConceptNet generate distractors via hierarchical fallback",
-      "WordNet: hypernym→hyponym chains with sense disambiguation; ConceptNet: part-of relationships as fallback",
-      "Semantic distance from the correct answer determines MCQ validity more than linguistic fluency",
+      "**Distractor construction** requires semantic reasoning — not just question writing; wrong options must be plausible enough to distinguish genuine understanding from guessing",
+      "**BERT** summarizes → **proper nouns anchor pivots** → **WordNet/ConceptNet** generate distractors via hierarchical fallback",
+      "WordNet: **hypernym→hyponym chains** with sense disambiguation; ConceptNet: **part-of relationships** as fallback when WordNet sense coverage is insufficient",
+      "**Semantic distance** from the correct answer determines MCQ validity more than linguistic fluency",
     ],
   },
   {
@@ -66,10 +82,10 @@ const items: ResearchItem[] = [
     title: "Physics-Informed Inference for Partial Observability",
     link: pinnsPdfUrl as string,
     bullets: [
-      "Known governing dynamics, incomplete internal state visibility — operational decisions made blind",
-      "PDEs embedded into the training objective alongside data loss — not as post-hoc constraints",
-      "Staged training balances telemetry fidelity against PDE adherence; convergence diagnosed via physical consistency",
-      "Physical constraints regularize learning — preventing silent invalid extrapolation under distribution shift",
+      "Known governing dynamics, **incomplete internal state visibility** — operational decisions made blind on partial telemetry",
+      "**PDEs embedded into the training objective** alongside data loss — not as post-hoc constraints applied after learning",
+      "**Staged training** balances telemetry fidelity against PDE adherence; convergence diagnosed via **physical consistency** metrics",
+      "Physical constraints **regularize learning** — preventing silent invalid extrapolation under **distribution shift**",
     ],
   },
   {
@@ -79,10 +95,10 @@ const items: ResearchItem[] = [
       "Contrastive Regime Classification — Symbolic and Observed Space Alignment",
     link: "https://github.com/spice14/PHYSCLIP",
     bullets: [
-      "Sparse or noisy sensors cause non-deterministic gating — identical states routed differently across runs",
-      "Dual encoders: symbolic (governing equations) and observed (field behavior + sensors) trained contrastively",
-      "Contrastive loss enforces symbolic–observed consistency, grounding classification in physics not correlation",
-      "Deterministic regime assignment at inference — no stochastic dispatch before numerical solvers",
+      "Existing physics-informed approaches **assume known governing equations** — the harder question of **which physics applies** first goes unanswered",
+      "**CLIP-inspired dual encoders**: a text encoder for symbolic descriptions (equations, boundary conditions, regimes) and a field encoder for observed physical data, trained jointly into a **shared latent space**",
+      "**Contrastive objective** pulls matched physics-description/physical-state pairs together and pushes mismatched ones apart — PHYSCLIP acts as a **perception layer upstream of PINNs**, resolving regime before equation enforcement begins",
+      "**Latent proximity encodes physical meaning** — representation learning restores context to physics rather than replacing it, enabling **interpretable regime identification** under partial observability",
     ],
   },
   {
@@ -92,23 +108,23 @@ const items: ResearchItem[] = [
       "Research as Structured Execution — Deterministic Services Over Autonomous Generation",
     link: "https://github.com/spice14/ScholarOS",
     bullets: [
-      "Fluent AI outputs with no traceable evidence link — unfit for workflows requiring reproducibility",
-      "Five locked MCP services via central orchestrator: literature mapping, contradiction detection, hypothesis critique, evidence extraction, proposal assembly",
-      "Agentic reasoning scoped to hypothesis critique only — all other stages deterministic with schema-defined interfaces",
-      "Every claim bound to source evidence; contradiction detection surfaces where scholarly consensus breaks",
+      "Fluent AI outputs with **no traceable evidence link** — unfit for workflows requiring reproducibility",
+      "**Five locked MCP services** via central orchestrator: literature mapping, contradiction detection, hypothesis critique, evidence extraction, proposal assembly",
+      "Agentic reasoning **scoped to hypothesis critique only** — all other stages deterministic with **schema-defined interfaces**",
+      "Every claim **bound to source evidence**; contradiction detection surfaces where **scholarly consensus breaks**",
     ],
   },
   {
     type: "github",
-    name: "Controla",
+    name: "controla",
     title:
       "Execution-Aware Inference Orchestration — Scheduling Before Dispatch",
     link: "https://github.com/spice14/controla",
     bullets: [
-      "Static backend routing — no awareness of task type, hardware state, or prior outcomes",
-      "10-stage pipeline: classify → plan → route → schedule → batch → dispatch, before backend selection",
-      "Priority-queue scheduler, VRAM-aware routing across 10 backends; latency and token efficiency tracked per request",
-      "Routing policy updates from observed metrics — inference as a scheduled workload, not a stateless API call",
+      "**Static backend routing** — no awareness of task type, hardware state, or prior outcomes",
+      "**10-stage pipeline**: classify → plan → route → schedule → batch → dispatch, before backend selection",
+      "**Priority-queue scheduler**, **VRAM-aware routing** across 10 backends; latency and token efficiency tracked per request",
+      "Routing policy **updates from observed metrics** — inference as a **scheduled workload**, not a stateless API call",
     ],
   },
 ];
@@ -247,10 +263,13 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
                 color: "rgba(255,255,255,0.22)",
                 marginTop: "4px",
                 flexShrink: 0,
-                letterSpacing: "0.05em",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                width: "76px",
+                lineHeight: 1.5,
               }}
             >
-              {String(i + 1).padStart(2, "0")}
+              {RESEARCH_LABELS[i]}
             </span>
             <span
               style={{
@@ -260,7 +279,7 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
                 color: "rgba(255,255,255,0.56)",
               }}
             >
-              {bullet}
+              {renderBullet(bullet)}
             </span>
           </div>
         ))}
@@ -305,57 +324,74 @@ export function Research() {
         position: "relative",
       }}
     >
-      {/* Section label */}
+      {/* Sticky heading block */}
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: isMobile ? "3.5rem" : "6rem",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          marginLeft: isMobile ? "-4vw" : "-6vw",
+          marginRight: isMobile ? "-4vw" : "-6vw",
+          paddingLeft: isMobile ? "4vw" : "6vw",
+          paddingRight: isMobile ? "4vw" : "6vw",
+          paddingTop: "1.5rem",
+          paddingBottom: "1.5rem",
+          background: "linear-gradient(to right, rgba(5,5,8,0.52) 0%, rgba(5,5,8,0.52) 45%, rgba(5,5,8,0) 88%)",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+          marginBottom: isMobile ? "3rem" : "5rem",
         }}
       >
-        <span
-          style={{
-            fontFamily: FONT_MONO,
-            fontSize: "0.62rem",
-            letterSpacing: "0.2em",
-            color: "rgba(255,255,255,0.4)",
-            textTransform: "uppercase",
-          }}
-        >
-          03 — Research &amp; Systems Thinking
-        </span>
+        {/* Section label */}
         <div
           style={{
-            flex: 1,
-            height: "1px",
-            background: "rgba(255,255,255,0.07)",
-          }}
-        />
-      </div>
-
-      {/* Section heading */}
-      <div
-        style={{ overflow: "hidden", marginBottom: isMobile ? "3rem" : "5rem" }}
-      >
-        <motion.h2
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-          style={{
-            fontFamily: FONT_SERIF,
-            fontSize: isMobile
-              ? "clamp(1.8rem, 7vw, 4rem)"
-              : "clamp(3rem, 6vw, 5.5rem)",
-            fontWeight: 800,
-            lineHeight: 1.1,
-            letterSpacing: "-0.04em",
-            color: "#fafaf8",
-            margin: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+            marginBottom: "1rem",
           }}
         >
-          Research & Systems Thinking
-        </motion.h2>
+          <span
+            style={{
+              fontFamily: FONT_MONO,
+              fontSize: "0.62rem",
+              letterSpacing: "0.2em",
+              color: "rgba(255,255,255,0.4)",
+              textTransform: "uppercase",
+            }}
+          >
+            03 — Research &amp; Systems Thinking
+          </span>
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "rgba(255,255,255,0.07)",
+            }}
+          />
+        </div>
+
+        {/* Section heading */}
+        <div style={{ overflow: "hidden" }}>
+          <motion.h2
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            style={{
+              fontFamily: FONT_SERIF,
+              fontSize: isMobile
+                ? "clamp(1.8rem, 7vw, 4rem)"
+                : "clamp(3rem, 6vw, 5.5rem)",
+              fontWeight: 800,
+              lineHeight: 1.1,
+              letterSpacing: "-0.04em",
+              color: "#fafaf8",
+              margin: 0,
+            }}
+          >
+            Observe. Abstract. Construct.
+          </motion.h2>
+        </div>
       </div>
 
       {/* Cards grid — row 1: 3 cards */}

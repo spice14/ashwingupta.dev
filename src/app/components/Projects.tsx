@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
-import { useState } from "react";
+import { ArrowUpRight, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useIsMobile } from "../../hooks/useMediaQuery";
 import coforgeLogoImg from "../../assets/coforgeLogo.webp?url";
 import gidaLogoImg from "../../assets/gidaLogo.webp?url";
@@ -17,37 +17,35 @@ const GIDA_LOGO = gidaLogoImg;
 const HDFC_LOGO = hdfcLogoImg;
 const BMSCE_LOGO = bmsceLogoImg;
 
-function CompanyLogo({
-  logo,
-  alt,
-  height = 20,
-}: {
-  logo?: string;
-  alt: string;
-  height?: number;
-}) {
-  if (!logo) return null;
-  return (
-    <img
-      loading="lazy"
-      src={logo}
-      alt={alt}
-      style={{
-        height: `${height}px`,
-        width: "auto",
-        maxWidth: "80px",
-        objectFit: "contain",
-        borderRadius: "3px",
-      }}
-      onError={(e) =>
-        ((e.currentTarget as HTMLImageElement).style.display = "none")
-      }
-    />
+type Project = {
+  index: string;
+  title: string;
+  company: string;
+  logo: string;
+  logoHeight: number;
+  status: string;
+  devStatus?: string;
+  tags: string[];
+  impact: string;
+  summary: [string, string, string, string];
+  bullets: string[];
+  github: string | null;
+};
+
+function renderBullet(text: string): React.ReactNode {
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} style={{ color: "#e8e0d0", fontWeight: 600 }}>
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
   );
 }
 
-const projects = [
-  // ── PERSONAL ─────────────────────────────────────────────────
+const projects: Project[] = [
   {
     index: "01",
     title: "ashwingupta.dev — Design Handoff to Production",
@@ -66,6 +64,12 @@ const projects = [
     ],
     impact:
       "Live at ashwingupta.dev · 90% image reduction · 72% JS bundle cut · 400 CSS DOM nodes eliminated",
+    summary: [
+      "A portfolio claiming performance engineering was its own **performance failure** — **400 CSS-animated DOM particles**, **2 MB JPEG** hero, 72 unvetted dependencies",
+      "Rebuilt from scratch: **three-layer spatial architecture** with all visual effects in a **single Canvas 2D RAF loop**; below-fold sections lazy-loaded via React.lazy + Suspense",
+      "Scanline texture pre-rendered to offscreen canvas (**1 drawImage vs 270 fillRect/frame**); RAF paused on visibility change; mouse tracking gated behind RAF scheduler",
+      "**90% image reduction** · **72% JS bundle cut** · 400 animated DOM nodes eliminated · stable 60fps under CPU throttle",
+    ],
     bullets: [
       "A portfolio site is its own proof unit. The designer baseline was self-defeating — the first thing a hiring manager measured was a **performance failure on the site claiming performance engineering**.",
       "Designer baseline: **400 CSS-animated DOM particles**, **2 MB JPEG** hero, Google Fonts loaded per-component, **72 unvetted dependencies**. The site needed to signal systems thinking — and was doing the opposite.",
@@ -75,7 +79,6 @@ const projects = [
     ],
     github: "https://github.com/spice14/ashwingupta.dev",
   },
-  // ── OPEN SOURCE ──────────────────────────────────────────────
   {
     index: "02",
     title: "PageIndexOllama — Local-First Fork of PageIndex",
@@ -94,6 +97,12 @@ const projects = [
     ],
     impact:
       "Fully offline tree-RAG execution · vendor lock-in eliminated · provider-agnostic runtime",
+    summary: [
+      "Tree RAG **hardcoded to OpenAI** — offline execution blocked entirely; provider switches **corrupted traversal silently** with no error surface",
+      "Forked and refactored with **provider-routing abstraction** via env vars, **finish-reason normalization layer**, externalized prompt registry, and bounded async concurrency",
+      "Finish-reason normalization stabilizes **recursive traversal** across model outputs; hierarchical fallback handles large documents on **constrained VRAM** without pipeline failure",
+      "**Fully offline tree-RAG** with Ollama — no API keys, **vendor lock-in eliminated**, provider-agnostic runtime with e2e coverage across document types",
+    ],
     bullets: [
       "All inference required a **live OpenAI API key** — offline or air-gapped execution was blocked entirely; **provider switches corrupted traversal silently** with no error surface; token encoding differences across providers produced inconsistent chunk boundaries with no visible signal.",
       "PageIndex's tree RAG was hardcoded to **OpenAI's API contract** — inline prompt strings, non-normalized completion handling. **Local or offline deployment was impossible**. Any provider change broke traversal.",
@@ -121,6 +130,12 @@ const projects = [
     ],
     impact:
       "Fully offline academic document QA · reproducible HNSW indexes · zero API dependency",
+    summary: [
+      "Sensitive academic papers had **no private processing path** — all RAG required cloud APIs; air-gap institutions were fully blocked by existing tooling",
+      "Fully local RAG: **LEANN/HNSW vector indexing** with dense embeddings (facebook/contriever), Ollama-backed inference, multi-source ingestion across PDFs, arXiv URLs, and directories",
+      "Smart chunking with overlap, **configurable Top-K (3–4)** and **context windows (1024–1536 tokens)**; PyMuPDF + BeautifulSoup handle varied PDF quality before indexing — not at query time",
+      "**API-free document QA** on sub-1GB quantized models · **reproducible index artifacts** for air-gapped institutional research",
+    ],
     bullets: [
       "Sensitive academic papers had **no private processing path** — all RAG required external inference APIs; researchers on **CPU-only or low-VRAM hardware** had no viable local inference option; institutions with air-gap requirements were blocked by all existing tooling.",
       "Researchers with sensitive papers had no offline RAG that handled mixed sources — local PDFs, arXiv URLs, paper directories — without exposing data to external inference APIs or cloud indexing.",
@@ -130,7 +145,6 @@ const projects = [
     ],
     github: "https://github.com/spice14/research-it",
   },
-  // ── COFORGE ──────────────────────────────────────────────────
   {
     index: "04",
     title: "Real-Time AI Voice Infrastructure for Banking",
@@ -148,6 +162,12 @@ const projects = [
     ],
     impact:
       "1,600+ concurrent sessions · 7× VM capacity · ~$1.3M annualized savings · MTTR ~1–2 hrs → ~5 min",
+    summary: [
+      "Thread-based concurrency **capped at 20 calls/VM**; post-call docs **10–15 min each**; compute **$118K/month**; incident recovery **1–2 hours** from fragmented cross-service logs",
+      "Led **4-engineer team**: refactored to **asyncio + uvloop**, automated GCE image builds via Packer for SBC→STT→LLM stack, built SIPp load suite for 2,000 concurrent users",
+      "**Cross-stack log correlation** over GCP Logging APIs reconstructs **250K+ log lines in under 5 seconds**; libsrtp + DTLS/SRTP for in-transit security; n2-standard-32 → c4-standard-8 migration",
+      "**7× per-VM capacity** · **1,600+ sessions** sustained · **$118K → $8K/month** (~$1.3M annualized) · MTTR **1–2 hr → ~5 min**",
+    ],
     bullets: [
       "**Thread-based GIL contention** concurrent sessions saturated at 20 per VM — before packet loss rose above 10%; available hardware capacity was highly under-utilised; post-call documentation required **10–15 minutes of manual effort** per interaction with no automated path; fragmented cross-service logs with no correlation layer meant incidents required **1–2 hours of manual reconstruction** to identify root cause.",
       "HSBC voice AI was thread-based, capped at **20 concurrent calls per VM**. Post-call documentation: **10–15 min per interaction**. Inference cost: **~$118K/month**. Incident recovery: **1–2 hours** — fragmented logs, no unified observability layer.",
@@ -174,6 +194,12 @@ const projects = [
     ],
     impact:
       "~2–3 days → ~2–3 hours documentation turnaround · 104 resource groups/project · zero fabricated components",
+    summary: [
+      "Infrastructure docs took **2–3 days per project**, authored by hand from **stale exports**, and drifted from live state with no mechanism to detect divergence",
+      "Streamlit engine that takes a subscription ID and auto-generates **SDDs and PlantUML diagrams** via live inventory extraction, network flow mapping, and security config analysis",
+      "**Few-shot LLM prompting** grounded in live Azure Resource Graph state; **validation guardrails** cross-check every generated component against extracted inventory — hallucinated topology can't reach governance docs",
+      "**2–3 days → ~2–3 hours** · 104 resource groups/project · **zero fabricated components** · manual PlantUML authoring eliminated",
+    ],
     bullets: [
       "Infrastructure documentation required **manual extraction from Azure** — 2–3 days per project; **PlantUML diagrams were authored by hand** from memory or stale exports; documented architecture drifted from live infrastructure state with **no mechanism to detect or correct divergence**.",
       "Enterprise infrastructure documentation required manual Azure subscription extraction — **2–3 days per project**. Produced stale views, delayed governance reviews, and documented state that drifted from live infrastructure.",
@@ -199,6 +225,12 @@ const projects = [
     ],
     impact:
       "~96% extraction accuracy · automated normalization across varied airline PDF schemas",
+    summary: [
+      "Airline contract PDFs **mixed image-embedded and readable tables**; template drift across carriers meant **no unified extraction path**; manual review couldn't scale",
+      "**Camelot + Ghostscript** extract tables from both source types; **GPT-4o with one-shot prompting** normalizes across diverse carrier formats into schema-consistent output",
+      "One-shot prompting maintains contextual coherence **without per-carrier fine-tuning**; covers the full format range from scan-quality images to nested programmatic tables",
+      "**~96% extraction accuracy** · automated normalization replaced manual review · **real-time query resolution** for sales and customer support",
+    ],
     bullets: [
       "Airline contract tables were **reviewed manually** — slow, error-prone, and couldn't scale to the volume of carrier agreements; **template drift across carriers** meant each format required separate handling logic; sales and support queries on contract terms had **no real-time resolution path**.",
       "Airline contract PDFs for AMEX GBT mixed **image-embedded and readable tables**, with varied schemas and template drift across carriers. Manual review was slow, error-prone, and couldn't scale.",
@@ -208,7 +240,6 @@ const projects = [
     ],
     github: null,
   },
-  // ── GIDA ─────────────────────────────────────────────────────
   {
     index: "07",
     title: "Here.app – Multilingual Vehicle Intelligence Platform",
@@ -226,6 +257,12 @@ const projects = [
     ],
     impact:
       "~97% factual accuracy · 163 languages · reduced manual escalation on specification queries",
+    summary: [
+      "Vehicle spec chatbots returned **inconsistent and contradictory answers** across languages; **manual escalation** was the only fallback for spec-heavy queries",
+      "**RAG** grounded in a curated specification database with image-linked attributes and a **QA-tested retrieval pipeline** with dynamic data lookup across **163 languages**",
+      "**QA-gated retrieval** enforces factual grounding before responses are served; 163-language localization from the **same structured data source** — not translated post-hoc",
+      "**~97% factual accuracy** across **163 languages** · reduced manual escalation on spec-heavy queries",
+    ],
     bullets: [
       "Vehicle spec chatbots produced **inconsistent and factually unreliable answers** — the same query in different languages could return contradictory results; **manual support escalation** was the only fallback for spec-heavy queries, creating volume bottlenecks at scale.",
       "HDFC Bank's vehicle intelligence required accurate answers on structured specification data across **163 languages**. Standard chatbots failed on spec queries — generating inconsistent answers that increased manual support escalation.",
@@ -252,6 +289,12 @@ const projects = [
     ],
     impact:
       "Three interlinked AI tools · 163-language content generation · cURL-to-20+ language API conversion",
+    summary: [
+      "Content generation, bot deployment, and API conversion required **separate tools with manual handoffs** and inconsistent output quality across every client engagement",
+      "Designed and shipped **three interlinked AI tools**: **Laminar** (163-language CMS with AI visuals), **Metamorph** (no-code chatbot builder from prompts), **Polymorph** (cURL-to-20+ language API converter)",
+      "**Standardized output artifacts** across all three tools produce deployable outputs — not drafts; AI-generated visuals maintain **brand consistency** from prompts across client deployments",
+      "**Three fragmented workflows unified** · **163-language content** at scale · no-code bot deployment **removed engineering dependency** from chatbot delivery",
+    ],
     bullets: [
       "Content generation, bot deployment, and API conversion each required **separate tools and manual handoff steps** — inconsistent output quality across every client engagement; **multilingual content at scale** had no standardized generation path; chatbot delivery required **engineering involvement** for every new deployment or update.",
       "Teams building multilingual products, chatbots, and API integrations operated with **fragmented tooling** — content generation, bot deployment, and API code conversion each required separate workflows and produced inconsistent output quality.",
@@ -278,6 +321,12 @@ const projects = [
     ],
     impact:
       "+30% recommendation relevance · sub-50ms latency · single NVIDIA T4 under production load",
+    summary: [
+      "Recommendation system **ignored hierarchical skill relationships**; every taxonomy expansion triggered **full batch retraining**; inference **exceeded sub-50ms SLA** under production concurrency",
+      "**Weighted directed graph** encoding multi-level skill hierarchies as typed edges; **lightweight scoring heuristics**; dynamic node updates without full graph recomputation",
+      "**Deterministic traversal logic** produces consistent outputs under frequent profile and taxonomy updates; latency profiled at **99th percentile** on NVIDIA T4 before deployment",
+      "**+30% recommendation relevance** · **sub-50ms inference** on NVIDIA T4 · batch retraining **eliminated** on taxonomy expansion",
+    ],
     bullets: [
       "The recommendation system **ignored hierarchical skill relationships** — related skills treated as independent nodes with no structural modeling; **every taxonomy expansion triggered full batch retraining**, blocking updates until recompute completed; inference latency under production concurrency **exceeded the sub-50ms SLA** required for live platform use.",
       "Prismforce needed real-time skill recommendations against a **large, evolving taxonomy**. The existing system missed hierarchical skill relationships, went stale under profile updates, and couldn't hit **sub-50ms latency** for live platform use.",
@@ -287,7 +336,6 @@ const projects = [
     ],
     github: null,
   },
-  // ── BMSCE ────────────────────────────────────────────────────
   {
     index: "10",
     title: "Physics-Informed Neural Networks (PINNs)",
@@ -305,6 +353,12 @@ const projects = [
     ],
     impact:
       "Best Outgoing Project · BMSCE 2022–23 · 6 validated benchmarks across fluid, structural, and thermal domains",
+    summary: [
+      "Purely data-driven physics simulation required **large labeled datasets** and produced **physically implausible solutions** under sparse data — model could satisfy data loss while violating governing equations",
+      "**Dual-loss PINN framework** embedding **PDE/ODE constraints directly into the optimization objective** alongside data loss, validated across six physics benchmarks",
+      "Validated across **Burgers' equation**, **1D heat conduction**, fixed-fixed and cantilever deflection, **1D transient cooling** under Neumann flux and Dirichlet boundary conditions",
+      "**Stable convergence** across fluid, structural, and thermal domains with limited labeled data · **Best Outgoing Project — BMSCE 2022–23**",
+    ],
     bullets: [
       "Purely data-driven physics simulation required **large labeled datasets** expensive or impossible to generate experimentally; sparse training data produced **physically implausible solutions** — the model could satisfy the data loss while violating governing equations; no unified framework existed that validated across multiple physics domains simultaneously.",
       "Physics simulation (fluid dynamics, structural mechanics, heat transfer) is **unstable under purely data-driven approaches** — requires large labeled datasets that are expensive or impossible to generate, and produces physically implausible solutions under sparse data.",
@@ -316,35 +370,544 @@ const projects = [
   },
 ];
 
-// ── Bullet icon map — keyed on first matching keyword ──────────
-const BULLET_STAGE_ICONS = ["⚡", "⚠️", "⚙️", "🛡️", "🚀"] as const;
+const SUMMARY_LABELS = ["Problem", "Built", "Technical decision", "Outcome"];
 
-function bulletIcon(index: number): string {
-  return BULLET_STAGE_ICONS[index] ?? "▸";
+function ProjectCard({
+  p,
+  index,
+  onClick,
+}: {
+  p: Project;
+  index: number;
+  onClick: () => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  const isAward = p.status === "Best Outgoing Project · 2022–23";
+  const statusColor = isAward
+    ? "#facc15"
+    : p.status === "Client Delivery"
+      ? "#22d3ee"
+      : p.devStatus === "completed"
+        ? "#4ade80"
+        : "#facc15";
+  const statusBorder = isAward
+    ? "rgba(250,204,21,0.35)"
+    : p.status === "Client Delivery"
+      ? "rgba(34,211,238,0.4)"
+      : p.devStatus === "completed"
+        ? "rgba(74,222,128,0.35)"
+        : "rgba(250,204,21,0.35)";
+  const statusBg = isAward
+    ? "rgba(250,204,21,0.06)"
+    : p.status === "Client Delivery"
+      ? "rgba(34,211,238,0.08)"
+      : p.devStatus === "completed"
+        ? "rgba(74,222,128,0.06)"
+        : "rgba(250,204,21,0.06)";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.06, duration: 0.45 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={onClick}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        padding: "1.6rem",
+        borderRadius: "8px",
+        border: `1px solid ${hovered ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.05)"}`,
+        background: hovered
+          ? "rgba(255,255,255,0.055)"
+          : "rgba(255,255,255,0.012)",
+        transform: hovered ? "translateY(-6px)" : "translateY(0)",
+        boxShadow: hovered ? "0 12px 32px rgba(0,0,0,0.35)" : "none",
+        transition:
+          "transform 280ms ease, border-color 280ms ease, background 280ms ease, box-shadow 280ms ease",
+        cursor: "pointer",
+      }}
+    >
+      {/* Title + badge row */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "0.75rem",
+        }}
+      >
+        <p
+          style={{
+            fontFamily: FONT_SERIF,
+            fontWeight: 800,
+            fontSize: "1.75rem",
+            color: "#fafaf8",
+            lineHeight: 1.2,
+            margin: 0,
+            flex: 1,
+          }}
+        >
+          {p.title}
+        </p>
+        <span
+          style={{
+            fontFamily: FONT_MONO,
+            fontSize: "0.52rem",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            whiteSpace: "nowrap",
+            padding: "3px 9px",
+            borderRadius: "20px",
+            flexShrink: 0,
+            marginTop: "3px",
+            color: statusColor,
+            border: `1px solid ${statusBorder}`,
+            background: statusBg,
+          }}
+        >
+          {p.status}
+          {isAward && " 🏆"}
+        </span>
+      </div>
+
+      {/* Company */}
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <img
+          src={p.logo}
+          alt={p.company}
+          style={{
+            height: `${p.logoHeight}px`,
+            width: "auto",
+            maxWidth: "72px",
+            objectFit: "contain",
+            borderRadius: "3px",
+            opacity: 0.85,
+          }}
+          onError={(e) =>
+            ((e.currentTarget as HTMLImageElement).style.display = "none")
+          }
+        />
+        <span
+          style={{
+            fontFamily: FONT_MONO,
+            fontSize: "0.7rem",
+            letterSpacing: "0.09em",
+            color: "rgba(255,255,255,0.35)",
+          }}
+        >
+          {p.company}
+        </span>
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: "1px", background: "rgba(255,255,255,0.06)" }} />
+
+      {/* 4 summary bullets */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
+        {p.summary.map((bullet, i) => (
+          <div
+            key={i}
+            style={{
+              display: "flex",
+              gap: "0.65rem",
+              alignItems: "flex-start",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: FONT_MONO,
+                fontSize: "0.62rem",
+                color: "rgba(255,255,255,0.22)",
+                marginTop: "4px",
+                flexShrink: 0,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                width: "76px",
+                lineHeight: 1.5,
+              }}
+            >
+              {SUMMARY_LABELS[i]}
+            </span>
+            <span
+              style={{
+                fontFamily: FONT_SANS,
+                fontSize: "0.88rem",
+                lineHeight: 1.65,
+                color: "rgba(255,255,255,0.56)",
+              }}
+            >
+              {renderBullet(bullet)}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer: index + arrow */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "auto",
+          paddingTop: "0.25rem",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: FONT_MONO,
+            fontSize: "0.62rem",
+            color: "rgba(255,255,255,0.18)",
+            letterSpacing: "0.1em",
+          }}
+        >
+          {p.index}
+        </span>
+        <span
+          style={{
+            fontFamily: FONT_MONO,
+            fontSize: "0.72rem",
+            color: hovered
+              ? "rgba(255,255,255,0.55)"
+              : "rgba(255,255,255,0.18)",
+            transition: "color 280ms ease",
+          }}
+        >
+          ↗
+        </span>
+      </div>
+    </motion.div>
+  );
 }
 
-function renderBullet(text: string): React.ReactNode {
-  const parts = text.split(/\*\*(.+?)\*\*/g);
-  return parts.map((part, i) =>
-    i % 2 === 1 ? (
-      <strong key={i} style={{ color: "#e8e0d0", fontWeight: 600 }}>
-        {part}
-      </strong>
-    ) : (
-      part
-    ),
+function ProjectDrawer({ p, onClose }: { p: Project; onClose: () => void }) {
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const isAward = p.status === "Best Outgoing Project · 2022–23";
+  const statusColor = isAward
+    ? "#facc15"
+    : p.status === "Client Delivery"
+      ? "#22d3ee"
+      : p.devStatus === "completed"
+        ? "#4ade80"
+        : "#facc15";
+  const statusBorder = isAward
+    ? "rgba(250,204,21,0.35)"
+    : p.status === "Client Delivery"
+      ? "rgba(34,211,238,0.4)"
+      : p.devStatus === "completed"
+        ? "rgba(74,222,128,0.35)"
+        : "rgba(250,204,21,0.35)";
+  const statusBg = isAward
+    ? "rgba(250,204,21,0.06)"
+    : p.status === "Client Delivery"
+      ? "rgba(34,211,238,0.08)"
+      : p.devStatus === "completed"
+        ? "rgba(74,222,128,0.06)"
+        : "rgba(250,204,21,0.06)";
+
+  const BULLET_ICONS = ["⚡", "⚠️", "⚙️", "🛡️", "🚀"] as const;
+
+  return (
+    <>
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        onClick={onClose}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 100,
+          background: "rgba(0,0,0,0.55)",
+          backdropFilter: "blur(3px)",
+          WebkitBackdropFilter: "blur(3px)",
+        }}
+      />
+
+      {/* Drawer panel */}
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ duration: 0.38, ease: [0.76, 0, 0.24, 1] }}
+        style={{
+          position: "fixed",
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: isMobile ? "100vw" : "min(560px, 46vw)",
+          zIndex: 101,
+          background: "rgba(8, 8, 10, 0.98)",
+          borderLeft: "1px solid rgba(255,255,255,0.1)",
+          overflowY: "auto",
+          padding: isMobile ? "2rem 1.5rem" : "3rem 2.5rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.8rem",
+        }}
+      >
+        {/* Close */}
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <button
+            onClick={onClose}
+            style={{
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "50%",
+              width: "34px",
+              height: "34px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "rgba(255,255,255,0.5)",
+              transition: "border-color 0.2s, color 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.borderColor =
+                "rgba(255,255,255,0.3)";
+              (e.currentTarget as HTMLElement).style.color = "#fafaf8";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.borderColor =
+                "rgba(255,255,255,0.1)";
+              (e.currentTarget as HTMLElement).style.color =
+                "rgba(255,255,255,0.5)";
+            }}
+          >
+            <X size={14} />
+          </button>
+        </div>
+
+        {/* Header */}
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: FONT_MONO,
+                fontSize: "0.5rem",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                padding: "3px 8px",
+                borderRadius: "20px",
+                color: statusColor,
+                border: `1px solid ${statusBorder}`,
+                background: statusBg,
+              }}
+            >
+              {p.status}
+              {isAward && " 🏆"}
+            </span>
+          </div>
+          <h2
+            style={{
+              fontFamily: FONT_SERIF,
+              fontWeight: 800,
+              fontSize: "1.75rem",
+              color: "#fafaf8",
+              lineHeight: 1.2,
+              letterSpacing: "-0.02em",
+              margin: 0,
+            }}
+          >
+            {p.title}
+          </h2>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <img
+              src={p.logo}
+              alt={p.company}
+              style={{
+                height: `${p.logoHeight}px`,
+                width: "auto",
+                maxWidth: "72px",
+                objectFit: "contain",
+                borderRadius: "3px",
+                opacity: 0.85,
+              }}
+              onError={(e) =>
+                ((e.currentTarget as HTMLImageElement).style.display = "none")
+              }
+            />
+            <span
+              style={{
+                fontFamily: FONT_MONO,
+                fontSize: "0.62rem",
+                letterSpacing: "0.09em",
+                color: "rgba(255,255,255,0.4)",
+              }}
+            >
+              {p.company}
+            </span>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
+
+        {/* Full bullets */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+          {p.bullets.map((b, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: 8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                alignItems: "flex-start",
+                padding: "0.85rem 0",
+                borderBottom:
+                  i < p.bullets.length - 1
+                    ? "1px solid rgba(255,255,255,0.05)"
+                    : "none",
+              }}
+            >
+              <span
+                style={{ fontSize: "0.9rem", flexShrink: 0, marginTop: "2px" }}
+              >
+                {BULLET_ICONS[i] ?? "▸"}
+              </span>
+              <span
+                style={{
+                  fontFamily: FONT_SANS,
+                  fontSize: "0.84rem",
+                  lineHeight: 1.75,
+                  color: "rgba(255,255,255,0.65)",
+                }}
+              >
+                {renderBullet(b)}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Impact */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.45, duration: 0.3 }}
+          style={{
+            fontFamily: FONT_MONO,
+            fontSize: "0.62rem",
+            color: "#e8e0d0",
+            letterSpacing: "0.05em",
+            background: "rgba(232,224,208,0.07)",
+            border: "1px solid rgba(232,224,208,0.15)",
+            borderRadius: "4px",
+            padding: "10px 14px",
+            lineHeight: 1.6,
+          }}
+        >
+          ↳ {p.impact}
+        </motion.div>
+
+        {/* Tags */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.3 }}
+          style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}
+        >
+          {p.tags.map((t) => (
+            <span
+              key={t}
+              style={{
+                fontFamily: FONT_MONO,
+                fontSize: "0.52rem",
+                letterSpacing: "0.07em",
+                color: "rgba(255,255,255,0.38)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "3px",
+                padding: "3px 7px",
+              }}
+            >
+              {t}
+            </span>
+          ))}
+        </motion.div>
+
+        {/* GitHub link */}
+        {p.github && (
+          <motion.a
+            href={p.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55, duration: 0.3 }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              fontFamily: FONT_MONO,
+              fontSize: "0.65rem",
+              letterSpacing: "0.08em",
+              color: "rgba(255,255,255,0.45)",
+              textDecoration: "none",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "6px",
+              padding: "10px 14px",
+              width: "fit-content",
+              transition: "border-color 0.2s, color 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.borderColor =
+                "rgba(255,255,255,0.3)";
+              (e.currentTarget as HTMLElement).style.color = "#fafaf8";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.borderColor =
+                "rgba(255,255,255,0.12)";
+              (e.currentTarget as HTMLElement).style.color =
+                "rgba(255,255,255,0.45)";
+            }}
+          >
+            <ArrowUpRight size={13} />
+            View on GitHub
+          </motion.a>
+        )}
+      </motion.div>
+    </>
   );
 }
 
 export function Projects() {
   const isMobile = useIsMobile();
-  const [openCard, setOpenCard] = useState<number | null>(0);
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+
   const orderedProjects = [...projects].sort((a, b) => {
     const aIsAward = a.status === "Best Outgoing Project · 2022–23";
     const bIsAward = b.status === "Best Outgoing Project · 2022–23";
     if (aIsAward === bIsAward) return 0;
     return aIsAward ? 1 : -1;
   });
+
+  const cols = isMobile ? 1 : 2;
 
   return (
     <section
@@ -355,409 +918,103 @@ export function Projects() {
         position: "relative",
       }}
     >
+      {/* Sticky heading block */}
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          marginLeft: isMobile ? "-4vw" : "-6vw",
+          marginRight: isMobile ? "-4vw" : "-6vw",
+          paddingLeft: isMobile ? "4vw" : "6vw",
+          paddingRight: isMobile ? "4vw" : "6vw",
+          paddingTop: "1.5rem",
+          paddingBottom: "1.5rem",
+          background: "linear-gradient(to right, rgba(5,5,8,0.52) 0%, rgba(5,5,8,0.52) 45%, rgba(5,5,8,0) 88%)",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
           marginBottom: "5rem",
         }}
       >
-        <span
-          style={{
-            fontFamily: FONT_MONO,
-            fontSize: "0.62rem",
-            letterSpacing: "0.2em",
-            color: "rgba(255,255,255,0.4)",
-            textTransform: "uppercase",
-          }}
-        >
-          04 — Projects
-        </span>
+        {/* Section label */}
         <div
           style={{
-            flex: 1,
-            height: "1px",
-            background: "rgba(255,255,255,0.07)",
-          }}
-        />
-      </div>
-
-      <div style={{ overflow: "visible", marginBottom: "5rem" }}>
-        <motion.h2
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-          style={{
-            fontFamily: FONT_SERIF,
-            fontSize: isMobile
-              ? "clamp(1.8rem, 7vw, 4rem)"
-              : "clamp(3rem, 6vw, 5.5rem)",
-            fontWeight: 800,
-            lineHeight: 1.1,
-            letterSpacing: "-0.04em",
-            color: "#fafaf8",
-            margin: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+            marginBottom: "1rem",
           }}
         >
-          Built Under Constraint.
-        </motion.h2>
+          <span
+            style={{
+              fontFamily: FONT_MONO,
+              fontSize: "0.62rem",
+              letterSpacing: "0.2em",
+              color: "rgba(255,255,255,0.4)",
+              textTransform: "uppercase",
+            }}
+          >
+            04 — Projects
+          </span>
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "rgba(255,255,255,0.07)",
+            }}
+          />
+        </div>
+
+        {/* Heading */}
+        <div style={{ overflow: "hidden" }}>
+          <motion.h2
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            style={{
+              fontFamily: FONT_SERIF,
+              fontSize: isMobile
+                ? "clamp(1.8rem, 7vw, 4rem)"
+                : "clamp(3rem, 6vw, 5.5rem)",
+              fontWeight: 800,
+              lineHeight: 1.1,
+              letterSpacing: "-0.04em",
+              color: "#fafaf8",
+              margin: 0,
+            }}
+          >
+            Delivered, Scaled.
+          </motion.h2>
+        </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        {orderedProjects.map((p, i) => {
-          const isOpen = openCard === i;
-          const isAwardStatus = p.status === "Best Outgoing Project · 2022–23";
-          const statusColor = isAwardStatus
-            ? "#facc15"
-            : p.status === "Client Delivery"
-              ? "#22d3ee"
-              : p.devStatus === "completed"
-                ? "#4ade80"
-                : p.devStatus === "in-progress"
-                  ? "#facc15"
-                  : "rgba(255,255,255,0.35)";
-          const statusBorder = isAwardStatus
-            ? "rgba(250,204,21,0.35)"
-            : p.status === "Client Delivery"
-              ? "rgba(34,211,238,0.4)"
-              : p.devStatus === "completed"
-                ? "rgba(74,222,128,0.35)"
-                : p.devStatus === "in-progress"
-                  ? "rgba(250,204,21,0.35)"
-                  : "rgba(255,255,255,0.12)";
-          const statusBg = isAwardStatus
-            ? "rgba(250,204,21,0.06)"
-            : p.status === "Client Delivery"
-              ? "rgba(34,211,238,0.1)"
-              : p.devStatus === "completed"
-                ? "rgba(74,222,128,0.06)"
-                : p.devStatus === "in-progress"
-                  ? "rgba(250,204,21,0.06)"
-                  : "transparent";
-
-          return (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: 0.04 * i, duration: 0.55 }}
-              onClick={() => setOpenCard((prev) => (prev === i ? null : i))}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  setOpenCard((prev) => (prev === i ? null : i));
-                }
-              }}
-              role="button"
-              tabIndex={0}
-              aria-expanded={isOpen}
-              style={{
-                borderRadius: "12px",
-                border: isOpen
-                  ? "1px solid rgba(255,255,255,0.17)"
-                  : "1px solid rgba(255,255,255,0.11)",
-                background: "rgba(255,255,255,0.025)",
-                backdropFilter: "none",
-                transition: "border-color 0.3s",
-                overflow: "hidden",
-                cursor: "pointer",
-              }}
-            >
-              <div
-                style={{
-                  padding: isMobile ? "1.2rem 1.2rem" : "1.6rem 1.8rem",
-                  display: "grid",
-                  gridTemplateColumns: isMobile ? "1fr" : "48px 1fr auto",
-                  gap: isMobile ? "1rem" : "1.5rem",
-                  alignItems: "start",
-                }}
-              >
-                {/* Index */}
-                <span
-                  style={{
-                    fontFamily: FONT_MONO,
-                    fontSize: "0.6rem",
-                    letterSpacing: "0.15em",
-                    paddingTop: "5px",
-                    color: isOpen
-                      ? "rgba(255,255,255,0.55)"
-                      : "rgba(255,255,255,0.22)",
-                    transition: "color 0.3s",
-                  }}
-                >
-                  {p.index}
-                </span>
-
-                {/* Title + meta + expandable body */}
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                      flexWrap: "wrap",
-                      marginBottom: "0.45rem",
-                    }}
-                  >
-                    <h3
-                      style={{
-                        fontFamily: FONT_SERIF,
-                        fontSize: isMobile
-                          ? "clamp(0.95rem, 4vw, 1.15rem)"
-                          : "clamp(1.05rem, 1.8vw, 1.45rem)",
-                        fontWeight: 800,
-                        lineHeight: 1.2,
-                        letterSpacing: "-0.02em",
-                        margin: 0,
-                        color: isOpen ? "#fafaf8" : "rgba(255,255,255,0.65)",
-                        transition: "color 0.3s",
-                      }}
-                    >
-                      {p.title}
-                    </h3>
-                    <span
-                      style={{
-                        fontFamily: FONT_MONO,
-                        fontSize: "0.52rem",
-                        letterSpacing: "0.12em",
-                        borderRadius: "20px",
-                        padding: "3px 9px",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "5px",
-                        textTransform: "uppercase",
-                        whiteSpace: "nowrap",
-                        color: statusColor,
-                        border: `1px solid ${statusBorder}`,
-                        background: statusBg,
-                      }}
-                    >
-                      {p.status}
-                      {isAwardStatus && (
-                        <span style={{ fontSize: "0.7rem", lineHeight: 1 }}>
-                          🏆
-                        </span>
-                      )}
-                    </span>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      marginBottom: isOpen ? "1rem" : "0",
-                      transition: "margin 0.3s",
-                    }}
-                  >
-                    <CompanyLogo
-                      logo={p.logo}
-                      alt={p.company}
-                      height={p.logoHeight}
-                    />
-                    <span
-                      style={{
-                        fontFamily: FONT_MONO,
-                        fontSize: "0.58rem",
-                        letterSpacing: "0.09em",
-                        color: "rgba(255,255,255,0.38)",
-                      }}
-                    >
-                      {p.company}
-                    </span>
-                  </div>
-
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{
-                          duration: 0.35,
-                          ease: [0.76, 0, 0.24, 1],
-                        }}
-                        style={{ overflow: "hidden" }}
-                      >
-                        {/* Thin rule */}
-                        <div
-                          style={{
-                            height: "1px",
-                            background: "rgba(255,255,255,0.07)",
-                            marginBottom: "1rem",
-                          }}
-                        />
-
-                        {/* Bullets with category icons */}
-                        <ul
-                          style={{
-                            margin: "0 0 1.1rem 0",
-                            padding: 0,
-                            listStyle: "none",
-                            maxWidth: "680px",
-                          }}
-                        >
-                          {p.bullets.map((b: string, bi: number) => (
-                            <motion.li
-                              key={bi}
-                              initial={{ opacity: 0, x: -6 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{
-                                delay: 0.04 + bi * 0.05,
-                                duration: 0.28,
-                              }}
-                              style={{
-                                fontFamily: FONT_SANS,
-                                fontSize: "0.84rem",
-                                lineHeight: 1.75,
-                                color: "rgba(255,255,255,0.68)",
-                                display: "flex",
-                                gap: "0.6rem",
-                                alignItems: "flex-start",
-                                marginBottom: "0.3rem",
-                              }}
-                            >
-                              <span
-                                style={{
-                                  fontSize: "1.02rem",
-                                  flexShrink: 0,
-                                  marginTop: "0.08rem",
-                                }}
-                              >
-                                {bulletIcon(bi)}
-                              </span>
-                              <span>{renderBullet(b)}</span>
-                            </motion.li>
-                          ))}
-                        </ul>
-
-                        {/* Impact pill + tags */}
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "1.25rem",
-                            flexWrap: "wrap",
-                          }}
-                        >
-                          <span
-                            style={{
-                              fontFamily: FONT_MONO,
-                              fontSize: "0.6rem",
-                              color: "#e8e0d0",
-                              letterSpacing: "0.05em",
-                              background: "rgba(232,224,208,0.07)",
-                              border: "1px solid rgba(232,224,208,0.15)",
-                              borderRadius: "4px",
-                              padding: "4px 10px",
-                            }}
-                          >
-                            ↳ {p.impact}
-                          </span>
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "5px",
-                              flexWrap: "wrap",
-                            }}
-                          >
-                            {p.tags.map((t) => (
-                              <span
-                                key={t}
-                                style={{
-                                  fontFamily: FONT_MONO,
-                                  fontSize: "0.52rem",
-                                  letterSpacing: "0.07em",
-                                  color: "rgba(255,255,255,0.4)",
-                                  border: "1px solid rgba(255,255,255,0.1)",
-                                  borderRadius: "3px",
-                                  padding: "3px 7px",
-                                }}
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* GitHub / NDA badge */}
-                <div style={{ paddingTop: "4px" }}>
-                  {p.github ? (
-                    <motion.a
-                      href={p.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      animate={{ opacity: isOpen ? 1 : 0 }}
-                      transition={{ duration: 0.25 }}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "34px",
-                        height: "34px",
-                        border: "1px solid rgba(255,255,255,0.2)",
-                        borderRadius: "50%",
-                        color: "rgba(255,255,255,0.6)",
-                        textDecoration: "none",
-                        transition: "border-color 0.2s, color 0.2s",
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      onMouseEnter={(e) => {
-                        const el = e.currentTarget as HTMLElement;
-                        el.style.borderColor = "#e8e0d0";
-                        el.style.color = "#e8e0d0";
-                      }}
-                      onMouseLeave={(e) => {
-                        const el = e.currentTarget as HTMLElement;
-                        el.style.borderColor = "rgba(255,255,255,0.2)";
-                        el.style.color = "rgba(255,255,255,0.6)";
-                      }}
-                    >
-                      <ArrowUpRight size={14} />
-                    </motion.a>
-                  ) : (
-                    <motion.div
-                      animate={{ opacity: isOpen ? 0.5 : 0 }}
-                      transition={{ duration: 0.25 }}
-                      style={{
-                        width: "34px",
-                        height: "34px",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: FONT_MONO,
-                          fontSize: "0.42rem",
-                          color: "rgba(255,255,255,0.4)",
-                        }}
-                      >
-                        NDA
-                      </span>
-                    </motion.div>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
+      {/* Grid */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${cols}, 1fr)`,
+          gap: "1.25rem",
+        }}
+      >
+        {orderedProjects.map((p, i) => (
+          <ProjectCard
+            key={p.index}
+            p={p}
+            index={i}
+            onClick={() => setSelectedIdx(i)}
+          />
+        ))}
       </div>
 
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=DM+Sans:wght@400;600&family=DM+Mono:wght@400&display=swap"
-        rel="stylesheet"
-      />
+      {/* Drawer */}
+      <AnimatePresence>
+        {selectedIdx !== null && (
+          <ProjectDrawer
+            p={orderedProjects[selectedIdx]}
+            onClose={() => setSelectedIdx(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
