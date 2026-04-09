@@ -130,90 +130,9 @@ const projects = [
     ],
     github: "https://github.com/spice14/research-it",
   },
-  {
-    index: "04",
-    title: "Controla — Local-First Inference Control Plane",
-    company: "Open Source",
-    logo: "https://cdn.simpleicons.org/github/ffffff",
-    logoHeight: 18,
-    status: "Active Development",
-    devStatus: "in-progress",
-    tags: [
-      "Execution-Aware Routing",
-      "Real Scheduling Engine",
-      "10 Backend Adapters",
-      "VRAM-Aware Dispatch",
-      "Feedback-Driven Optimization",
-      "Python / Local-First",
-    ],
-    impact:
-      "10 inference backends orchestrated · execution-aware scheduling · adaptive routing over time",
-    bullets: [
-      "Each inference backend required **separate manual routing configuration** with no shared scheduling layer; all requests went to a **single static backend** regardless of task type or hardware state; routing decisions **never improved over time** — degradation went undetected with no feedback mechanism.",
-      "Local AI runs across **incompatible inference backends** — vLLM, Ollama, llama.cpp, TensorRT-LLM — with no shared scheduling layer. Routing is static, ignores hardware state, and has no feedback to improve over time.",
-      "Building a **10-stage execution pipeline** (Request Analyzer → Execution Planner → Routing Engine → Scheduler → Batch Engine → Backend Adapters). **Task classification** (reasoning, extraction, summarization, multimodal) produces an execution plan before backend selection. **Priority-queue scheduler** with deadline awareness and starvation prevention across **10 backends**. **VRAM-aware routing** handles dynamic model loading and GPU/CPU dispatch.",
-      "**Feedback loop** records latency, throughput, failure rate, and token efficiency per backend — routing policy updates continuously to prevent static dispatch degradation. Starvation prevention and load-aware dispatch prevent queue saturation under concurrent workloads.",
-      "Unified control plane across **10 inference backends**. Per-stage routing (retrieval → llama.cpp, reasoning → vLLM). **Adaptive routing reduces cost and latency over time** through performance feedback.",
-    ],
-    github: "https://github.com/spice14/controla",
-  },
-  {
-    index: "05",
-    title: "ScholarOS — Agentic Research Execution System",
-    company: "Open Source",
-    logo: "https://cdn.simpleicons.org/github/ffffff",
-    logoHeight: 18,
-    status: "Active Development",
-    devStatus: "in-progress",
-    tags: [
-      "Agentic Orchestration",
-      "Deterministic Tool Services",
-      "Evidence Traceability",
-      "Multi-Agent Hypothesis Critique",
-      "MCP / Composable Architecture",
-    ],
-    impact:
-      "Structured research execution · adversarial hypothesis critique · provenance-tracked evidence extraction",
-    bullets: [
-      "AI research outputs had **no traceable link to source evidence** — generated claims couldn't be audited or reproduced; **scholarly contradictions and consensus** across the literature were invisible to the researcher; extending research tooling with new capability routinely broke previously validated pipeline behavior.",
-      "AI research tools produce plausible outputs that **can't be reproduced, audited, or traced** to source evidence. Unsuitable for academic workflows where contradiction detection and hypothesis validation are required — not just text generation.",
-      "Building ScholarOS as a modular research execution system: central orchestrator coordinating **five locked capability services** — literature mapping, contradiction detection, adversarial hypothesis critique, multimodal evidence extraction with provenance tracking, and grant/proposal assistance. All services expose uniform **MCP interfaces**. Agentic reasoning applied selectively — only for adversarial critique loops.",
-      "**Deterministic tool services** with schema-defined MCP interfaces eliminate hidden coupling. Evidence-bound outputs enforce provenance tracking on every claim. Isolated tool execution prevents cross-stage state contamination.",
-      "**Auditable execution traces** with evidence links for every insight. **Contradiction and consensus detection** surfaces where scholarly agreement breaks down. Composable — capability extension without disrupting validated stages.",
-    ],
-    github: "https://github.com/spice14/ScholarOS",
-  },
-  {
-    index: "06",
-    title:
-      "PHYSCLIP — Contrastive Alignment of Physical Laws and Field Solutions",
-    company: "Open Source",
-    logo: "https://cdn.simpleicons.org/github/ffffff",
-    logoHeight: 18,
-    status: "Active Development",
-    devStatus: "in-progress",
-    tags: [
-      "Contrastive Learning",
-      "Dual-Encoder Architecture",
-      "Physics-Constrained Training",
-      "Symbolic Alignment",
-      "Regime Classification",
-      "Inference Gating",
-    ],
-    impact:
-      "Deterministic regime gating before compute dispatch · stable under sparse and noisy measurements",
-    bullets: [
-      "Purely data-driven classifiers produced **unstable regime gating** under sparse measurements or noisy sensor readings; **stochastic assignment** at inference time meant identical physical states could be routed differently across runs; misclassification propagated unchecked into **expensive downstream solvers** with no isolation layer.",
-      "Physics-governed control stacks need reliable regime identification before routing to **expensive downstream solvers**. Purely data-driven classifiers **fail under sparse measurements, noisy sensors, or partially missing physical state** — misclassification propagates through the entire compute stack.",
-      "Designing PHYSCLIP as a **contrastive dual-encoder regime classifier**: symbolic encoder aligns governing equations and physical law representations; observed encoder aligns field-solution behavior and sensor measurements. **Contrastive training** grounds classification in physical constraints, not statistical correlations.",
-      "Physics-constrained training enforces consistency between symbolic and observed spaces — preventing misclassification under sparse inputs. **Deterministic routing at inference time** — no stochastic assignment, producing stable and reproducible gating across variable operating conditions.",
-      "**Stable regime gating** upstream of expensive numerical solvers. Downstream decision consistency without replacing validated numerical methods. Designed for environments where **misclassification has high downstream cost**.",
-    ],
-    github: "https://github.com/spice14/PHYSCLIP",
-  },
   // ── COFORGE ──────────────────────────────────────────────────
   {
-    index: "07",
+    index: "04",
     title: "Real-Time AI Voice Infrastructure for Banking",
     company: "HSBC · Coforge",
     logo: "https://cdn.simpleicons.org/hsbc/DB0011",
@@ -239,7 +158,7 @@ const projects = [
     github: null,
   },
   {
-    index: "08",
+    index: "05",
     title: "AI-Powered Azure Infrastructure Documentation Engine",
     company: "Coforge",
     logo: COFORGE_LOGO,
@@ -265,7 +184,7 @@ const projects = [
     github: null,
   },
   {
-    index: "09",
+    index: "06",
     title: "AI Contract Intelligence System for Airline Agreements",
     company: "Amex GBT · Coforge",
     logo: "https://cdn.simpleicons.org/americanexpress/2E77BC",
@@ -291,7 +210,7 @@ const projects = [
   },
   // ── GIDA ─────────────────────────────────────────────────────
   {
-    index: "10",
+    index: "07",
     title: "Here.app – Multilingual Vehicle Intelligence Platform",
     company: "HDFC Bank · Gida",
     logo: HDFC_LOGO,
@@ -317,7 +236,7 @@ const projects = [
     github: null,
   },
   {
-    index: "11",
+    index: "08",
     title: "Laminar · Metamorph · Polymorph — AI Delivery Toolchain",
     company: "Gida Technologies",
     logo: GIDA_LOGO,
@@ -343,7 +262,7 @@ const projects = [
     github: null,
   },
   {
-    index: "12",
+    index: "09",
     title: "Graph-Based Skill Recommendation Engine",
     company: "Prismforce",
     logo: prismforceLogoImg,
@@ -370,7 +289,7 @@ const projects = [
   },
   // ── BMSCE ────────────────────────────────────────────────────
   {
-    index: "13",
+    index: "10",
     title: "Physics-Informed Neural Networks (PINNs)",
     company: "BMS College of Engineering",
     logo: BMSCE_LOGO,
@@ -453,7 +372,7 @@ export function Projects() {
             textTransform: "uppercase",
           }}
         >
-          03 — Projects
+          04 — Projects
         </span>
         <div
           style={{

@@ -735,37 +735,6 @@ export function About() {
             )}
           </div>
 
-          <motion.a
-            href="https://ijiset.com/conference/NCISCT-2022/IJISET-NCISCT-220520.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            whileHover={{ x: 4 }}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              marginTop: "1.8rem",
-              fontFamily: FONT_MONO,
-              fontSize: "0.95rem",
-              letterSpacing: "0.1em",
-              color: "rgba(255,255,255,0.42)",
-              textDecoration: "none",
-              transition: "color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.color = "#e8e0d0")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.color =
-                "rgba(255,255,255,0.42)")
-            }
-          >
-            ↗️ NCISCT 2022 — Generating MCQs using Graphs & Language Models
-          </motion.a>
         </div>
       </div>
     </section>

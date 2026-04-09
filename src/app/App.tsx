@@ -7,9 +7,9 @@ import { HologramInterface } from "./components/HologramInterface";
 import { useIsMobile } from "../hooks/useMediaQuery";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-
 const About = lazy(() => import("./components/About").then((m) => ({ default: m.About })));
 const Skills = lazy(() => import("./components/Skills").then((m) => ({ default: m.Skills })));
+const Research = lazy(() => import("./components/Research").then((m) => ({ default: m.Research })));
 const Projects = lazy(() => import("./components/Projects").then((m) => ({ default: m.Projects })));
 const Contact = lazy(() => import("./components/Contact").then((m) => ({ default: m.Contact })));
 
@@ -29,6 +29,7 @@ export default function App() {
         <Suspense fallback={null}>
           <About />
           <Skills />
+          <Research />
           <Projects />
           <Contact />
         </Suspense>

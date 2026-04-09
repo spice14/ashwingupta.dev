@@ -118,7 +118,7 @@ export function Contact() {
             textTransform: "uppercase",
           }}
         >
-          04 — Contact
+          05 — Contact
         </span>
         <div
           style={{
