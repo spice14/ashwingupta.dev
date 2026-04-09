@@ -197,8 +197,8 @@ export function Contact() {
                 width: "6px",
                 height: "6px",
                 borderRadius: "50%",
-                background: "#4ade80",
-                boxShadow: "0 0 8px #4ade80",
+                background: "#facc15",
+                boxShadow: "0 0 8px #facc15",
                 animation: "pulse 2s infinite",
               }}
             />
@@ -211,7 +211,7 @@ export function Contact() {
                 textTransform: "uppercase",
               }}
             >
-              Open to opportunities
+              Building, not browsing
             </span>
           </motion.div>
 
