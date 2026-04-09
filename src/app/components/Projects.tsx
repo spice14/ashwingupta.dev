@@ -907,7 +907,8 @@ export function Projects() {
     return aIsAward ? 1 : -1;
   });
 
-  const cols = isMobile ? 1 : 2;
+  const ROW_COLS = isMobile ? [1, 1, 1, 1] : [3, 2, 3, 2];
+  const ROW_SLICES = [[0, 3], [3, 5], [5, 8], [8, 10]];
 
   return (
     <section
@@ -988,21 +989,29 @@ export function Projects() {
         </div>
       </div>
 
-      {/* Grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${cols}, 1fr)`,
-          gap: "1.25rem",
-        }}
-      >
-        {orderedProjects.map((p, i) => (
-          <ProjectCard
-            key={p.index}
-            p={p}
-            index={i}
-            onClick={() => setSelectedIdx(i)}
-          />
+      {/* Grid — alternating 3-col / 2-col rows */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+        {ROW_SLICES.map(([start, end], rowIdx) => (
+          <div
+            key={rowIdx}
+            style={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${ROW_COLS[rowIdx]}, 1fr)`,
+              gap: "1.25rem",
+            }}
+          >
+            {orderedProjects.slice(start, end).map((p) => {
+              const globalIdx = orderedProjects.indexOf(p);
+              return (
+                <ProjectCard
+                  key={p.index}
+                  p={p}
+                  index={globalIdx}
+                  onClick={() => setSelectedIdx(globalIdx)}
+                />
+              );
+            })}
+          </div>
         ))}
       </div>
 
