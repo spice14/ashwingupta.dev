@@ -344,7 +344,7 @@ export function Research() {
             display: "flex",
             alignItems: "center",
             gap: "1rem",
-            marginBottom: "1rem",
+            marginBottom: "3rem",
           }}
         >
           <span

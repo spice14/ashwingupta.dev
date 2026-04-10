@@ -52,7 +52,7 @@ const experience = [
     detail:
       "Founded & led the ML team at NMCAD Lab, Aerospace Engg. — eVTOL design optimisation using ML/DL under Dr Dineshkumar Harursampath. 5 projects delivered in 8 months.",
     logo: iiscLogoImg,
-    logoH: 55,
+    logoH: 36,
   },
   {
     from: "Feb 2021",
@@ -62,7 +62,7 @@ const experience = [
     detail:
       "Built production-ready AI products based on OpenAI research for cellstrathub.com — 11k+ global AI developers at time of deployment.",
     logo: cellstratLogoImg,
-    logoH: 55,
+    logoH: 36,
   },
   {
     from: "Jan 2020",
@@ -205,7 +205,10 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            Most AI work focuses on what a model outputs. I focus on how the system behaves — how requests are routed, how decisions are made under constraint, and how the system holds when inputs are noisy, capacity is saturated, or governing assumptions break.
+            Most AI work focuses on what a model outputs. I focus on how the
+            system behaves — how requests are routed, how decisions are made
+            under constraint, and how the system holds when inputs are noisy,
+            capacity is saturated, or governing assumptions break.
           </motion.p>
 
           <motion.p
@@ -221,7 +224,11 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            This spans three areas: inference and orchestration systems (scheduling, routing, execution), scientific ML (physics-informed models where governing equations constrain learning), and retrieval pipelines that have to be reliable — not just accurate on benchmarks.
+            This spans three areas: inference and orchestration systems
+            (scheduling, routing, execution), scientific ML (physics-informed
+            models where governing equations constrain learning), and retrieval
+            pipelines that have to be reliable — not just accurate on
+            benchmarks.
           </motion.p>
 
           <motion.p
@@ -237,7 +244,10 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            Controla is an inference orchestrator. ScholarOS is structured research execution. PHYSCLIP aligns symbolic physics with observed behavior. The PINNs work embeds PDEs into training. These are not tools — they are systems with decision logic.
+            Controla is an inference orchestrator. ScholarOS is structured
+            research execution. PHYSCLIP aligns symbolic physics with observed
+            behavior. The PINNs work embeds PDEs into training. These are not
+            tools — they are systems with decision logic.
           </motion.p>
 
           <div
@@ -376,32 +386,18 @@ export function About() {
                       }}
                     >
                       {logo && (
-                        <div
+                        <img
+                          src={logo}
+                          alt={company}
                           style={{
-                            width: "52px",
-                            height: "52px",
-                            borderRadius: "8px",
-                            background: "rgba(255,255,255,0.93)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            height: "48px",
+                            width: "48px",
+                            objectFit: "contain",
+                            display: "block",
                             flexShrink: 0,
-                            overflow: "hidden",
-                            padding: "5px",
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+                            opacity: 0.9,
                           }}
-                        >
-                          <img
-                            src={logo}
-                            alt={company}
-                            style={{
-                              height: "42px",
-                              width: "42px",
-                              objectFit: "contain",
-                              display: "block",
-                            }}
-                          />
-                        </div>
+                        />
                       )}
                       <p
                         style={{
@@ -618,32 +614,18 @@ export function About() {
                       }}
                     >
                       {logo && (
-                        <div
+                        <img
+                          src={logo}
+                          alt={company}
                           style={{
-                            width: "52px",
-                            height: "52px",
-                            borderRadius: "8px",
-                            background: "rgba(255,255,255,0.93)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            height: "48px",
+                            width: "48px",
+                            objectFit: "contain",
+                            display: "block",
                             flexShrink: 0,
-                            overflow: "hidden",
-                            padding: "5px",
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+                            opacity: 0.9,
                           }}
-                        >
-                          <img
-                            src={logo}
-                            alt={company}
-                            style={{
-                              height: "42px",
-                              width: "42px",
-                              objectFit: "contain",
-                              display: "block",
-                            }}
-                          />
-                        </div>
+                        />
                       )}
                       <p
                         style={{
@@ -724,7 +706,6 @@ export function About() {
               ),
             )}
           </div>
-
         </div>
       </div>
     </section>

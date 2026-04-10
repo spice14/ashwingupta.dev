@@ -147,7 +147,7 @@ export const projects: Project[] = [
   {
     index: "04",
     title: "Real-Time AI Voice Infrastructure for Banking",
-    company: "HSBC · Coforge",
+    company: "HSBC",
     logo: "https://cdn.simpleicons.org/hsbc/DB0011",
     logoHeight: 22,
     status: "Client Delivery",
@@ -211,7 +211,7 @@ export const projects: Project[] = [
   {
     index: "06",
     title: "AI Contract Intelligence System for Airline Agreements",
-    company: "Amex GBT · Coforge",
+    company: "Amex GBT",
     logo: "https://cdn.simpleicons.org/americanexpress/2E77BC",
     logoHeight: 18,
     status: "Client Delivery",
@@ -242,7 +242,7 @@ export const projects: Project[] = [
   {
     index: "07",
     title: "Here.app – Multilingual Vehicle Intelligence Platform",
-    company: "HDFC Bank · Gida",
+    company: "HDFC ERGO",
     logo: HDFC_LOGO,
     logoHeight: 22,
     status: "Client Delivery",
@@ -371,13 +371,7 @@ export const projects: Project[] = [
 
 const SUMMARY_LABELS = ["Problem", "System", "Design", "Outcome"];
 
-function ProjectCard({
-  p,
-  index,
-}: {
-  p: Project;
-  index: number;
-}) {
+function ProjectCard({ p, index }: { p: Project; index: number }) {
   const [hovered, setHovered] = useState(false);
 
   const isAward = p.status === "Best Outgoing Project · 2022–23";
@@ -412,7 +406,9 @@ function ProjectCard({
       transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => { window.location.href = `/projects/${p.index}`; }}
+      onClick={() => {
+        window.location.href = `/projects/${p.index}`;
+      }}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -478,7 +474,6 @@ function ProjectCard({
             width: "auto",
             maxWidth: "72px",
             objectFit: "contain",
-            borderRadius: "3px",
             opacity: 0.85,
           }}
           onError={(e) =>
@@ -588,7 +583,12 @@ export function Projects() {
   });
 
   const ROW_COLS = isMobile ? [1, 1, 1, 1] : [3, 2, 3, 2];
-  const ROW_SLICES = [[0, 3], [3, 5], [5, 8], [8, 10]];
+  const ROW_SLICES = [
+    [0, 3],
+    [3, 5],
+    [5, 8],
+    [8, 10],
+  ];
 
   return (
     <section
@@ -611,7 +611,8 @@ export function Projects() {
           paddingRight: isMobile ? "4vw" : "6vw",
           paddingTop: "1.5rem",
           paddingBottom: "1.5rem",
-          background: "linear-gradient(to right, rgba(5,5,8,0.52) 0%, rgba(5,5,8,0.52) 45%, rgba(5,5,8,0) 88%)",
+          background:
+            "linear-gradient(to right, rgba(5,5,8,0.52) 0%, rgba(5,5,8,0.52) 45%, rgba(5,5,8,0) 88%)",
           backdropFilter: "blur(6px)",
           WebkitBackdropFilter: "blur(6px)",
           marginBottom: "5rem",
@@ -622,7 +623,7 @@ export function Projects() {
             display: "flex",
             alignItems: "center",
             gap: "1rem",
-            marginBottom: "1rem",
+            marginBottom: "3rem",
           }}
         >
           <span
@@ -680,13 +681,7 @@ export function Projects() {
           >
             {orderedProjects.slice(start, end).map((p) => {
               const globalIdx = orderedProjects.indexOf(p);
-              return (
-                <ProjectCard
-                  key={p.index}
-                  p={p}
-                  index={globalIdx}
-                />
-              );
+              return <ProjectCard key={p.index} p={p} index={globalIdx} />;
             })}
           </div>
         ))}
