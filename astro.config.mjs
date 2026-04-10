@@ -8,7 +8,17 @@ export default defineConfig({
   output: "static",
   integrations: [
     react(),
-    sitemap(),
+    sitemap({
+      changefreq: "weekly",
+      priority: 0.7,
+      lastmod: new Date(),
+      serialize(item) {
+        if (item.url === "https://www.ashwingupta.dev/") {
+          return { ...item, priority: 1.0, changefreq: "weekly" };
+        }
+        return item;
+      },
+    }),
   ],
   vite: {
     plugins: [tailwindcss()],
