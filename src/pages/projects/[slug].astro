@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectDetailApp from "../../app/ProjectDetailApp";
+import { projects } from "../../app/components/Projects";
+import "../../styles/index.css";
+
+export function getStaticPaths() {
+  return projects.map((p) => ({
+    params: { slug: p.index },
+    props: { title: p.title },
+  }));
+}
+
+const { slug } = Astro.params;
+const { title } = Astro.props;
+
+const canonical = `https://www.ashwingupta.dev/projects/${slug}`;
+---
+
+<BaseLayout
+  title={`${title} | Ashwin Gupta`}
+  description={`Project detail: ${title}`}
+  canonical={canonical}
+>
+  <ProjectDetailApp slug={slug} client:idle />
+</BaseLayout>

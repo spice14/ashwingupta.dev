@@ -1,6 +1,5 @@
-import { motion, AnimatePresence } from "motion/react";
-import { ArrowUpRight, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { motion } from "motion/react";
+import { useState } from "react";
 import { useIsMobile } from "../../hooks/useMediaQuery";
 import coforgeLogoImg from "../../assets/coforgeLogo.webp?url";
 import gidaLogoImg from "../../assets/gidaLogo.webp?url";
@@ -17,7 +16,7 @@ const GIDA_LOGO = gidaLogoImg;
 const HDFC_LOGO = hdfcLogoImg;
 const BMSCE_LOGO = bmsceLogoImg;
 
-type Project = {
+export type Project = {
   index: string;
   title: string;
   company: string;
@@ -32,7 +31,7 @@ type Project = {
   github: string | null;
 };
 
-function renderBullet(text: string): React.ReactNode {
+export function renderBullet(text: string): React.ReactNode {
   const parts = text.split(/\*\*(.+?)\*\*/g);
   return parts.map((part, i) =>
     i % 2 === 1 ? (
@@ -45,7 +44,7 @@ function renderBullet(text: string): React.ReactNode {
   );
 }
 
-const projects: Project[] = [
+export const projects: Project[] = [
   {
     index: "01",
     title: "ashwingupta.dev — Design Handoff to Production",
@@ -375,11 +374,9 @@ const SUMMARY_LABELS = ["Problem", "System", "Design", "Outcome"];
 function ProjectCard({
   p,
   index,
-  onClick,
 }: {
   p: Project;
   index: number;
-  onClick: () => void;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -415,7 +412,7 @@ function ProjectCard({
       transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={onClick}
+      onClick={() => { window.location.href = `/projects/${p.index}`; }}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -580,321 +577,8 @@ function ProjectCard({
   );
 }
 
-function ProjectDrawer({ p, onClose }: { p: Project; onClose: () => void }) {
-  const isMobile = useIsMobile();
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
-  const isAward = p.status === "Best Outgoing Project · 2022–23";
-  const statusColor = isAward
-    ? "#facc15"
-    : p.status === "Client Delivery"
-      ? "#22d3ee"
-      : p.devStatus === "completed"
-        ? "#4ade80"
-        : "#facc15";
-  const statusBorder = isAward
-    ? "rgba(250,204,21,0.35)"
-    : p.status === "Client Delivery"
-      ? "rgba(34,211,238,0.4)"
-      : p.devStatus === "completed"
-        ? "rgba(74,222,128,0.35)"
-        : "rgba(250,204,21,0.35)";
-  const statusBg = isAward
-    ? "rgba(250,204,21,0.06)"
-    : p.status === "Client Delivery"
-      ? "rgba(34,211,238,0.08)"
-      : p.devStatus === "completed"
-        ? "rgba(74,222,128,0.06)"
-        : "rgba(250,204,21,0.06)";
-
-  const BULLET_ICONS = ["⚡", "⚠️", "⚙️", "🛡️", "🚀"] as const;
-
-  return (
-    <>
-      {/* Backdrop */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.25 }}
-        onClick={onClose}
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 100,
-          background: "rgba(0,0,0,0.55)",
-          backdropFilter: "blur(3px)",
-          WebkitBackdropFilter: "blur(3px)",
-        }}
-      />
-
-      {/* Drawer panel */}
-      <motion.div
-        initial={{ x: "100%" }}
-        animate={{ x: 0 }}
-        exit={{ x: "100%" }}
-        transition={{ duration: 0.38, ease: [0.76, 0, 0.24, 1] }}
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: isMobile ? "100vw" : "min(560px, 46vw)",
-          zIndex: 101,
-          background: "rgba(8, 8, 10, 0.98)",
-          borderLeft: "1px solid rgba(255,255,255,0.1)",
-          overflowY: "auto",
-          padding: isMobile ? "2rem 1.5rem" : "3rem 2.5rem",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1.8rem",
-        }}
-      >
-        {/* Close */}
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <button
-            onClick={onClose}
-            style={{
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "50%",
-              width: "34px",
-              height: "34px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              color: "rgba(255,255,255,0.5)",
-              transition: "border-color 0.2s, color 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor =
-                "rgba(255,255,255,0.3)";
-              (e.currentTarget as HTMLElement).style.color = "#fafaf8";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor =
-                "rgba(255,255,255,0.1)";
-              (e.currentTarget as HTMLElement).style.color =
-                "rgba(255,255,255,0.5)";
-            }}
-          >
-            <X size={14} />
-          </button>
-        </div>
-
-        {/* Header */}
-        <div
-          style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
-              flexWrap: "wrap",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: FONT_MONO,
-                fontSize: "0.5rem",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                padding: "3px 8px",
-                borderRadius: "20px",
-                color: statusColor,
-                border: `1px solid ${statusBorder}`,
-                background: statusBg,
-              }}
-            >
-              {p.status}
-              {isAward && " 🏆"}
-            </span>
-          </div>
-          <h2
-            style={{
-              fontFamily: FONT_SERIF,
-              fontWeight: 800,
-              fontSize: "1.75rem",
-              color: "#fafaf8",
-              lineHeight: 1.2,
-              letterSpacing: "-0.02em",
-              margin: 0,
-            }}
-          >
-            {p.title}
-          </h2>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img
-              src={p.logo}
-              alt={p.company}
-              style={{
-                height: `${p.logoHeight}px`,
-                width: "auto",
-                maxWidth: "72px",
-                objectFit: "contain",
-                borderRadius: "3px",
-                opacity: 0.85,
-              }}
-              onError={(e) =>
-                ((e.currentTarget as HTMLImageElement).style.display = "none")
-              }
-            />
-            <span
-              style={{
-                fontFamily: FONT_MONO,
-                fontSize: "0.62rem",
-                letterSpacing: "0.09em",
-                color: "rgba(255,255,255,0.4)",
-              }}
-            >
-              {p.company}
-            </span>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
-
-        {/* Full bullets */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-          {p.bullets.map((b, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: 8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
-              style={{
-                display: "flex",
-                gap: "0.75rem",
-                alignItems: "flex-start",
-                padding: "0.85rem 0",
-                borderBottom:
-                  i < p.bullets.length - 1
-                    ? "1px solid rgba(255,255,255,0.05)"
-                    : "none",
-              }}
-            >
-              <span
-                style={{ fontSize: "0.9rem", flexShrink: 0, marginTop: "2px" }}
-              >
-                {BULLET_ICONS[i] ?? "▸"}
-              </span>
-              <span
-                style={{
-                  fontFamily: FONT_SANS,
-                  fontSize: "0.84rem",
-                  lineHeight: 1.75,
-                  color: "rgba(255,255,255,0.65)",
-                }}
-              >
-                {renderBullet(b)}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Impact */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.45, duration: 0.3 }}
-          style={{
-            fontFamily: FONT_MONO,
-            fontSize: "0.62rem",
-            color: "#e8e0d0",
-            letterSpacing: "0.05em",
-            background: "rgba(232,224,208,0.07)",
-            border: "1px solid rgba(232,224,208,0.15)",
-            borderRadius: "4px",
-            padding: "10px 14px",
-            lineHeight: 1.6,
-          }}
-        >
-          ↳ {p.impact}
-        </motion.div>
-
-        {/* Tags */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.3 }}
-          style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}
-        >
-          {p.tags.map((t) => (
-            <span
-              key={t}
-              style={{
-                fontFamily: FONT_MONO,
-                fontSize: "0.52rem",
-                letterSpacing: "0.07em",
-                color: "rgba(255,255,255,0.38)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "3px",
-                padding: "3px 7px",
-              }}
-            >
-              {t}
-            </span>
-          ))}
-        </motion.div>
-
-        {/* GitHub link */}
-        {p.github && (
-          <motion.a
-            href={p.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.55, duration: 0.3 }}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              fontFamily: FONT_MONO,
-              fontSize: "0.65rem",
-              letterSpacing: "0.08em",
-              color: "rgba(255,255,255,0.45)",
-              textDecoration: "none",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "6px",
-              padding: "10px 14px",
-              width: "fit-content",
-              transition: "border-color 0.2s, color 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor =
-                "rgba(255,255,255,0.3)";
-              (e.currentTarget as HTMLElement).style.color = "#fafaf8";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor =
-                "rgba(255,255,255,0.12)";
-              (e.currentTarget as HTMLElement).style.color =
-                "rgba(255,255,255,0.45)";
-            }}
-          >
-            <ArrowUpRight size={13} />
-            View on GitHub
-          </motion.a>
-        )}
-      </motion.div>
-    </>
-  );
-}
-
 export function Projects() {
   const isMobile = useIsMobile();
-  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
   const orderedProjects = [...projects].sort((a, b) => {
     const aIsAward = a.status === "Best Outgoing Project · 2022–23";
@@ -933,7 +617,6 @@ export function Projects() {
           marginBottom: "5rem",
         }}
       >
-        {/* Section label */}
         <div
           style={{
             display: "flex",
@@ -962,7 +645,6 @@ export function Projects() {
           />
         </div>
 
-        {/* Heading */}
         <div style={{ overflow: "hidden" }}>
           <motion.h2
             initial={{ y: "100%" }}
@@ -1003,23 +685,12 @@ export function Projects() {
                   key={p.index}
                   p={p}
                   index={globalIdx}
-                  onClick={() => setSelectedIdx(globalIdx)}
                 />
               );
             })}
           </div>
         ))}
       </div>
-
-      {/* Drawer */}
-      <AnimatePresence>
-        {selectedIdx !== null && (
-          <ProjectDrawer
-            p={orderedProjects[selectedIdx]}
-            onClose={() => setSelectedIdx(null)}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 }
