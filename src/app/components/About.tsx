@@ -19,7 +19,7 @@ const experience = [
     role: "AI Engineer",
     company: "Coforge",
     detail:
-      "Designed the inference and orchestration layer for HSBC voice AI — asyncio refactor lifted session capacity 7× · $1.3M annualized savings · MTTR 1–2hr → ~5min via correlated log infrastructure",
+      "Owns the inference and concurrency architecture for HSBC voice AI — redesigned from thread pool to asyncio event loop, eliminating GIL contention across the full SIP/STT/LLM pipeline · 7× session capacity · $1.3M annualized savings · MTTR 1–2hr → ~5min via cross-stack log correlation",
     logo: coforgeLogoImg,
     logoH: 55,
     awards: [

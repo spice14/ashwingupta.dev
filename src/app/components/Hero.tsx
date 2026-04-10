@@ -96,64 +96,70 @@ export function Hero() {
       />
 
       {/* Navigation bar */}
-      {!isMobile && (
-        <motion.nav
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
-          style={{
-            position: "absolute",
-            top: 36,
-            left: "5%",
-            right: "5%",
-            display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            zIndex: 5,
-          }}
-        >
-          {[
-            { label: "About", href: "#about" },
-            { label: "Capabilities", href: "#skills" },
-            { label: "Research", href: "#research" },
-            { label: "Projects", href: "#projects" },
-            { label: "Contact", href: "#contact" },
-          ].map(({ label, href }) => (
-            <a
-              key={href}
-              href={href}
-              style={{
-                fontFamily: '"DM Mono", monospace',
-                fontSize: "0.6rem",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "rgba(255,255,255,0.35)",
-                textDecoration: "none",
-                background: "transparent",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "0.65rem 0",
-                cursor: "none",
-                transition: "color 0.2s, background 0.2s",
-                borderRadius: "3px",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.color = "rgba(255,255,255,0.9)";
-                el.style.background =
-                  "linear-gradient(to top, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0) 100%)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.color = "rgba(255,255,255,0.35)";
-                el.style.background = "transparent";
-              }}
-            >
-              {label}
-            </a>
-          ))}
-        </motion.nav>
-      )}
+      <motion.nav
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.1, duration: 0.6 }}
+        style={{
+          position: "absolute",
+          top: isMobile ? 18 : 36,
+          left: isMobile ? "5.5vw" : "5%",
+          right: isMobile ? "5.5vw" : "5%",
+          display: "grid",
+          gridTemplateColumns: "repeat(5, 1fr)",
+          zIndex: 5,
+        }}
+      >
+        {[
+          { label: "About", href: "#about" },
+          { label: "Capabilities", href: "#skills" },
+          { label: "Research", href: "#research" },
+          { label: "Projects", href: "#projects" },
+          { label: "Contact", href: "#contact" },
+        ].map(({ label, href }) => (
+          <a
+            key={href}
+            href={href}
+            style={{
+              fontFamily: '"DM Mono", monospace',
+              fontSize: isMobile ? "0.48rem" : "0.6rem",
+              letterSpacing: isMobile ? "0" : "0.15em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.35)",
+              textDecoration: "none",
+              background: "transparent",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: isMobile ? "0.5rem 0" : "0.65rem 0",
+              cursor: isMobile ? "auto" : "none",
+              transition: "color 0.2s, background 0.2s",
+              borderRadius: "3px",
+            }}
+            onMouseEnter={
+              isMobile
+                ? undefined
+                : (e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.color = "rgba(255,255,255,0.9)";
+                    el.style.background =
+                      "linear-gradient(to top, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0) 100%)";
+                  }
+            }
+            onMouseLeave={
+              isMobile
+                ? undefined
+                : (e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.color = "rgba(255,255,255,0.35)";
+                    el.style.background = "transparent";
+                  }
+            }
+          >
+            {label}
+          </a>
+        ))}
+      </motion.nav>
 
       {/* Main content */}
       <div
@@ -162,7 +168,7 @@ export function Hero() {
           gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
           gap: isMobile ? "3rem" : "4vw",
           alignItems: "center",
-          paddingTop: isMobile ? "40px" : "60px",
+          paddingTop: isMobile ? "110px" : "60px",
           position: "relative",
           zIndex: 1,
         }}
@@ -391,15 +397,13 @@ export function Hero() {
                   textTransform: "uppercase",
                 }}
               >
-                Building, not browsing
+                Building, not Browsing
               </span>
             </div>
             <div
               style={{
                 display: "flex",
                 gap: "12px",
-                width: isMobile ? "100%" : "auto",
-                justifyContent: isMobile ? "center" : "flex-start",
                 alignItems: "center",
               }}
             >

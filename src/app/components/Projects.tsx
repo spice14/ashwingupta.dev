@@ -132,7 +132,7 @@ const projects: Project[] = [
       "Fully offline academic document QA · reproducible HNSW indexes · zero API dependency",
     summary: [
       "Sensitive academic papers had **no private processing path** — all RAG required cloud APIs; air-gap institutions were fully blocked by existing tooling",
-      "Fully local RAG: **LEANN/HNSW vector indexing** with dense embeddings (facebook/contriever), Ollama-backed inference, multi-source ingestion across PDFs, arXiv URLs, and directories",
+      "A **privacy-first inference pipeline**: LEANN/HNSW indexes stay local, Ollama serves models on-device, and document ingestion normalizes across sources before any query reaches the retrieval layer",
       "Smart chunking with overlap, **configurable Top-K (3–4)** and **context windows (1024–1536 tokens)**; PyMuPDF + BeautifulSoup handle varied PDF quality before indexing — not at query time",
       "**API-free document QA** on sub-1GB quantized models · **reproducible index artifacts** for air-gapped institutional research",
     ],
@@ -164,7 +164,7 @@ const projects: Project[] = [
       "1,600+ concurrent sessions · 7× VM capacity · ~$1.3M annualized savings · MTTR ~1–2 hrs → ~5 min",
     summary: [
       "Thread-based concurrency **capped at 20 calls/VM**; post-call docs **10–15 min each**; compute **$118K/month**; incident recovery **1–2 hours** from fragmented cross-service logs",
-      "Led **4-engineer team**: refactored to **asyncio + uvloop**, automated GCE image builds via Packer for SBC→STT→LLM stack, built SIPp load suite for 2,000 concurrent users",
+      "**Concurrency architecture redesigned** from thread pool to asyncio event loop — each SIP session becomes a coroutine, GIL contention eliminated, scheduling owned per request across the full SBC→STT→LLM pipeline",
       "**Cross-stack log correlation** over GCP Logging APIs reconstructs **250K+ log lines in under 5 seconds**; libsrtp + DTLS/SRTP for in-transit security; n2-standard-32 → c4-standard-8 migration",
       "**7× per-VM capacity** · **1,600+ sessions** sustained · **$118K → $8K/month** (~$1.3M annualized) · MTTR **1–2 hr → ~5 min**",
     ],
@@ -196,7 +196,7 @@ const projects: Project[] = [
       "~2–3 days → ~2–3 hours documentation turnaround · 104 resource groups/project · zero fabricated components",
     summary: [
       "Infrastructure docs took **2–3 days per project**, authored by hand from **stale exports**, and drifted from live state with no mechanism to detect divergence",
-      "Streamlit engine that takes a subscription ID and auto-generates **SDDs and PlantUML diagrams** via live inventory extraction, network flow mapping, and security config analysis",
+      "**Live-state extraction pipeline**: subscription ID resolves to resource graph traversal → network topology mapping → security config analysis — documentation generated from what the infrastructure is, not what was last recorded",
       "**Few-shot LLM prompting** grounded in live Azure Resource Graph state; **validation guardrails** cross-check every generated component against extracted inventory — hallucinated topology can't reach governance docs",
       "**2–3 days → ~2–3 hours** · 104 resource groups/project · **zero fabricated components** · manual PlantUML authoring eliminated",
     ],
@@ -291,7 +291,7 @@ const projects: Project[] = [
       "Three interlinked AI tools · 163-language content generation · cURL-to-20+ language API conversion",
     summary: [
       "Content generation, bot deployment, and API conversion required **separate tools with manual handoffs** and inconsistent output quality across every client engagement",
-      "Designed and shipped **three interlinked AI tools**: **Laminar** (163-language CMS with AI visuals), **Metamorph** (no-code chatbot builder from prompts), **Polymorph** (cURL-to-20+ language API converter)",
+      "**Unified delivery toolchain** — each tool owns one fragmented workflow: **Laminar** orchestrates multilingual content generation across 163 languages, **Metamorph** converts prompts to deployed chatbots, **Polymorph** resolves API specs to implementation across 20+ languages",
       "**Standardized output artifacts** across all three tools produce deployable outputs — not drafts; AI-generated visuals maintain **brand consistency** from prompts across client deployments",
       "**Three fragmented workflows unified** · **163-language content** at scale · no-code bot deployment **removed engineering dependency** from chatbot delivery",
     ],
@@ -370,7 +370,7 @@ const projects: Project[] = [
   },
 ];
 
-const SUMMARY_LABELS = ["Problem", "Built", "Technical decision", "Outcome"];
+const SUMMARY_LABELS = ["Problem", "System", "Design", "Outcome"];
 
 function ProjectCard({
   p,
