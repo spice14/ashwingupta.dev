@@ -65,10 +65,10 @@ const projects: Project[] = [
     impact:
       "Live at ashwingupta.dev · 90% image reduction · 72% JS bundle cut · 400 CSS DOM nodes eliminated",
     summary: [
-      "A portfolio claiming performance engineering was its own **performance failure** — **400 CSS-animated DOM particles**, **2 MB JPEG** hero, 72 unvetted dependencies",
-      "Rebuilt from scratch: **three-layer spatial architecture** with all visual effects in a **single Canvas 2D RAF loop**; below-fold sections lazy-loaded via React.lazy + Suspense",
-      "Scanline texture pre-rendered to offscreen canvas (**1 drawImage vs 270 fillRect/frame**); RAF paused on visibility change; mouse tracking gated behind RAF scheduler",
-      "**90% image reduction** · **72% JS bundle cut** · 400 animated DOM nodes eliminated · stable 60fps under CPU throttle",
+      "A site claiming performance engineering had **400 CSS-animated DOM nodes**, a **2 MB JPEG** hero, and 72 unvetted dependencies — the artifact contradicted the claim",
+      "Rebuilt around a **three-layer spatial architecture**: environment, Canvas 2D particle field, hologram interface — all visual effects collapsed into a **single RAF loop**",
+      "**Offscreen canvas pre-rendering** eliminates per-frame fillRect calls; RAF gated on visibility; lazy boundaries enforce below-fold deferral — each decision reduces execution cost",
+      "**90% image reduction** · **72% JS bundle cut** · frame time **18–25ms → 4–6ms** · stable 60fps under CPU throttle",
     ],
     bullets: [
       "A portfolio site is its own proof unit. The designer baseline was self-defeating — the first thing a hiring manager measured was a **performance failure on the site claiming performance engineering**.",
@@ -98,10 +98,10 @@ const projects: Project[] = [
     impact:
       "Fully offline tree-RAG execution · vendor lock-in eliminated · provider-agnostic runtime",
     summary: [
-      "Tree RAG **hardcoded to OpenAI** — offline execution blocked entirely; provider switches **corrupted traversal silently** with no error surface",
-      "Forked and refactored with **provider-routing abstraction** via env vars, **finish-reason normalization layer**, externalized prompt registry, and bounded async concurrency",
-      "Finish-reason normalization stabilizes **recursive traversal** across model outputs; hierarchical fallback handles large documents on **constrained VRAM** without pipeline failure",
-      "**Fully offline tree-RAG** with Ollama — no API keys, **vendor lock-in eliminated**, provider-agnostic runtime with e2e coverage across document types",
+      "Tree-RAG **hardcoded to a single provider** — provider contract differences silently corrupted recursive traversal with no error surface",
+      "Introduced a **provider-routing abstraction** and **finish-reason normalization layer** — the traversal state machine no longer depends on any specific provider's output contract",
+      "Hierarchical fallback handles large documents on **constrained VRAM**; bounded concurrency prevents pipeline saturation; prompts externalized so the system is configurable without touching execution logic",
+      "**Fully offline tree-RAG** execution — the system routes, normalizes, and traverses without external API dependency",
     ],
     bullets: [
       "All inference required a **live OpenAI API key** — offline or air-gapped execution was blocked entirely; **provider switches corrupted traversal silently** with no error surface; token encoding differences across providers produced inconsistent chunk boundaries with no visible signal.",
@@ -411,7 +411,8 @@ function ProjectCard({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.06, duration: 0.45 }}
+      whileHover={{ y: -6, scale: 1.025 }}
+      transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={onClick}
@@ -421,14 +422,9 @@ function ProjectCard({
         gap: "1rem",
         padding: "1.6rem",
         borderRadius: "8px",
-        border: `1px solid ${hovered ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.05)"}`,
-        background: hovered
-          ? "rgba(255,255,255,0.055)"
-          : "rgba(255,255,255,0.012)",
-        transform: hovered ? "translateY(-6px)" : "translateY(0)",
-        boxShadow: hovered ? "0 12px 32px rgba(0,0,0,0.35)" : "none",
-        transition:
-          "transform 280ms ease, border-color 280ms ease, background 280ms ease, box-shadow 280ms ease",
+        border: `1px solid ${hovered ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.15)"}`,
+        background: "transparent",
+        transition: "border-color 0.2s, color 0.2s",
         cursor: "pointer",
       }}
     >
@@ -572,9 +568,9 @@ function ProjectCard({
             fontFamily: FONT_MONO,
             fontSize: "0.72rem",
             color: hovered
-              ? "rgba(255,255,255,0.55)"
-              : "rgba(255,255,255,0.18)",
-            transition: "color 280ms ease",
+              ? "rgba(255,255,255,0.95)"
+              : "rgba(255,255,255,0.35)",
+            transition: "color 0.2s",
           }}
         >
           ↗

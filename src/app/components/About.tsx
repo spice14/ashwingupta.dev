@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import { TiltCard } from "./TiltCard";
 import { useIsMobile } from "../../hooks/useMediaQuery";
 import coforgeLogoImg from "../../assets/coforgeLogo.webp?url";
 import gidaLogoImg from "../../assets/gidaLogo.webp?url";
@@ -20,7 +19,7 @@ const experience = [
     role: "AI Engineer",
     company: "Coforge",
     detail:
-      "asyncio refactor → 140+ calls/VM (was 20) · 1,600+ sessions · $1.3M annualized savings · MTTR 1–2hr → ~5min",
+      "Designed the inference and orchestration layer for HSBC voice AI — asyncio refactor lifted session capacity 7× · $1.3M annualized savings · MTTR 1–2hr → ~5min via correlated log infrastructure",
     logo: coforgeLogoImg,
     logoH: 55,
     awards: [
@@ -103,16 +102,16 @@ const education = [
 
 const pillars = [
   {
-    title: "Inference Infrastructure",
-    desc: "asyncio + uvloop replacing thread-blocked workers. Bounded session caps enforced at the orchestration layer. 140+ calls/VM — from a hard ceiling of 20.",
+    title: "Inference as a System",
+    desc: "Inference is not a function call — it is a workload with scheduling, routing, and resource constraints. I design the layer that decides how requests move through hardware, when to batch, and how to degrade gracefully when capacity is hit.",
   },
   {
-    title: "Observability & Failure Isolation",
-    desc: "250K+ log lines reconstructed in <5s via GCP Logging APIs. MTTR: 1–2 hours → ~5 minutes. Not from alerts — from correlated trace structure built into the stack.",
+    title: "Execution Under Constraints",
+    desc: "Real systems run under latency budgets, VRAM ceilings, and cost targets. I design around those constraints before they become failures — not after. Observability is part of the system, not bolted on.",
   },
   {
-    title: "Retrieval & Orchestration Systems",
-    desc: "Finish-reason normalization across LLM providers prevents recursive traversal corruption. Hierarchical fallback paths handle large documents on constrained VRAM without pipeline failure.",
+    title: "Physics-Informed Scientific ML",
+    desc: "Governing equations exist for many systems. I embed them directly into the learning objective — PDEs as training constraints, not post-hoc validators. PHYSCLIP and the PINNs work both come from this.",
   },
 ];
 
@@ -189,7 +188,7 @@ export function About() {
                 margin: 0,
               }}
             >
-              Building AI Infrastructure That Survives Production Load.
+              Systems that decide. Infrastructure that holds.
             </motion.h2>
           </div>
 
@@ -206,9 +205,7 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            I design systems around the constraints they'll actually face: 300ms
-            latency budgets, 1,600+ concurrent sessions, and cost ceilings where
-            every token maps to monthly spend.
+            Most AI work focuses on what a model outputs. I focus on how the system behaves — how requests are routed, how decisions are made under constraint, and how the system holds when inputs are noisy, capacity is saturated, or governing assumptions break.
           </motion.p>
 
           <motion.p
@@ -224,10 +221,7 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            Inference without observability is guesswork. I build correlated
-            telemetry alongside the inference stack — 250K+ log lines
-            reconstructed in under 5 seconds — so when something degrades under
-            load, the trace already exists.
+            This spans three areas: inference and orchestration systems (scheduling, routing, execution), scientific ML (physics-informed models where governing equations constrain learning), and retrieval pipelines that have to be reliable — not just accurate on benchmarks.
           </motion.p>
 
           <motion.p
@@ -243,10 +237,7 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            I design around the failure modes others skip: noisy ASR inputs
-            breaking entity extraction, retrieval misses on long-tail queries,
-            hallucinations when model confidence falls below threshold. The
-            system has to hold when those happen.
+            Controla is an inference orchestrator. ScholarOS is structured research execution. PHYSCLIP aligns symbolic physics with observed behavior. The PINNs work embeds PDEs into training. These are not tools — they are systems with decision logic.
           </motion.p>
 
           <div
@@ -254,8 +245,7 @@ export function About() {
           >
             {pillars.map(({ title, desc }, i) => (
               <div key={i}>
-                <TiltCard
-                  intensity={8}
+                <div
                   style={{
                     display: "flex",
                     alignItems: "flex-start",
@@ -300,7 +290,7 @@ export function About() {
                       {desc}
                     </p>
                   </div>
-                </TiltCard>
+                </div>
               </div>
             ))}
           </div>

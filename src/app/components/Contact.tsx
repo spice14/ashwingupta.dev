@@ -178,42 +178,6 @@ export function Contact() {
             systems, and scientific ML.
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-              padding: "10px 16px",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "4px",
-              marginBottom: "2.5rem",
-            }}
-          >
-            <div
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#facc15",
-                boxShadow: "0 0 8px #facc15",
-                animation: "pulse 2s infinite",
-              }}
-            />
-            <span
-              style={{
-                fontFamily: FONT_MONO,
-                fontSize: "0.65rem",
-                letterSpacing: "0.12em",
-                color: "rgba(255,255,255,0.65)",
-                textTransform: "uppercase",
-              }}
-            >
-              Building, not browsing
-            </span>
-          </motion.div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             {links.map(({ label, value, href, icon }, i) => (

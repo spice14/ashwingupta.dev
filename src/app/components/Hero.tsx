@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, ArrowRight } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useCallback, useState } from "react";
 import { useIsMobile, useIsTouchDevice } from "../../hooks/useMediaQuery";
@@ -95,45 +95,64 @@ export function Hero() {
         }}
       />
 
-      {/* Nav-style label top left */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.1, duration: 0.6 }}
-        style={{
-          position: "absolute",
-          top: isMobile ? 36 : 56,
-          left: isMobile ? "5.5vw" : "8.5vw",
-          fontFamily: '"DM Mono", monospace',
-          fontSize: isMobile ? "0.55rem" : "0.65rem",
-          letterSpacing: "0.18em",
-          color: "rgba(255,255,255,0.5)",
-          textTransform: "uppercase",
-          zIndex: 5,
-        }}
-      >
-        Ashwin Gupta — Portfolio 2026
-      </motion.div>
-
-      {/* Nav-style label top right */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-        style={{
-          position: "absolute",
-          top: isMobile ? 36 : 56,
-          right: isMobile ? "5.5vw" : "8.5vw",
-          fontFamily: '"DM Mono", monospace',
-          fontSize: isMobile ? "0.55rem" : "0.65rem",
-          letterSpacing: "0.18em",
-          color: "rgba(255,255,255,0.5)",
-          textTransform: "uppercase",
-          zIndex: 5,
-        }}
-      >
-        AI Engineer — Bangalore
-      </motion.div>
+      {/* Navigation bar */}
+      {!isMobile && (
+        <motion.nav
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
+          style={{
+            position: "absolute",
+            top: 36,
+            left: "5%",
+            right: "5%",
+            display: "grid",
+            gridTemplateColumns: "repeat(5, 1fr)",
+            zIndex: 5,
+          }}
+        >
+          {[
+            { label: "About", href: "#about" },
+            { label: "Skills", href: "#skills" },
+            { label: "Research", href: "#research" },
+            { label: "Projects", href: "#projects" },
+            { label: "Contact", href: "#contact" },
+          ].map(({ label, href }) => (
+            <a
+              key={href}
+              href={href}
+              style={{
+                fontFamily: '"DM Mono", monospace',
+                fontSize: "0.6rem",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.35)",
+                textDecoration: "none",
+                background: "transparent",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0.65rem 0",
+                cursor: "none",
+                transition: "color 0.2s, background 0.2s",
+                borderRadius: "3px",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.color = "rgba(255,255,255,0.9)";
+                el.style.background = "linear-gradient(to top, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0) 100%)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.color = "rgba(255,255,255,0.35)";
+                el.style.background = "transparent";
+              }}
+            >
+              {label}
+            </a>
+          ))}
+        </motion.nav>
+      )}
 
       {/* Main content */}
       <div
@@ -177,8 +196,7 @@ export function Hero() {
                   textTransform: "uppercase",
                 }}
               >
-                Inference Infrastructure · Failure Isolation · Production
-                Constraints
+                Inference · Orchestration · Scientific ML
               </span>
             </motion.div>
           </div>
@@ -197,8 +215,8 @@ export function Hero() {
                 fontFamily:
                   '"Editorial New", "Playfair Display", Georgia, serif',
                 fontSize: isMobile
-                  ? "clamp(3.2rem, 11.8vw, 10rem)"
-                  : "clamp(4.5rem, 11.8vw, 10rem)",
+                  ? "clamp(2.8rem, 10vw, 8.5rem)"
+                  : "clamp(3.8rem, 10vw, 8.5rem)",
                 fontWeight: 800,
                 lineHeight: 0.9,
                 letterSpacing: "-0.04em",
@@ -227,8 +245,8 @@ export function Hero() {
                 fontFamily:
                   '"Editorial New", "Playfair Display", Georgia, serif',
                 fontSize: isMobile
-                  ? "clamp(3.2rem, 11.8vw, 10rem)"
-                  : "clamp(4.5rem, 11.8vw, 10rem)",
+                  ? "clamp(2.8rem, 10vw, 8.5rem)"
+                  : "clamp(3.8rem, 10vw, 8.5rem)",
                 fontWeight: 800,
                 lineHeight: 1.1,
                 letterSpacing: "-0.04em",
@@ -274,9 +292,9 @@ export function Hero() {
                   lineHeight: 1.5,
                 }}
               >
-                AI Systems Engineer
+                AI Systems Researcher
                 <br />
-                Inference, Retrieval, Observability
+                Inference · Orchestration · Scientific ML
               </p>
             </div>
             <div>
@@ -321,19 +339,15 @@ export function Hero() {
               marginBottom: isMobile ? "2rem" : "2.5rem",
             }}
           >
-            Production AI breaks predictably — under load, on noisy inputs, when
-            latency budgets collapse. I design for those conditions. Refactored
-            thread-blocked voice inference to{" "}
-            <span style={{ color: "#e8e0d0" }}>asyncio + uvloop</span>:{" "}
-            <span style={{ color: "#e8e0d0" }}>1,600+ concurrent sessions</span>
-            , <span style={{ color: "#e8e0d0" }}>7× VM capacity</span>,{" "}
-            <span style={{ color: "#e8e0d0" }}>~$1.3M annualized savings</span>,
-            MTTR{" "}
-            <span style={{ color: "#e8e0d0" }}>1–2 hours → ~5 minutes</span>{" "}
-            through correlated log infrastructure.
+            I design how AI systems behave under real-world constraints — from
+            decision layers and inference routing to physics-informed models.
+            Not what a model outputs, but{" "}
+            <span style={{ color: "#e8e0d0" }}>how the system decides</span>,{" "}
+            <span style={{ color: "#e8e0d0" }}>executes</span>, and{" "}
+            <span style={{ color: "#e8e0d0" }}>holds under load</span>.
           </motion.p>
 
-          {/* CTA row */}
+          {/* Status + socials row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -345,35 +359,40 @@ export function Hero() {
               gap: isMobile ? "1rem" : "1.5rem",
             }}
           >
-            <motion.a
-              href="#projects"
-              whileHover={{ gap: "12px" }}
+            {/* Status pill */}
+            <div
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "8px",
-                fontFamily: '"DM Sans", sans-serif',
-                fontWeight: 600,
-                fontSize: isMobile ? "0.8rem" : "0.85rem",
-                letterSpacing: "0.05em",
-                color: "#0a0a0a",
-                background: "#e8e0d0",
-                padding: isMobile ? "11px 22px" : "12px 24px",
+                gap: "10px",
+                padding: "8px 14px",
+                border: "1px solid rgba(255,255,255,0.1)",
                 borderRadius: "4px",
-                textDecoration: "none",
-                transition: "background 0.2s",
-                width: isMobile ? "100%" : "auto",
-                justifyContent: isMobile ? "center" : "flex-start",
               }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "#fff")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "#e8e0d0")
-              }
             >
-              View work <ArrowRight size={14} />
-            </motion.a>
+              <div
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "#facc15",
+                  boxShadow: "0 0 8px #facc15",
+                  animation: "pulse 2s infinite",
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: '"DM Mono", monospace',
+                  fontSize: "0.62rem",
+                  letterSpacing: "0.12em",
+                  color: "rgba(255,255,255,0.55)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Building, not browsing
+              </span>
+            </div>
             <div
               style={{
                 display: "flex",
@@ -491,7 +510,7 @@ export function Hero() {
           transition={{ delay: 0.4, duration: 1.1, ease: [0.76, 0, 0.24, 1] }}
           style={{
             position: "relative",
-            width: isMobile ? "84%" : "82%",
+            width: isMobile ? "76%" : "74%",
             margin: isMobile ? "0 auto" : "0 2vw 0 auto",
           }}
         >

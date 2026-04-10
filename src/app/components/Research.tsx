@@ -140,7 +140,8 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.07, duration: 0.45 }}
+      whileHover={{ y: -6, scale: 1.025 }}
+      transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -149,14 +150,9 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
         gap: "1rem",
         padding: "1.6rem",
         borderRadius: "8px",
-        border: `1px solid ${hovered ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.05)"}`,
-        background: hovered
-          ? "rgba(255,255,255,0.055)"
-          : "rgba(255,255,255,0.012)",
-        transform: hovered ? "translateY(-6px)" : "translateY(0)",
-        boxShadow: hovered ? "0 12px 32px rgba(0,0,0,0.35)" : "none",
-        transition:
-          "transform 280ms ease, border-color 280ms ease, background 280ms ease, box-shadow 280ms ease",
+        border: `1px solid ${hovered ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.15)"}`,
+        background: "transparent",
+        transition: "border-color 0.2s, color 0.2s",
         textDecoration: "none",
         color: "inherit",
         cursor: "pointer",
@@ -299,9 +295,9 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
             fontFamily: FONT_MONO,
             fontSize: "0.72rem",
             color: hovered
-              ? "rgba(255,255,255,0.45)"
-              : "rgba(255,255,255,0.18)",
-            transition: "color 250ms ease",
+              ? "rgba(255,255,255,0.95)"
+              : "rgba(255,255,255,0.35)",
+            transition: "color 0.2s",
           }}
         >
           ↗

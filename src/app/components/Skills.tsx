@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import { TiltCard } from "./TiltCard";
 import { useIsMobile } from "../../hooks/useMediaQuery";
 
 const FONT_SERIF = '"Playfair Display", Georgia, serif';
@@ -196,11 +195,6 @@ export function Skills() {
             {techStack.map((t) => (
               <motion.span
                 key={t}
-                whileHover={{
-                  color: "#e8e0d0",
-                  borderColor: "rgba(255,255,255,0.42)",
-                  y: -2,
-                }}
                 style={{
                   fontFamily: FONT_MONO,
                   fontSize: "0.6rem",
@@ -232,8 +226,7 @@ export function Skills() {
             <div
               key={cap.title}
             >
-              <TiltCard
-                intensity={7}
+              <div
                 style={{
                   borderRadius: "10px",
                   border: "1px solid rgba(255,255,255,0.11)",
@@ -302,7 +295,7 @@ export function Skills() {
                     </span>
                   ))}
                 </div>
-              </TiltCard>
+              </div>
             </div>
           ))}
         </div>
