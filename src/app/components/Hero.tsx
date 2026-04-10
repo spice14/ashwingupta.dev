@@ -113,7 +113,7 @@ export function Hero() {
         >
           {[
             { label: "About", href: "#about" },
-            { label: "Skills", href: "#skills" },
+            { label: "Capabilities", href: "#skills" },
             { label: "Research", href: "#research" },
             { label: "Projects", href: "#projects" },
             { label: "Contact", href: "#contact" },
@@ -140,7 +140,8 @@ export function Hero() {
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.color = "rgba(255,255,255,0.9)";
-                el.style.background = "linear-gradient(to top, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0) 100%)";
+                el.style.background =
+                  "linear-gradient(to top, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0) 100%)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
