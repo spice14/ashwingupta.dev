@@ -646,6 +646,7 @@ export function Projects() {
           />
         </div>
 
+        {/* Section heading */}
         <div style={{ overflow: "hidden" }}>
           <motion.h2
             initial={{ y: "100%" }}
@@ -665,6 +666,19 @@ export function Projects() {
           >
             Delivered, Scaled.
           </motion.h2>
+        </div>
+        {/* Hint */}
+        <div style={{ textAlign: "right", marginTop: "0.6rem" }}>
+          <span
+            style={{
+              fontFamily: FONT_MONO,
+              fontSize: "0.58rem",
+              letterSpacing: "0.1em",
+              color: "rgba(255,255,255,0.28)",
+            }}
+          >
+            Tap to dive deeper
+          </span>
         </div>
       </div>
 

@@ -332,7 +332,8 @@ export function Research() {
           paddingRight: isMobile ? "4vw" : "6vw",
           paddingTop: "1.5rem",
           paddingBottom: "1.5rem",
-          background: "linear-gradient(to right, rgba(5,5,8,0.52) 0%, rgba(5,5,8,0.52) 45%, rgba(5,5,8,0) 88%)",
+          background:
+            "linear-gradient(to right, rgba(5,5,8,0.52) 0%, rgba(5,5,8,0.52) 45%, rgba(5,5,8,0) 88%)",
           backdropFilter: "blur(6px)",
           WebkitBackdropFilter: "blur(6px)",
           marginBottom: isMobile ? "3rem" : "5rem",
@@ -387,6 +388,19 @@ export function Research() {
           >
             Observe. Abstract. Construct.
           </motion.h2>
+        </div>
+        {/* Hint */}
+        <div style={{ textAlign: "right", marginTop: "0.6rem" }}>
+          <span
+            style={{
+              fontFamily: FONT_MONO,
+              fontSize: "0.58rem",
+              letterSpacing: "0.1em",
+              color: "rgba(255,255,255,0.28)",
+            }}
+          >
+            Tap to dive deeper
+          </span>
         </div>
       </div>
 
