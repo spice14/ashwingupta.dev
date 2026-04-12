@@ -22,7 +22,7 @@ const FONT_SERIF = '"Playfair Display", Georgia, serif';
 const FONT_MONO = '"DM Mono", monospace';
 const FONT_SANS = '"DM Sans", sans-serif';
 
-type ItemType = "paper" | "whitepaper" | "github";
+type ItemType = "paper" | "whitepaper" | "github" | "commercial";
 
 type ResearchItem = {
   type: ItemType;
@@ -57,6 +57,13 @@ const TYPE_META: Record<
     border: "rgba(96,165,250,0.45)",
     bg: "rgba(96,165,250,0.10)",
     glow: "0 0 2px rgba(96,165,250,0.35)",
+  },
+  commercial: {
+    label: "Commercial Software (In Development)",
+    color: "#ffffff",
+    border: "rgba(139,92,246,0.55)",
+    bg: "rgba(93,33,182,0.22)",
+    glow: "0 0 8px rgba(139,92,246,0.35)",
   },
 };
 
@@ -102,11 +109,11 @@ const items: ResearchItem[] = [
     ],
   },
   {
-    type: "github",
+    type: "commercial",
     name: "ScholarOS",
     title:
       "Research as Structured Execution — Deterministic Services Over Autonomous Generation",
-    link: "https://github.com/spice14/ScholarOS",
+    link: "/projects/12",
     bullets: [
       "Fluent AI outputs with **no traceable evidence link** — unfit for workflows requiring reproducibility",
       "**Five locked MCP services** via central orchestrator: literature mapping, contradiction detection, hypothesis critique, evidence extraction, proposal assembly",
@@ -115,16 +122,16 @@ const items: ResearchItem[] = [
     ],
   },
   {
-    type: "github",
+    type: "commercial",
     name: "controla",
     title:
-      "Execution-Aware Inference Orchestration — Scheduling Before Dispatch",
-    link: "https://github.com/spice14/controla",
+      "Local Inference That Learns — Routing That Compounds With Every Deployment",
+    link: "/projects/11",
     bullets: [
-      "**Static backend routing** — no awareness of task type, hardware state, or prior outcomes",
-      "**10-stage pipeline**: classify → plan → route → schedule → batch → dispatch, before backend selection",
-      "**Priority-queue scheduler**, **VRAM-aware routing** across 10 backends; latency and token efficiency tracked per request",
-      "Routing policy **updates from observed metrics** — inference as a **scheduled workload**, not a stateless API call",
+      "**Local inference is stateless by default** — routing ignores task type, available hardware, and prior outcomes; nothing is learned between requests, and every restart discards what worked",
+      "**Gets better the longer it runs** — every request is an observation; routing adapts to your exact workload and hardware without manual tuning",
+      "**Policy changes are validated before they ship** — tested against real execution history, rolled back if they regress",
+      "Inference as a **managed workload**, not a stateless API call",
     ],
   },
 ];
@@ -135,8 +142,8 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
   return (
     <motion.a
       href={item.link}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={item.link.startsWith("/") ? undefined : "_blank"}
+      rel={item.link.startsWith("/") ? undefined : "noopener noreferrer"}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -344,8 +351,8 @@ export function Research() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "1rem",
-            marginBottom: "3rem",
+            gap: "2rem",
+            marginBottom: "2rem",
           }}
         >
           <span

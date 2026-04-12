@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import App from "../app/App";
 import "../styles/index.css";
+import profilePictureUrl from "../assets/profilePicture.webp?url";
 
 const canonical = "https://www.ashwingupta.dev/";
 
@@ -55,5 +56,6 @@ const websiteSchema = {
   canonical={canonical}
   jsonLd={[personSchema, websiteSchema]}
 >
+  <link slot="head" rel="preload" as="image" href={profilePictureUrl} fetchpriority="high" type="image/webp" />
   <App client:idle />
 </BaseLayout>

@@ -244,10 +244,11 @@ export function About() {
               maxWidth: "500px",
             }}
           >
-            Controla is an inference orchestrator. ScholarOS is structured
-            research execution. PHYSCLIP aligns symbolic physics with observed
-            behavior. The PINNs work embeds PDEs into training. These are not
-            tools — they are systems with decision logic.
+            Controla is inference infrastructure that gets smarter the longer it
+            runs. ScholarOS is
+            structured research execution. PHYSCLIP aligns symbolic physics with
+            observed behavior. The PINNs work embeds PDEs into training. These
+            are not tools — they are systems with decision logic.
           </motion.p>
 
           <div

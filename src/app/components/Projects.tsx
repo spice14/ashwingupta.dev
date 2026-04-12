@@ -336,6 +336,70 @@ export const projects: Project[] = [
     github: null,
   },
   {
+    index: "12",
+    title: "ScholarOS — Structured Research Execution Platform",
+    company: "Personal",
+    logo: "https://cdn.simpleicons.org/github/ffffff",
+    logoHeight: 18,
+    status: "In Development",
+    tags: [
+      "MCP Orchestrator · DAG Execution",
+      "9 Deterministic Services",
+      "Hypothesis · Critic Agent Loop",
+      "Evidence-Bound Outputs",
+      "Chroma · SQLite · Redis",
+      "Local-First · Self-Hostable",
+    ],
+    impact:
+      "5,479 chunks · 180 claims · 76 contradictions detected · 100% determinism rate · fully local execution",
+    summary: [
+      "Generic AI tools produce **fluent text with no evidence traceability** — hallucinated synthesis is structurally indistinguishable from grounded synthesis; five separate research stages, no shared execution model, no adversarial hypothesis challenge",
+      "**Structured research execution platform** — five capabilities (literature mapping, contradiction detection, hypothesis critique, evidence extraction, proposal generation) executed as a **DAG-orchestrated MCP workflow**; nine deterministic services with no inter-service imports; all data flows through the orchestrator",
+      "**100% determinism rate** — no stochastic processes in the deterministic pipeline; agents bounded to max 5 iterations per hypothesis loop, grounded to source claim identifiers; complete execution provenance via JSON trace logs",
+      "**Five research output artifacts** — ClusterMap, Contradiction Report, Validated Hypotheses, Research Proposals (Markdown/LaTeX), Extracted Evidence · **76 contradictions detected** across 5 papers · **fully local, self-hostable**",
+    ],
+    bullets: [
+      "Generic AI tools applied to academic research produce **fluent text with no evidence traceability** — hallucinated synthesis is structurally indistinguishable from grounded synthesis; literature review, contradiction detection, hypothesis validation, evidence extraction, and proposal drafting each require **separate manual workflows** with no shared execution model; hypothesis stress-testing relies on the same model that generated the hypothesis — no adversarial challenge, no convergence gate, **no provenance on the resulting claim**.",
+      "ScholarOS is a **structured research execution platform** — five capabilities delivered as a DAG-executed MCP workflow, not a chatbox. Every output is **bound to source evidence**. Contradiction detection runs across the full corpus, not per-query. Hypothesis critique uses a **bounded Hypothesis / Critic agent loop** with convergence detection — not unconstrained generation. Nine services process research artifacts with rule-based, schema-defined, reproducible logic. **No service imports another service** — all data flows through the orchestrator via MCP tool invocations.",
+      "**MCP Orchestrator** executes workflows as DAGs with pause/resume, session management, and full trace logging. Five capabilities: **Literature Mapping** (HDBSCAN clustering + LLM cluster labeling + paper ranking), **Contradiction & Consensus** (claim extraction → metric normalization → polarity/value divergence detection → Belief Engine confidence assignment), **Hypothesis & Critique** (bounded Hypothesis/Critic loop, max 5 iterations, grounded to source claim identifiers), **Multimodal Evidence Extraction** (tables, figures, metrics from PDFs → structured output), **Proposal Assistant** (validated hypotheses → Markdown/LaTeX with citation assembly). Data layer: **Chroma** (vector), **SQLite** (metadata), **Redis** (session), JSON traces (execution provenance). Local inference: **Ollama qwen2.5:32b**, **sentence-transformers all-MiniLM-L6-v2**.",
+      "**100% determinism rate** — identical inputs produce identical outputs on repeated processing; no stochastic processes in the deterministic pipeline. Nine independently testable services with no global state and no inter-service imports — all data flows through the orchestrator, **eliminating hidden state** and enabling complete execution traceability. Agent reasoning is **explicitly bounded**: max 5 iterations per hypothesis refinement loop with required grounding to source claim identifiers — unconstrained generation is architecturally prevented. March 2026 E2E validation across five papers: **5,479 chunks processed**, **180 claims extracted**, **76 contradictions detected**.",
+      "**Five research output artifacts** — ClusterMap (JSON), Contradiction Report (JSON), Validated Hypotheses (JSON), Research Proposals (Markdown · LaTeX), Extracted Evidence (CSV · JSON). **Fully local and self-hostable** — no external API dependency for any deterministic pipeline stage. Designed to serve undergraduates through PhD researchers — adapts to task requirements across the full research lifecycle: literature synthesis → contradiction detection → hypothesis validation → proposal generation.",
+    ],
+    github: "https://github.com/spice14/ScholarOS",
+  },
+  {
+    index: "11",
+    title: "controla — Local-First Self-Improving Inference OS",
+    company: "Personal",
+    logo: "https://cdn.simpleicons.org/github/ffffff",
+    logoHeight: 18,
+    status: "In Development",
+    tags: [
+      "Local-First Inference OS",
+      "19 Backends · 7 Modalities",
+      "Closed Learning Loop (EWMA)",
+      "Redis-Backed Priority Scheduler",
+      "VRAM-Aware Routing",
+      "Policy Versioning · Replay Validation",
+    ],
+    impact:
+      "19 backends · 7 modalities · closed learning loop · routing accuracy compounds with every deployment",
+    summary: [
+      "Local AI stacks use **static backend routing** — no task awareness, no hardware state, no learning from outcomes; **fragmented modality coverage** demands separate infrastructure per task class with no unified API",
+      "**Local-first inference OS** — classifies every request across 10 task types and 3 complexity levels, scores all candidates on **6 dimensions**, schedules via Redis priority queue, executes, and feeds a structured reward signal into contextual EWMA weight learning",
+      "**Stateless, deterministic scoring engine** above a versioned routing policy — EXPLOIT / EXPLORE / HOLD / BATCH modes; **offline replay validation** gates every policy promotion; ε-greedy exploration under hard VRAM and latency guardrails prevents SLA sacrifice for signal",
+      "**19 backends · 7 modalities** under one OpenAI-compatible API · **329 passing tests** · learning state survives restarts via Redis · routing accuracy compounds with every deployment",
+    ],
+    bullets: [
+      "**Static routing** in local inference stacks assigns every request to the same backend regardless of task type, VRAM headroom, or load history — no task-aware dispatch, no hardware state, no learning from prior outcomes; **modality coverage is fragmented** across disjoint infrastructure with no unified API surface; learning state is **in-memory only** — a process restart erases every routing insight accumulated; **no policy validation mechanism** means routing changes go live blind with no regression gate against historical performance data.",
+      "controla is a **local-first inference OS** — 19 backends across 7 modalities (text gen, STT, TTS, image generation, embeddings, vision, reasoning) under one OpenAI-compatible API. Every request is classified, scored against **6 dimensions**, scheduled, dispatched, and observed. Routing policy learns from execution telemetry — **contextual EWMA weights per `(backend, task_type, complexity)`** persist across restarts via Redis. Not a gateway. Not a proxy. A **self-improving control plane** that treats inference as a managed system workload.",
+      "**FeatureExtractor** classifies task type across 10 categories (reasoning, extraction, summarization, generation, multimodal, speech, TTS, image gen, embedding, unknown) and 3 complexity levels before dispatch. **ScoringEngine** evaluates every candidate across capability, performance, resource, load, reliability, and context — VRAM-aware routing applies **−15 if model cannot fit, +1.5 when already loaded in VRAM**. **Redis-backed priority queue** with per-user fairness enforcement, deadline-aware dispatch via `x-latency-budget` header, and starvation prevention. **ExecutionPlanner** decomposes high-complexity reasoning into typed step chains (RETRIEVE → REASON → SYNTHESIZE). **329 passing tests**.",
+      "The **scoring engine is stateless and deterministic** — same inputs, same score; all learning lives above it in a versioned **RoutingPolicy** layer. **ReplayEngine** validates every policy candidate against historical `FeedbackRecord` data before promotion — gated on p95 latency regression and failure rate delta — policy updates cannot regress production undetected. **ε-greedy exploration** runs under hard guardrails: capability-matched and VRAM-safe backends only, within configured latency ceilings, on designated traffic buckets — signal gathering never compromises SLA. **DeploymentProfile** fingerprints each installation's hardware, task mix, and latency percentiles — routing calibrated to the specific GPU and workload of your machine.",
+      "**19 backends across 7 modalities** — text gen (vLLM · Ollama · TensorRT-LLM · NVIDIA NIM · ExLlamaV2 · LocalAI · AirLLM), STT (faster-whisper · Parakeet · Voxtral · WhisperX), TTS (Kokoro · Fish Audio), image generation (ComfyUI · Automatic1111 · InvokeAI), embeddings (Infinity · TEI), vision (Koboldcpp). Learning state **persists across restarts** via Redis EWMA persistence and policy snapshots. The moat is **deployment-specific execution telemetry** — routing accuracy compounds with usage, and no fork or copy can replicate it without running the same workloads.",
+    ],
+    github: "https://github.com/spice14/controla",
+  },
+  {
     index: "10",
     title: "Physics-Informed Neural Networks (PINNs)",
     company: "BMS College of Engineering",
@@ -622,8 +686,8 @@ export function Projects() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "1rem",
-            marginBottom: "3rem",
+            gap: "2rem",
+            marginBottom: "2rem",
           }}
         >
           <span
