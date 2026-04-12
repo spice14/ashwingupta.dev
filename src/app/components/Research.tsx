@@ -138,6 +138,7 @@ const items: ResearchItem[] = [
 
 function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
   const [hovered, setHovered] = useState(false);
+  const isMobile = useIsMobile();
 
   return (
     <motion.a
@@ -147,7 +148,7 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -6, scale: 1.025 }}
+      whileHover={isMobile ? { y: -4 } : { y: -6, scale: 1.025 }}
       transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -163,15 +164,18 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
         textDecoration: "none",
         color: "inherit",
         cursor: "pointer",
+        minWidth: 0,
+        overflow: "hidden",
       }}
     >
       {/* Name + badge row */}
       <div
         style={{
           display: "flex",
-          alignItems: "center",
+          alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
-          gap: "0.6rem",
+          flexWrap: "wrap",
+          gap: "0.5rem",
         }}
       >
         <p
@@ -182,6 +186,7 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
             color: "#fafaf8",
             lineHeight: 1.2,
             margin: 0,
+            minWidth: 0,
           }}
         >
           {item.name}
@@ -192,9 +197,11 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
             fontSize: "0.52rem",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            whiteSpace: "nowrap",
+            whiteSpace: isMobile ? "normal" : "nowrap",
             padding: "3px 9px",
             borderRadius: "20px",
+            flexShrink: 0,
+            maxWidth: isMobile ? "100%" : undefined,
             color: TYPE_META[item.type].color,
             border: `1px solid ${TYPE_META[item.type].border}`,
             background: TYPE_META[item.type].bg,
@@ -268,7 +275,7 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
                 flexShrink: 0,
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                width: "76px",
+                width: isMobile ? "56px" : "76px",
                 lineHeight: 1.5,
               }}
             >
