@@ -140,7 +140,9 @@ const items: ResearchItem[] = [
 
 function ResearchCard({ item }: { item: ResearchItem }) {
   const [hovered, setHovered] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const isMobile = useIsMobile();
+  const showOutcome = hovered || revealed;
 
   return (
     <motion.a
@@ -154,6 +156,12 @@ function ResearchCard({ item }: { item: ResearchItem }) {
       transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={(e) => {
+        if (isMobile && !revealed) {
+          e.preventDefault();
+          setRevealed(true);
+        }
+      }}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -271,6 +279,14 @@ function ResearchCard({ item }: { item: ResearchItem }) {
               display: "flex",
               gap: "0.65rem",
               alignItems: "flex-start",
+              ...(i === 2 && !showOutcome
+                ? {
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, black 20%, transparent 100%)",
+                    maskImage:
+                      "linear-gradient(to bottom, black 20%, transparent 100%)",
+                  }
+                : {}),
             }}
           >
             <span
@@ -303,24 +319,9 @@ function ResearchCard({ item }: { item: ResearchItem }) {
           </div>
         ))}
 
-        {/* Upward fade on penultimate bullet — hints the Insight row is hidden below */}
-        {!hovered && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "3.5rem",
-              background: "linear-gradient(to bottom, transparent, #050508)",
-              pointerEvents: "none",
-            }}
-          />
-        )}
-
         {/* 4th bullet (Insight) — fades in on hover */}
         <AnimatePresence>
-          {hovered && (
+          {showOutcome && (
             <motion.div
               key="insight"
               initial={{ opacity: 0 }}

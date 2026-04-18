@@ -452,6 +452,9 @@ const SUMMARY_LABELS = ["Problem", "System", "Design", "Outcome"];
 
 function ProjectCard({ p, index }: { p: Project; index: number }) {
   const [hovered, setHovered] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+  const isMobile = useIsMobile();
+  const showOutcome = hovered || revealed;
 
   const isAward = p.status === "Best Outgoing Project · 2022–23";
   const statusColor = isAward
@@ -486,6 +489,10 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => {
+        if (isMobile && !revealed) {
+          setRevealed(true);
+          return;
+        }
         window.location.href = `/projects/${p.slug}`;
       }}
       style={{
@@ -590,6 +597,14 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
               display: "flex",
               gap: "0.65rem",
               alignItems: "flex-start",
+              ...(i === 2 && !showOutcome
+                ? {
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, black 20%, transparent 100%)",
+                    maskImage:
+                      "linear-gradient(to bottom, black 20%, transparent 100%)",
+                  }
+                : {}),
             }}
           >
             <span
@@ -622,24 +637,9 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
           </div>
         ))}
 
-        {/* Upward fade on penultimate bullet — hints the Outcome row is hidden below */}
-        {!hovered && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "3.5rem",
-              background: "linear-gradient(to bottom, transparent, #050508)",
-              pointerEvents: "none",
-            }}
-          />
-        )}
-
         {/* 4th bullet (Outcome) — fades in on hover */}
         <AnimatePresence>
-          {hovered && (
+          {showOutcome && (
             <motion.div
               key="outcome"
               initial={{ opacity: 0 }}
