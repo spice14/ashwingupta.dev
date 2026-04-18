@@ -1,6 +1,8 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
-import { useIsMobile } from "../../hooks/useMediaQuery";
+import { useIsMobile, useIsTablet } from "../../hooks/useMediaQuery";
+import { useEqualRows } from "../../hooks/useCollageGrid";
+import { EqualGridRenderer } from "./CollageRenderer";
 import coforgeLogoImg from "../../assets/coforgeLogo.webp?url";
 import gidaLogoImg from "../../assets/gidaLogo.webp?url";
 import hdfcLogoImg from "../../assets/HDFClogo.webp?url";
@@ -18,6 +20,7 @@ const BMSCE_LOGO = bmsceLogoImg;
 
 export type Project = {
   index: string;
+  slug: string;
   title: string;
   company: string;
   logo: string;
@@ -47,6 +50,7 @@ export function renderBullet(text: string): React.ReactNode {
 export const projects: Project[] = [
   {
     index: "01",
+    slug: "ashwingupta-dev",
     title: "ashwingupta.dev — Design Handoff to Production",
     company: "Personal",
     logo: "https://cdn.simpleicons.org/vercel/ffffff",
@@ -64,10 +68,10 @@ export const projects: Project[] = [
     impact:
       "Live at ashwingupta.dev · 90% image reduction · 72% JS bundle cut · 400 CSS DOM nodes eliminated",
     summary: [
-      "A site claiming performance engineering had **400 CSS-animated DOM nodes**, a **2 MB JPEG** hero, and 72 unvetted dependencies — the artifact contradicted the claim",
-      "Rebuilt around a **three-layer spatial architecture**: environment, Canvas 2D particle field, hologram interface — all visual effects collapsed into a **single RAF loop**",
-      "**Offscreen canvas pre-rendering** eliminates per-frame fillRect calls; RAF gated on visibility; lazy boundaries enforce below-fold deferral — each decision reduces execution cost",
-      "**90% image reduction** · **72% JS bundle cut** · frame time **18–25ms → 4–6ms** · stable 60fps under CPU throttle",
+      "The original portfolio claimed performance engineering while shipping **400 animated DOM nodes** and a **2 MB hero** — self-defeating on load.",
+      "Rebuilt as a **three-layer spatial interface** — environment shell, Canvas particle field, hologram surface — collapsing visual effects into one system.",
+      "**Offscreen pre-rendering**, visibility-gated RAF, lazy loading, and asset compression cut work at the source, making optimization structural not cosmetic.",
+      "**90% image reduction** · **72% JS cut** · frame time **18–25ms → 4–6ms** · **60fps under throttle** · **400 animated DOM nodes removed**.",
     ],
     bullets: [
       "A portfolio site is its own proof unit. The designer baseline was self-defeating — the first thing a hiring manager measured was a **performance failure on the site claiming performance engineering**.",
@@ -80,6 +84,7 @@ export const projects: Project[] = [
   },
   {
     index: "02",
+    slug: "pageindexollama",
     title: "PageIndexOllama — Local-First Fork of PageIndex",
     company: "Open Source",
     logo: "https://cdn.simpleicons.org/github/ffffff",
@@ -97,10 +102,10 @@ export const projects: Project[] = [
     impact:
       "Fully offline tree-RAG execution · vendor lock-in eliminated · provider-agnostic runtime",
     summary: [
-      "Tree-RAG **hardcoded to a single provider** — provider contract differences silently corrupted recursive traversal with no error surface",
-      "Introduced a **provider-routing abstraction** and **finish-reason normalization layer** — the traversal state machine no longer depends on any specific provider's output contract",
-      "Hierarchical fallback handles large documents on **constrained VRAM**; bounded concurrency prevents pipeline saturation; prompts externalized so the system is configurable without touching execution logic",
-      "**Fully offline tree-RAG** execution — the system routes, normalizes, and traverses without external API dependency",
+      "Tree-RAG was **hardwired to one provider contract** — completion differences silently corrupted recursive traversal, and failures surfaced only after collapse.",
+      "Added a **provider-routing layer** with **finish-reason normalization**, so traversal depends on stable internal contracts rather than whichever runtime answered.",
+      "Prompt externalization, bounded concurrency, and hierarchical fallback keep long-document runs stable on **local models** with uneven outputs and limited memory.",
+      "**Fully offline tree-RAG** across Ollama, llama.cpp, and vLLM — provider switching became transparent, with no external API dependency in execution.",
     ],
     bullets: [
       "All inference required a **live OpenAI API key** — offline or air-gapped execution was blocked entirely; **provider switches corrupted traversal silently** with no error surface; token encoding differences across providers produced inconsistent chunk boundaries with no visible signal.",
@@ -113,6 +118,7 @@ export const projects: Project[] = [
   },
   {
     index: "03",
+    slug: "research-it",
     title: "Research-It — Fully Local RAG System",
     company: "Open Source",
     logo: "https://cdn.simpleicons.org/github/ffffff",
@@ -130,10 +136,10 @@ export const projects: Project[] = [
     impact:
       "Fully offline academic document QA · reproducible HNSW indexes · zero API dependency",
     summary: [
-      "Sensitive academic papers had **no private processing path** — all RAG required cloud APIs; air-gap institutions were fully blocked by existing tooling",
-      "A **privacy-first inference pipeline**: LEANN/HNSW indexes stay local, Ollama serves models on-device, and document ingestion normalizes across sources before any query reaches the retrieval layer",
-      "Smart chunking with overlap, **configurable Top-K (3–4)** and **context windows (1024–1536 tokens)**; PyMuPDF + BeautifulSoup handle varied PDF quality before indexing — not at query time",
-      "**API-free document QA** on sub-1GB quantized models · **reproducible index artifacts** for air-gapped institutional research",
+      "Academic RAG assumed **cloud inference by default** — air-gapped institutions and low-VRAM machines had no private path from ingestion to QA.",
+      "Built a **local-first retrieval stack**: LEANN/HNSW indexes, dense embeddings, Ollama inference, and normalized ingestion across PDFs, HTML, and paper folders.",
+      "Chunk overlap, tuned **Top-K** and context windows, plus PyMuPDF and BeautifulSoup cleanup fix retrieval quality before errors reach query time.",
+      "**API-free academic QA** on **sub-1GB quantized models** · reproducible HNSW artifacts for air-gapped use · ingestion and retrieval run without cloud credentials.",
     ],
     bullets: [
       "Sensitive academic papers had **no private processing path** — all RAG required external inference APIs; researchers on **CPU-only or low-VRAM hardware** had no viable local inference option; institutions with air-gap requirements were blocked by all existing tooling.",
@@ -146,6 +152,7 @@ export const projects: Project[] = [
   },
   {
     index: "04",
+    slug: "hsbc-voice",
     title: "Real-Time AI Voice Infrastructure for Banking",
     company: "HSBC",
     logo: "https://cdn.simpleicons.org/hsbc/DB0011",
@@ -162,10 +169,10 @@ export const projects: Project[] = [
     impact:
       "1,600+ concurrent sessions · 7× VM capacity · ~$1.3M annualized savings · MTTR ~1–2 hrs → ~5 min",
     summary: [
-      "Thread-based concurrency **capped at 20 calls/VM**; post-call docs **10–15 min each**; compute **$118K/month**; incident recovery **1–2 hours** from fragmented cross-service logs",
-      "**Concurrency architecture redesigned** from thread pool to asyncio event loop — each SIP session becomes a coroutine, GIL contention eliminated, scheduling owned per request across the full SBC→STT→LLM pipeline",
-      "**Cross-stack log correlation** over GCP Logging APIs reconstructs **250K+ log lines in under 5 seconds**; libsrtp + DTLS/SRTP for in-transit security; n2-standard-32 → c4-standard-8 migration",
-      "**7× per-VM capacity** · **1,600+ sessions** sustained · **$118K → $8K/month** (~$1.3M annualized) · MTTR **1–2 hr → ~5 min**",
+      "Voice infrastructure was **thread-bound at 20 calls per VM**, documentation took **10–15 minutes**, and incident recovery demanded **1–2 hours**.",
+      "Redesigned around **asyncio + uvloop** — each SIP session became a coroutine across SBC, STT, and LLM stages, removing thread contention.",
+      "Built **cross-stack log correlation**, SIPp load testing, and secure media transport — capacity, observability, and cost treated as one system.",
+      "**7× per-VM capacity** · **1,600+ sessions** sustained · **$118K → $8K/month** · MTTR **1–2 hr → ~5 min** · docs **10–15 min → 2–3 min**.",
     ],
     bullets: [
       "**Thread-based GIL contention** concurrent sessions saturated at 20 per VM — before packet loss rose above 10%; available hardware capacity was highly under-utilised; post-call documentation required **10–15 minutes of manual effort** per interaction with no automated path; fragmented cross-service logs with no correlation layer meant incidents required **1–2 hours of manual reconstruction** to identify root cause.",
@@ -178,6 +185,7 @@ export const projects: Project[] = [
   },
   {
     index: "05",
+    slug: "azure-infra-docs",
     title: "AI-Powered Azure Infrastructure Documentation Engine",
     company: "Coforge",
     logo: COFORGE_LOGO,
@@ -194,10 +202,10 @@ export const projects: Project[] = [
     impact:
       "~2–3 days → ~2–3 hours documentation turnaround · 104 resource groups/project · zero fabricated components",
     summary: [
-      "Infrastructure docs took **2–3 days per project**, authored by hand from **stale exports**, and drifted from live state with no mechanism to detect divergence",
-      "**Live-state extraction pipeline**: subscription ID resolves to resource graph traversal → network topology mapping → security config analysis — documentation generated from what the infrastructure is, not what was last recorded",
-      "**Few-shot LLM prompting** grounded in live Azure Resource Graph state; **validation guardrails** cross-check every generated component against extracted inventory — hallucinated topology can't reach governance docs",
-      "**2–3 days → ~2–3 hours** · 104 resource groups/project · **zero fabricated components** · manual PlantUML authoring eliminated",
+      "Azure documentation relied on **manual exports and hand-drawn diagrams** — every project took **2–3 days** and drifted from live state.",
+      "Built a **live-state extraction pipeline** — subscription scan, topology mapping, and security analysis generate documents from current resource evidence.",
+      "**Few-shot prompting** grounds generation in extracted inventory; guardrails reject any component without a matching live resource in the estate.",
+      "**2–3 days → ~2–3 hours** · **104 resource groups** per engagement · **zero fabricated components** · manual PlantUML authoring removed from delivery.",
     ],
     bullets: [
       "Infrastructure documentation required **manual extraction from Azure** — 2–3 days per project; **PlantUML diagrams were authored by hand** from memory or stale exports; documented architecture drifted from live infrastructure state with **no mechanism to detect or correct divergence**.",
@@ -210,6 +218,7 @@ export const projects: Project[] = [
   },
   {
     index: "06",
+    slug: "airline-contract-intelligence",
     title: "AI Contract Intelligence System for Airline Agreements",
     company: "Amex GBT",
     logo: "https://cdn.simpleicons.org/americanexpress/2E77BC",
@@ -225,10 +234,10 @@ export const projects: Project[] = [
     impact:
       "~96% extraction accuracy · automated normalization across varied airline PDF schemas",
     summary: [
-      "Airline contract PDFs **mixed image-embedded and readable tables**; template drift across carriers meant **no unified extraction path**; manual review couldn't scale",
-      "**Camelot + Ghostscript** extract tables from both source types; **GPT-4o with one-shot prompting** normalizes across diverse carrier formats into schema-consistent output",
-      "One-shot prompting maintains contextual coherence **without per-carrier fine-tuning**; covers the full format range from scan-quality images to nested programmatic tables",
-      "**~96% extraction accuracy** · automated normalization replaced manual review · **real-time query resolution** for sales and customer support",
+      "Airline agreements mixed **scan-quality and readable PDF tables**, and carrier template drift made manual review the only reliable extraction path.",
+      "**Camelot + Ghostscript** extracted tables from both formats; **GPT-4o one-shot normalization** mapped varied carrier layouts into one contract view.",
+      "The pipeline preserves context without per-carrier tuning — low-quality scans, nested tables, and layout drift are handled inside one extraction flow.",
+      "**~96% extraction accuracy** across mixed airline PDFs · automated normalization replaced manual review · commercial term queries gained a real-time support path.",
     ],
     bullets: [
       "Airline contract tables were **reviewed manually** — slow, error-prone, and couldn't scale to the volume of carrier agreements; **template drift across carriers** meant each format required separate handling logic; sales and support queries on contract terms had **no real-time resolution path**.",
@@ -241,6 +250,7 @@ export const projects: Project[] = [
   },
   {
     index: "07",
+    slug: "here-app",
     title: "Here.app – Multilingual Vehicle Intelligence Platform",
     company: "HDFC ERGO",
     logo: HDFC_LOGO,
@@ -257,10 +267,10 @@ export const projects: Project[] = [
     impact:
       "~97% factual accuracy · 163 languages · reduced manual escalation on specification queries",
     summary: [
-      "Vehicle spec chatbots returned **inconsistent and contradictory answers** across languages; **manual escalation** was the only fallback for spec-heavy queries",
-      "**RAG** grounded in a curated specification database with image-linked attributes and a **QA-tested retrieval pipeline** with dynamic data lookup across **163 languages**",
-      "**QA-gated retrieval** enforces factual grounding before responses are served; 163-language localization from the **same structured data source** — not translated post-hoc",
-      "**~97% factual accuracy** across **163 languages** · reduced manual escalation on spec-heavy queries",
+      "Vehicle assistants answered **specification queries inconsistently across languages** — the same request could contradict itself, making manual escalation the safe fallback.",
+      "Built a **RAG system** over a structured vehicle database with image-linked attributes — every answer grounded in one canonical source.",
+      "**QA-gated retrieval** validates lookup quality before generation, while **163-language delivery** stays anchored to one data model instead of post-hoc translation.",
+      "**~97% factual accuracy** across **163 languages** · grounded responses reduced manual escalation on configuration, pricing, and feature-specification queries at scale.",
     ],
     bullets: [
       "Vehicle spec chatbots produced **inconsistent and factually unreliable answers** — the same query in different languages could return contradictory results; **manual support escalation** was the only fallback for spec-heavy queries, creating volume bottlenecks at scale.",
@@ -273,6 +283,7 @@ export const projects: Project[] = [
   },
   {
     index: "08",
+    slug: "laminar-metamorph-polymorph",
     title: "Laminar · Metamorph · Polymorph — AI Delivery Toolchain",
     company: "Gida Technologies",
     logo: GIDA_LOGO,
@@ -289,10 +300,10 @@ export const projects: Project[] = [
     impact:
       "Three interlinked AI tools · 163-language content generation · cURL-to-20+ language API conversion",
     summary: [
-      "Content generation, bot deployment, and API conversion required **separate tools with manual handoffs** and inconsistent output quality across every client engagement",
-      "**Unified delivery toolchain** — each tool owns one fragmented workflow: **Laminar** orchestrates multilingual content generation across 163 languages, **Metamorph** converts prompts to deployed chatbots, **Polymorph** resolves API specs to implementation across 20+ languages",
-      "**Standardized output artifacts** across all three tools produce deployable outputs — not drafts; AI-generated visuals maintain **brand consistency** from prompts across client deployments",
-      "**Three fragmented workflows unified** · **163-language content** at scale · no-code bot deployment **removed engineering dependency** from chatbot delivery",
+      "Content generation, chatbot delivery, and API conversion lived in **separate tools with manual handoffs** — output drifted across every project.",
+      "Designed a **three-part AI toolchain**: Laminar for multilingual content, Metamorph for no-code chatbots, and Polymorph for API conversion scaffolds.",
+      "Each tool ships **standardized deployable artifacts** — brand-consistent visuals, multilingual content at scale, and cURL-derived code across 20+ languages.",
+      "**Three fragmented workflows unified** · **163-language content generation** at scale · no-code bot delivery cut engineering dependency · API work accelerated.",
     ],
     bullets: [
       "Content generation, bot deployment, and API conversion each required **separate tools and manual handoff steps** — inconsistent output quality across every client engagement; **multilingual content at scale** had no standardized generation path; chatbot delivery required **engineering involvement** for every new deployment or update.",
@@ -305,6 +316,7 @@ export const projects: Project[] = [
   },
   {
     index: "09",
+    slug: "skill-recommendation-engine",
     title: "Graph-Based Skill Recommendation Engine",
     company: "Prismforce",
     logo: prismforceLogoImg,
@@ -321,10 +333,10 @@ export const projects: Project[] = [
     impact:
       "+30% recommendation relevance · sub-50ms latency · single NVIDIA T4 under production load",
     summary: [
-      "Recommendation system **ignored hierarchical skill relationships**; every taxonomy expansion triggered **full batch retraining**; inference **exceeded sub-50ms SLA** under production concurrency",
-      "**Weighted directed graph** encoding multi-level skill hierarchies as typed edges; **lightweight scoring heuristics**; dynamic node updates without full graph recomputation",
-      "**Deterministic traversal logic** produces consistent outputs under frequent profile and taxonomy updates; latency profiled at **99th percentile** on NVIDIA T4 before deployment",
-      "**+30% recommendation relevance** · **sub-50ms inference** on NVIDIA T4 · batch retraining **eliminated** on taxonomy expansion",
+      "Skill recommendations ignored **hierarchical relationships**, taxonomy changes forced **full batch retraining**, and live inference missed the **sub-50ms** target.",
+      "Built a **weighted directed graph** over multi-level skill hierarchies with typed edges and lightweight scoring — structure, not retraining, drives relevance.",
+      "Dynamic node insertion and deterministic traversal keep the graph current; latency was profiled at the **99th percentile** under production load.",
+      "**+30% relevance** · **sub-50ms inference** on a single **NVIDIA T4** · taxonomy expansion no longer required batch retraining · live updates stayed current.",
     ],
     bullets: [
       "The recommendation system **ignored hierarchical skill relationships** — related skills treated as independent nodes with no structural modeling; **every taxonomy expansion triggered full batch retraining**, blocking updates until recompute completed; inference latency under production concurrency **exceeded the sub-50ms SLA** required for live platform use.",
@@ -336,71 +348,8 @@ export const projects: Project[] = [
     github: null,
   },
   {
-    index: "12",
-    title: "ScholarOS — Structured Research Execution Platform",
-    company: "Personal",
-    logo: "https://cdn.simpleicons.org/github/ffffff",
-    logoHeight: 18,
-    status: "In Development",
-    tags: [
-      "MCP Orchestrator · DAG Execution",
-      "9 Deterministic Services",
-      "Hypothesis · Critic Agent Loop",
-      "Evidence-Bound Outputs",
-      "Chroma · SQLite · Redis",
-      "Local-First · Self-Hostable",
-    ],
-    impact:
-      "5,479 chunks · 180 claims · 76 contradictions detected · 100% determinism rate · fully local execution",
-    summary: [
-      "Generic AI tools produce **fluent text with no evidence traceability** — hallucinated synthesis is structurally indistinguishable from grounded synthesis; five separate research stages, no shared execution model, no adversarial hypothesis challenge",
-      "**Structured research execution platform** — five capabilities (literature mapping, contradiction detection, hypothesis critique, evidence extraction, proposal generation) executed as a **DAG-orchestrated MCP workflow**; nine deterministic services with no inter-service imports; all data flows through the orchestrator",
-      "**100% determinism rate** — no stochastic processes in the deterministic pipeline; agents bounded to max 5 iterations per hypothesis loop, grounded to source claim identifiers; complete execution provenance via JSON trace logs",
-      "**Five research output artifacts** — ClusterMap, Contradiction Report, Validated Hypotheses, Research Proposals (Markdown/LaTeX), Extracted Evidence · **76 contradictions detected** across 5 papers · **fully local, self-hostable**",
-    ],
-    bullets: [
-      "Generic AI tools applied to academic research produce **fluent text with no evidence traceability** — hallucinated synthesis is structurally indistinguishable from grounded synthesis; literature review, contradiction detection, hypothesis validation, evidence extraction, and proposal drafting each require **separate manual workflows** with no shared execution model; hypothesis stress-testing relies on the same model that generated the hypothesis — no adversarial challenge, no convergence gate, **no provenance on the resulting claim**.",
-      "ScholarOS is a **structured research execution platform** — five capabilities delivered as a DAG-executed MCP workflow, not a chatbox. Every output is **bound to source evidence**. Contradiction detection runs across the full corpus, not per-query. Hypothesis critique uses a **bounded Hypothesis / Critic agent loop** with convergence detection — not unconstrained generation. Nine services process research artifacts with rule-based, schema-defined, reproducible logic. **No service imports another service** — all data flows through the orchestrator via MCP tool invocations.",
-      "**MCP Orchestrator** executes workflows as DAGs with pause/resume, session management, and full trace logging. Five capabilities: **Literature Mapping** (HDBSCAN clustering + LLM cluster labeling + paper ranking), **Contradiction & Consensus** (claim extraction → metric normalization → polarity/value divergence detection → Belief Engine confidence assignment), **Hypothesis & Critique** (bounded Hypothesis/Critic loop, max 5 iterations, grounded to source claim identifiers), **Multimodal Evidence Extraction** (tables, figures, metrics from PDFs → structured output), **Proposal Assistant** (validated hypotheses → Markdown/LaTeX with citation assembly). Data layer: **Chroma** (vector), **SQLite** (metadata), **Redis** (session), JSON traces (execution provenance). Local inference: **Ollama qwen2.5:32b**, **sentence-transformers all-MiniLM-L6-v2**.",
-      "**100% determinism rate** — identical inputs produce identical outputs on repeated processing; no stochastic processes in the deterministic pipeline. Nine independently testable services with no global state and no inter-service imports — all data flows through the orchestrator, **eliminating hidden state** and enabling complete execution traceability. Agent reasoning is **explicitly bounded**: max 5 iterations per hypothesis refinement loop with required grounding to source claim identifiers — unconstrained generation is architecturally prevented. March 2026 E2E validation across five papers: **5,479 chunks processed**, **180 claims extracted**, **76 contradictions detected**.",
-      "**Five research output artifacts** — ClusterMap (JSON), Contradiction Report (JSON), Validated Hypotheses (JSON), Research Proposals (Markdown · LaTeX), Extracted Evidence (CSV · JSON). **Fully local and self-hostable** — no external API dependency for any deterministic pipeline stage. Designed to serve undergraduates through PhD researchers — adapts to task requirements across the full research lifecycle: literature synthesis → contradiction detection → hypothesis validation → proposal generation.",
-    ],
-    github: "https://github.com/spice14/ScholarOS",
-  },
-  {
-    index: "11",
-    title: "controla — Local-First Self-Improving Inference OS",
-    company: "Personal",
-    logo: "https://cdn.simpleicons.org/github/ffffff",
-    logoHeight: 18,
-    status: "In Development",
-    tags: [
-      "Local-First Inference OS",
-      "19 Backends · 7 Modalities",
-      "Closed Learning Loop (EWMA)",
-      "Redis-Backed Priority Scheduler",
-      "VRAM-Aware Routing",
-      "Policy Versioning · Replay Validation",
-    ],
-    impact:
-      "19 backends · 7 modalities · closed learning loop · routing accuracy compounds with every deployment",
-    summary: [
-      "Local AI stacks use **static backend routing** — no task awareness, no hardware state, no learning from outcomes; **fragmented modality coverage** demands separate infrastructure per task class with no unified API",
-      "**Local-first inference OS** — classifies every request across 10 task types and 3 complexity levels, scores all candidates on **6 dimensions**, schedules via Redis priority queue, executes, and feeds a structured reward signal into contextual EWMA weight learning",
-      "**Stateless, deterministic scoring engine** above a versioned routing policy — EXPLOIT / EXPLORE / HOLD / BATCH modes; **offline replay validation** gates every policy promotion; ε-greedy exploration under hard VRAM and latency guardrails prevents SLA sacrifice for signal",
-      "**19 backends · 7 modalities** under one OpenAI-compatible API · **329 passing tests** · learning state survives restarts via Redis · routing accuracy compounds with every deployment",
-    ],
-    bullets: [
-      "**Static routing** in local inference stacks assigns every request to the same backend regardless of task type, VRAM headroom, or load history — no task-aware dispatch, no hardware state, no learning from prior outcomes; **modality coverage is fragmented** across disjoint infrastructure with no unified API surface; learning state is **in-memory only** — a process restart erases every routing insight accumulated; **no policy validation mechanism** means routing changes go live blind with no regression gate against historical performance data.",
-      "controla is a **local-first inference OS** — 19 backends across 7 modalities (text gen, STT, TTS, image generation, embeddings, vision, reasoning) under one OpenAI-compatible API. Every request is classified, scored against **6 dimensions**, scheduled, dispatched, and observed. Routing policy learns from execution telemetry — **contextual EWMA weights per `(backend, task_type, complexity)`** persist across restarts via Redis. Not a gateway. Not a proxy. A **self-improving control plane** that treats inference as a managed system workload.",
-      "**FeatureExtractor** classifies task type across 10 categories (reasoning, extraction, summarization, generation, multimodal, speech, TTS, image gen, embedding, unknown) and 3 complexity levels before dispatch. **ScoringEngine** evaluates every candidate across capability, performance, resource, load, reliability, and context — VRAM-aware routing applies **−15 if model cannot fit, +1.5 when already loaded in VRAM**. **Redis-backed priority queue** with per-user fairness enforcement, deadline-aware dispatch via `x-latency-budget` header, and starvation prevention. **ExecutionPlanner** decomposes high-complexity reasoning into typed step chains (RETRIEVE → REASON → SYNTHESIZE). **329 passing tests**.",
-      "The **scoring engine is stateless and deterministic** — same inputs, same score; all learning lives above it in a versioned **RoutingPolicy** layer. **ReplayEngine** validates every policy candidate against historical `FeedbackRecord` data before promotion — gated on p95 latency regression and failure rate delta — policy updates cannot regress production undetected. **ε-greedy exploration** runs under hard guardrails: capability-matched and VRAM-safe backends only, within configured latency ceilings, on designated traffic buckets — signal gathering never compromises SLA. **DeploymentProfile** fingerprints each installation's hardware, task mix, and latency percentiles — routing calibrated to the specific GPU and workload of your machine.",
-      "**19 backends across 7 modalities** — text gen (vLLM · Ollama · TensorRT-LLM · NVIDIA NIM · ExLlamaV2 · LocalAI · AirLLM), STT (faster-whisper · Parakeet · Voxtral · WhisperX), TTS (Kokoro · Fish Audio), image generation (ComfyUI · Automatic1111 · InvokeAI), embeddings (Infinity · TEI), vision (Koboldcpp). Learning state **persists across restarts** via Redis EWMA persistence and policy snapshots. The moat is **deployment-specific execution telemetry** — routing accuracy compounds with usage, and no fork or copy can replicate it without running the same workloads.",
-    ],
-    github: "https://github.com/spice14/controla",
-  },
-  {
     index: "10",
+    slug: "pinns",
     title: "Physics-Informed Neural Networks (PINNs)",
     company: "BMS College of Engineering",
     logo: BMSCE_LOGO,
@@ -417,10 +366,10 @@ export const projects: Project[] = [
     impact:
       "Best Outgoing Project · BMSCE 2022–23 · 6 validated benchmarks across fluid, structural, and thermal domains",
     summary: [
-      "Purely data-driven physics simulation required **large labeled datasets** and produced **physically implausible solutions** under sparse data — model could satisfy data loss while violating governing equations",
-      "**Dual-loss PINN framework** embedding **PDE/ODE constraints directly into the optimization objective** alongside data loss, validated across six physics benchmarks",
-      "Validated across **Burgers' equation**, **1D heat conduction**, fixed-fixed and cantilever deflection, **1D transient cooling** under Neumann flux and Dirichlet boundary conditions",
-      "**Stable convergence** across fluid, structural, and thermal domains with limited labeled data · **Best Outgoing Project — BMSCE 2022–23**",
+      "Purely data-driven simulation needed **large labeled datasets** and produced **physically invalid solutions** when sparse data let models ignore governing laws.",
+      "Developed a **dual-loss PINN framework** that embeds **PDE/ODE constraints** directly into optimization — data fit and physical law are solved together.",
+      "Validated across **six benchmarks** spanning fluid, structural, and thermal domains, including Burgers' equation plus Neumann and Dirichlet variants.",
+      "**Stable convergence** across three physics domains with limited data · HVAC and server-cooling use cases explored · **Best Outgoing Project — BMSCE 2022–23**.",
     ],
     bullets: [
       "Purely data-driven physics simulation required **large labeled datasets** expensive or impossible to generate experimentally; sparse training data produced **physically implausible solutions** — the model could satisfy the data loss while violating governing equations; no unified framework existed that validated across multiple physics domains simultaneously.",
@@ -430,6 +379,72 @@ export const projects: Project[] = [
       "**Stable convergence across 6 physics benchmarks** — fluid, structural, thermal — with limited labeled data. Applied use cases in HVAC thermal feedback and server cooling. **Best Outgoing Project — BMSCE 2022–23**.",
     ],
     github: null,
+  },
+  {
+    index: "12",
+    slug: "scholaros",
+    title: "ScholarOS — Structured Research Execution Platform",
+    company: "Personal",
+    logo: "https://cdn.simpleicons.org/github/ffffff",
+    logoHeight: 18,
+    status: "In Development",
+    tags: [
+      "MCP Orchestrator · DAG Execution",
+      "9 Deterministic Services",
+      "Hypothesis · Critic Agent Loop",
+      "Evidence-Bound Outputs",
+      "Chroma · SQLite · Redis",
+      "Local-First · Self-Hostable",
+    ],
+    impact:
+      "5,479 chunks · 180 claims · 76 contradictions detected · 100% determinism rate · fully local execution",
+    summary: [
+      "Research copilots generate **fluent text without evidence traceability** — grounded synthesis and hallucination look identical, so no claim can be audited.",
+      "**Five locked MCP services** cover literature mapping, contradiction detection, hypothesis critique, evidence extraction, and assembly through **schema-defined interfaces**.",
+      "Only hypothesis critique remains agentic — **bounded to five iterations**; all other stages are deterministic with provenance preserved through **typed artifacts**.",
+      "Each claim is **bound to source evidence**; contradiction detection marks where consensus breaks, keeping outputs falsifiable and useful beyond sessions.",
+    ],
+    bullets: [
+      "Generic AI tools applied to academic research produce **fluent text with no evidence traceability** — hallucinated synthesis is structurally indistinguishable from grounded synthesis; literature review, contradiction detection, hypothesis validation, evidence extraction, and proposal drafting each require **separate manual workflows** with no shared execution model; hypothesis stress-testing relies on the same model that generated the hypothesis — no adversarial challenge, no convergence gate, **no provenance on the resulting claim**.",
+      "ScholarOS is a **structured research execution platform** — five capabilities delivered as a DAG-executed MCP workflow, not a chatbox. Every output is **bound to source evidence**. Contradiction detection runs across the full corpus, not per-query. Hypothesis critique uses a **bounded Hypothesis / Critic agent loop** with convergence detection — not unconstrained generation. Nine services process research artifacts with rule-based, schema-defined, reproducible logic. **No service imports another service** — all data flows through the orchestrator via MCP tool invocations.",
+      "**MCP Orchestrator** executes workflows as DAGs with pause/resume, session management, and full trace logging. Five capabilities: **Literature Mapping** (HDBSCAN clustering + LLM cluster labeling + paper ranking), **Contradiction & Consensus** (claim extraction → metric normalization → polarity/value divergence detection → Belief Engine confidence assignment), **Hypothesis & Critique** (bounded Hypothesis/Critic loop, max 5 iterations, grounded to source claim identifiers), **Multimodal Evidence Extraction** (tables, figures, metrics from PDFs → structured output), **Proposal Assistant** (validated hypotheses → Markdown/LaTeX with citation assembly). Data layer: **Chroma** (vector), **SQLite** (metadata), **Redis** (session). Local inference: **Ollama qwen2.5:32b**, **sentence-transformers all-MiniLM-L6-v2**.",
+      "**100% determinism rate** — identical inputs produce identical outputs; no stochastic processes in the deterministic pipeline. Nine independently testable services with no global state and no inter-service imports — all data flows through the orchestrator, **eliminating hidden state**. Agent reasoning is **explicitly bounded**: max 5 iterations per hypothesis loop with required grounding to source claim identifiers. March 2026 validation: **5,479 chunks processed**, **180 claims extracted**, **76 contradictions detected**.",
+      "**Five research output artifacts** — ClusterMap (JSON), Contradiction Report (JSON), Validated Hypotheses (JSON), Research Proposals (Markdown · LaTeX), Extracted Evidence (CSV · JSON). **Fully local and self-hostable** — no external API dependency for any deterministic pipeline stage.",
+    ],
+    github: "https://github.com/spice14/ScholarOS",
+  },
+  {
+    index: "11",
+    slug: "controla",
+    title: "controla — Local-First Self-Improving Inference OS",
+    company: "Personal",
+    logo: "https://cdn.simpleicons.org/github/ffffff",
+    logoHeight: 18,
+    status: "In Development",
+    tags: [
+      "Local-First Inference OS",
+      "19 Backends · 7 Modalities",
+      "Closed Learning Loop (EWMA)",
+      "Redis-Backed Priority Scheduler",
+      "VRAM-Aware Routing",
+      "Policy Versioning · Replay Validation",
+    ],
+    impact:
+      "19 backends · 7 modalities · closed learning loop · routing accuracy compounds with every deployment",
+    summary: [
+      "**Local inference routing is stateless by default** — prior outcomes are ignored, so each request repeats the same blind dispatch mistakes.",
+      "Every request feeds **contextual EWMA weight learning**, so routing adapts to workload; the system **improves as it runs** without retuning.",
+      "**Policy updates are replay-validated before promotion** — candidate routes degrading latency, accuracy, or SLA coverage are blocked before reaching live traffic.",
+      "Inference becomes a **managed workload** — routing is versioned policy, feedback is structured reward signal, and learning compounds without operator retuning.",
+    ],
+    bullets: [
+      "**Static routing** in local inference stacks assigns every request to the same backend regardless of task type, VRAM headroom, or load history — no task-aware dispatch, no hardware state, no learning from prior outcomes; **modality coverage is fragmented** across disjoint infrastructure with no unified API surface; learning state is **in-memory only** — a process restart erases every routing insight accumulated; **no policy validation mechanism** means routing changes go live blind with no regression gate against historical performance data.",
+      "controla is a **local-first inference OS** — 19 backends across 7 modalities (text gen, STT, TTS, image generation, embeddings, vision, reasoning) under one OpenAI-compatible API. Every request is classified, scored against **6 dimensions**, scheduled, dispatched, and observed. Routing policy learns from execution telemetry — **contextual EWMA weights per `(backend, task_type, complexity)`** persist across restarts via Redis. Not a gateway. Not a proxy. A **self-improving control plane** that treats inference as a managed system workload.",
+      "**FeatureExtractor** classifies task type across 10 categories and 3 complexity levels before dispatch. **ScoringEngine** evaluates every candidate across capability, performance, resource, load, reliability, and context — VRAM-aware routing applies **−15 if model cannot fit, +1.5 when already loaded**. **Redis-backed priority queue** with per-user fairness enforcement, deadline-aware dispatch via `x-latency-budget` header, and starvation prevention. **ExecutionPlanner** decomposes high-complexity reasoning into typed step chains. **329 passing tests**.",
+      "The **scoring engine is stateless and deterministic** — same inputs, same score; all learning lives above it in a versioned **RoutingPolicy** layer. **ReplayEngine** validates every policy candidate against historical data before promotion — gated on p95 latency regression and failure rate delta. **ε-greedy exploration** runs under hard guardrails: capability-matched and VRAM-safe backends only, within configured latency ceilings, on designated traffic buckets.",
+      "**19 backends across 7 modalities** — text gen (vLLM · Ollama · TensorRT-LLM · NVIDIA NIM · ExLlamaV2 · LocalAI · AirLLM), STT (faster-whisper · Parakeet · Voxtral · WhisperX), TTS (Kokoro · Fish Audio), image generation (ComfyUI · Automatic1111 · InvokeAI), embeddings (Infinity · TEI), vision (Koboldcpp). Learning state **persists across restarts** via Redis. Routing accuracy compounds with usage.",
+    ],
+    github: "https://github.com/spice14/controla",
   },
 ];
 
@@ -471,7 +486,7 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => {
-        window.location.href = `/projects/${p.index}`;
+        window.location.href = `/projects/${p.slug}`;
       }}
       style={{
         display: "flex",
@@ -559,9 +574,16 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
       {/* Divider */}
       <div style={{ height: "1px", background: "rgba(255,255,255,0.06)" }} />
 
-      {/* 4 summary bullets */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
-        {p.summary.map((bullet, i) => (
+      {/* Bullets — first 3 always visible; 4th (Outcome) revealed on hover */}
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.65rem",
+        }}
+      >
+        {(p.summary as string[]).slice(0, 3).map((bullet, i) => (
           <div
             key={i}
             style={{
@@ -591,12 +613,75 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
                 fontSize: "0.88rem",
                 lineHeight: 1.65,
                 color: "rgba(255,255,255,0.56)",
+                textAlign: "justify",
+                textJustify: "inter-word",
               }}
             >
               {renderBullet(bullet)}
             </span>
           </div>
         ))}
+
+        {/* Upward fade on penultimate bullet — hints the Outcome row is hidden below */}
+        {!hovered && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "3.5rem",
+              background: "linear-gradient(to bottom, transparent, #050508)",
+              pointerEvents: "none",
+            }}
+          />
+        )}
+
+        {/* 4th bullet (Outcome) — fades in on hover */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              key="outcome"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              style={{
+                display: "flex",
+                gap: "0.65rem",
+                alignItems: "flex-start",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: FONT_MONO,
+                  fontSize: "0.62rem",
+                  color: "rgba(255,255,255,0.22)",
+                  marginTop: "4px",
+                  flexShrink: 0,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  width: "76px",
+                  lineHeight: 1.5,
+                }}
+              >
+                {SUMMARY_LABELS[3]}
+              </span>
+              <span
+                style={{
+                  fontFamily: FONT_SANS,
+                  fontSize: "0.88rem",
+                  lineHeight: 1.65,
+                  color: "rgba(255,255,255,0.56)",
+                  textAlign: "justify",
+                  textJustify: "inter-word",
+                }}
+              >
+                {renderBullet(p.summary[3])}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Footer: index + arrow */}
@@ -638,21 +723,23 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
 
 export function Projects() {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
-  const orderedProjects = [...projects].sort((a, b) => {
+  const visibleProjects = projects.filter(
+    (p) =>
+      p.title !== "ScholarOS — Structured Research Execution Platform" &&
+      p.title !== "controla — Local-First Self-Improving Inference OS",
+  );
+
+  const orderedProjects = [...visibleProjects].sort((a, b) => {
     const aIsAward = a.status === "Best Outgoing Project · 2022–23";
     const bIsAward = b.status === "Best Outgoing Project · 2022–23";
     if (aIsAward === bIsAward) return 0;
     return aIsAward ? 1 : -1;
   });
 
-  const ROW_COLS = isMobile ? [1, 1, 1, 1] : [3, 2, 3, 2];
-  const ROW_SLICES = [
-    [0, 3],
-    [3, 5],
-    [5, 8],
-    [8, 10],
-  ];
+  const maxPerRow = isMobile ? 1 : isTablet ? 2 : 3;
+  const rows = useEqualRows(orderedProjects.length, maxPerRow);
 
   return (
     <section
@@ -746,24 +833,12 @@ export function Projects() {
         </div>
       </div>
 
-      {/* Grid — alternating 3-col / 2-col rows */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-        {ROW_SLICES.map(([start, end], rowIdx) => (
-          <div
-            key={rowIdx}
-            style={{
-              display: "grid",
-              gridTemplateColumns: `repeat(${ROW_COLS[rowIdx]}, 1fr)`,
-              gap: "1.25rem",
-            }}
-          >
-            {orderedProjects.slice(start, end).map((p) => {
-              const globalIdx = orderedProjects.indexOf(p);
-              return <ProjectCard key={p.index} p={p} index={globalIdx} />;
-            })}
-          </div>
-        ))}
-      </div>
+      <EqualGridRenderer
+        rows={rows}
+        renderCard={(idx) => (
+          <ProjectCard p={orderedProjects[idx]} index={idx} />
+        )}
+      />
     </section>
   );
 }

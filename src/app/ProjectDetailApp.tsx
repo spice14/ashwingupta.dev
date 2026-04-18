@@ -5,7 +5,7 @@ import { HologramInterface } from "./components/HologramInterface";
 import { ProjectPage } from "./components/ProjectPage";
 import { useIsMobile } from "../hooks/useMediaQuery";
 
-export default function ProjectDetailApp({ slug }: { slug: string }) {
+export default function ProjectDetailApp({ slug, backHref }: Readonly<{ slug: string; backHref?: string }>) {
   const isMobile = useIsMobile();
 
   return (
@@ -14,7 +14,7 @@ export default function ProjectDetailApp({ slug }: { slug: string }) {
       <AIBackground />
       <Cursor />
       <HologramInterface>
-        <ProjectPage slug={slug} />
+        <ProjectPage slug={slug} backHref={backHref} />
       </HologramInterface>
     </div>
   );

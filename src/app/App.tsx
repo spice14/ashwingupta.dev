@@ -5,6 +5,7 @@ import { EnvironmentLayer } from "./components/EnvironmentLayer";
 import { AIBackground } from "./components/AIBackground";
 import { HologramInterface } from "./components/HologramInterface";
 import { useIsMobile } from "../hooks/useMediaQuery";
+import { useHashScroll } from "../hooks/useHashScroll";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { motion, AnimatePresence } from "motion/react";
@@ -17,6 +18,7 @@ const Contact = lazy(() => import("./components/Contact").then((m) => ({ default
 export default function App() {
   const isMobile = useIsMobile();
   const [showTop, setShowTop] = useState(false);
+  useHashScroll();
 
   useEffect(() => {
     const el = document.querySelector(".hologram-interface");

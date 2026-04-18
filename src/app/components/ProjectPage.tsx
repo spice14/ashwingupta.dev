@@ -9,9 +9,10 @@ const FONT_SANS = '"DM Sans", sans-serif';
 
 const BULLET_ICONS = ["⚡", "⚠️", "⚙️", "🛡️", "🚀"] as const;
 
-export function ProjectPage({ slug }: { slug: string }) {
+export function ProjectPage({ slug, backHref = "/#projects" }: { slug: string; backHref?: string }) {
   const isMobile = useIsMobile();
-  const p = projects.find((pr) => pr.index === slug);
+  const p = projects.find((pr) => pr.slug === slug);
+  const backSection = backHref.replace("/#", "");
 
   if (!p) {
     return (
@@ -65,7 +66,7 @@ export function ProjectPage({ slug }: { slug: string }) {
     >
       {/* Back */}
       <motion.a
-        href="/#projects"
+        href={backHref}
         initial={{ opacity: 0, x: -8 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}
@@ -89,7 +90,7 @@ export function ProjectPage({ slug }: { slug: string }) {
           (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.35)";
         }}
       >
-        ← Back to projects
+        ← Back to {backSection}
       </motion.a>
 
       {/* Header */}

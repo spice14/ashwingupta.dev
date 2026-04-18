@@ -1,7 +1,9 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import type React from "react";
 import { useIsMobile, useIsTablet } from "../../hooks/useMediaQuery";
+import { useEqualRows } from "../../hooks/useCollageGrid";
+import { EqualGridRenderer } from "./CollageRenderer";
 
 function renderBullet(text: string): React.ReactNode {
   const parts = text.split(/\*\*(.+?)\*\*/g);
@@ -77,10 +79,10 @@ const items: ResearchItem[] = [
     subtitle: "Published Research · IJISET · Vol. 9 Special Issue",
     link: "https://ijiset.com/conference/NCISCT-2022/IJISET-NCISCT-220520.pdf",
     bullets: [
-      "**Distractor construction** requires semantic reasoning — not just question writing; wrong options must be plausible enough to distinguish genuine understanding from guessing",
-      "**BERT** summarizes → **proper nouns anchor pivots** → **WordNet/ConceptNet** generate distractors via hierarchical fallback",
-      "WordNet: **hypernym→hyponym chains** with sense disambiguation; ConceptNet: **part-of relationships** as fallback when WordNet sense coverage is insufficient",
-      "**Semantic distance** from the correct answer determines MCQ validity more than linguistic fluency",
+      "MCQ generation fails when distractors are merely wrong — they must be **semantically plausible** enough to separate genuine understanding from guessing.",
+      "**BERT** surfaces salient spans, **proper nouns anchor pivots**, and **WordNet / ConceptNet** generate nearby alternatives through hierarchical sense fallback.",
+      "WordNet supplies **hypernym→hyponym chains** with sense disambiguation; ConceptNet adds **part-of structure** when lexical coverage thins, keeping selection grounded.",
+      "**Semantic distance** is the governing constraint — distractors must stay within the same conceptual neighborhood without matching the tested sense.",
     ],
   },
   {
@@ -89,10 +91,10 @@ const items: ResearchItem[] = [
     title: "Physics-Informed Inference for Partial Observability",
     link: pinnsPdfUrl as string,
     bullets: [
-      "Known governing dynamics, **incomplete internal state visibility** — operational decisions made blind on partial telemetry",
-      "**PDEs embedded into the training objective** alongside data loss — not as post-hoc constraints applied after learning",
-      "**Staged training** balances telemetry fidelity against PDE adherence; convergence diagnosed via **physical consistency** metrics",
-      "Physical constraints **regularize learning** — preventing silent invalid extrapolation under **distribution shift**",
+      "**Partially observed internal state** creates a blind-control problem — sparse telemetry leaves conventional numerical solvers guessing what sensors never see.",
+      "**PDE constraints are embedded inside the training objective** — the network fits observed telemetry while satisfying governing dynamics simultaneously.",
+      "**Staged training** rebalances telemetry fidelity against PDE adherence; convergence is read through **residual consistency**, boundary behavior, and physical plausibility.",
+      "Physics becomes the regularizer under uncertainty — extrapolation stays bounded by governing structure, so generalization depends on dynamics over coverage.",
     ],
   },
   {
@@ -102,10 +104,10 @@ const items: ResearchItem[] = [
       "Contrastive Regime Classification — Symbolic and Observed Space Alignment",
     link: "https://github.com/spice14/PHYSCLIP",
     bullets: [
-      "Existing physics-informed approaches **assume known governing equations** — the harder question of **which physics applies** first goes unanswered",
-      "**CLIP-inspired dual encoders**: a text encoder for symbolic descriptions (equations, boundary conditions, regimes) and a field encoder for observed physical data, trained jointly into a **shared latent space**",
-      "**Contrastive objective** pulls matched physics-description/physical-state pairs together and pushes mismatched ones apart — PHYSCLIP acts as a **perception layer upstream of PINNs**, resolving regime before equation enforcement begins",
-      "**Latent proximity encodes physical meaning** — representation learning restores context to physics rather than replacing it, enabling **interpretable regime identification** under partial observability",
+      "Physics-informed models assume the governing equation is known — the harder upstream problem is deciding **which regime applies** first.",
+      "**Dual encoders** map symbolic descriptions and field states into a **shared latent space**, so regime recognition emerges from cross-modal alignment.",
+      "A **contrastive objective** pulls matched pairs together and pushes mismatched apart, making PHYSCLIP a perception layer **before PINN-style enforcement**.",
+      "**Latent proximity** carries physical meaning — nearby embeddings reflect regime similarity, enabling interpretable regime identification under partial observability over opaque labels.",
     ],
   },
   {
@@ -113,12 +115,12 @@ const items: ResearchItem[] = [
     name: "ScholarOS",
     title:
       "Research as Structured Execution — Deterministic Services Over Autonomous Generation",
-    link: "/projects/12",
+    link: "/research/scholaros",
     bullets: [
-      "Fluent AI outputs with **no traceable evidence link** — unfit for workflows requiring reproducibility",
-      "**Five locked MCP services** via central orchestrator: literature mapping, contradiction detection, hypothesis critique, evidence extraction, proposal assembly",
-      "Agentic reasoning **scoped to hypothesis critique only** — all other stages deterministic with **schema-defined interfaces**",
-      "Every claim **bound to source evidence**; contradiction detection surfaces where **scholarly consensus breaks**",
+      "Research copilots generate **fluent text without evidence traceability** — grounded synthesis and hallucination look identical, so no claim can be audited.",
+      "**Five locked MCP services** cover literature mapping, contradiction detection, hypothesis critique, evidence extraction, and assembly through **schema-defined interfaces**.",
+      "Only hypothesis critique remains agentic — **bounded to five iterations**; all other stages are deterministic with provenance preserved through **typed artifacts**.",
+      "Each claim is **bound to source evidence**; contradiction detection marks where consensus breaks, keeping outputs falsifiable and useful beyond sessions.",
     ],
   },
   {
@@ -126,17 +128,17 @@ const items: ResearchItem[] = [
     name: "controla",
     title:
       "Local Inference That Learns — Routing That Compounds With Every Deployment",
-    link: "/projects/11",
+    link: "/research/controla",
     bullets: [
-      "**Local inference is stateless by default** — routing ignores task type, available hardware, and prior outcomes; nothing is learned between requests, and every restart discards what worked",
-      "**Gets better the longer it runs** — every request is an observation; routing adapts to your exact workload and hardware without manual tuning",
-      "**Policy changes are validated before they ship** — tested against real execution history, rolled back if they regress",
-      "Inference as a **managed workload**, not a stateless API call",
+      "**Local inference routing is stateless by default** — prior outcomes are ignored, so each request repeats the same blind dispatch mistakes.",
+      "Every request feeds **contextual EWMA weight learning**, so routing adapts to workload; the system **improves as it runs** without retuning.",
+      "**Policy updates are replay-validated before promotion** — candidate routes degrading latency, accuracy, or SLA coverage are blocked before reaching live traffic.",
+      "Inference becomes a **managed workload** — routing is versioned policy, feedback is structured reward signal, and learning compounds without operator retuning.",
     ],
   },
 ];
 
-function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
+function ResearchCard({ item }: { item: ResearchItem }) {
   const [hovered, setHovered] = useState(false);
   const isMobile = useIsMobile();
 
@@ -221,6 +223,8 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
           color: "rgba(255,255,255,0.55)",
           lineHeight: 1.45,
           margin: 0,
+          textAlign: "justify",
+          textJustify: "inter-word",
         }}
       >
         {item.title}
@@ -235,6 +239,8 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
             color: "rgba(255,255,255,0.28)",
             margin: 0,
             letterSpacing: "0.05em",
+            textAlign: "justify",
+            textJustify: "inter-word",
           }}
         >
           {item.subtitle}
@@ -249,15 +255,16 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
         }}
       />
 
-      {/* Bullets */}
+      {/* Bullets — first 3 always visible; 4th (Insight) revealed on hover */}
       <div
         style={{
+          position: "relative",
           display: "flex",
           flexDirection: "column",
           gap: "0.75rem",
         }}
       >
-        {item.bullets.map((bullet, i) => (
+        {item.bullets.slice(0, 3).map((bullet, i) => (
           <div
             key={i}
             style={{
@@ -287,12 +294,75 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
                 fontSize: "0.88rem",
                 lineHeight: 1.65,
                 color: "rgba(255,255,255,0.56)",
+                textAlign: "justify",
+                textJustify: "inter-word",
               }}
             >
               {renderBullet(bullet)}
             </span>
           </div>
         ))}
+
+        {/* Upward fade on penultimate bullet — hints the Insight row is hidden below */}
+        {!hovered && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "3.5rem",
+              background: "linear-gradient(to bottom, transparent, #050508)",
+              pointerEvents: "none",
+            }}
+          />
+        )}
+
+        {/* 4th bullet (Insight) — fades in on hover */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              key="insight"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              style={{
+                display: "flex",
+                gap: "0.65rem",
+                alignItems: "flex-start",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: FONT_MONO,
+                  fontSize: "0.62rem",
+                  color: "rgba(255,255,255,0.22)",
+                  marginTop: "4px",
+                  flexShrink: 0,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  width: isMobile ? "56px" : "76px",
+                  lineHeight: 1.5,
+                }}
+              >
+                {RESEARCH_LABELS[3]}
+              </span>
+              <span
+                style={{
+                  fontFamily: FONT_SANS,
+                  fontSize: "0.88rem",
+                  lineHeight: 1.65,
+                  color: "rgba(255,255,255,0.56)",
+                  textAlign: "justify",
+                  textJustify: "inter-word",
+                }}
+              >
+                {renderBullet(item.bullets[3])}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Link arrow */}
@@ -324,6 +394,8 @@ function ResearchCard({ item, index }: { item: ResearchItem; index: number }) {
 export function Research() {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
+  const maxPerRow = isMobile ? 1 : isTablet ? 2 : 3;
+  const rows = useEqualRows(items.length, maxPerRow);
 
   return (
     <section
@@ -371,7 +443,7 @@ export function Research() {
               textTransform: "uppercase",
             }}
           >
-            03 — Research &amp; Systems Thinking
+            03 — Research & Systems Thinking
           </span>
           <div
             style={{
@@ -418,40 +490,10 @@ export function Research() {
         </div>
       </div>
 
-      {/* Cards grid — row 1: 3 cards */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: isMobile
-            ? "1fr"
-            : isTablet
-              ? "1fr 1fr"
-              : "1fr 1fr 1fr",
-          gap: "1.25rem",
-          marginBottom: "1.25rem",
-        }}
-      >
-        {items
-          .slice(0, isMobile ? items.length : isTablet ? 2 : 3)
-          .map((item, i) => (
-            <ResearchCard key={i} item={item} index={i} />
-          ))}
-      </div>
-
-      {/* Cards grid — row 2: remaining cards fill width */}
-      {!isMobile && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isTablet ? "1fr 1fr" : "1fr 1fr",
-            gap: "1.25rem",
-          }}
-        >
-          {items.slice(isTablet ? 2 : 3).map((item, i) => (
-            <ResearchCard key={i} item={item} index={(isTablet ? 2 : 3) + i} />
-          ))}
-        </div>
-      )}
+      <EqualGridRenderer
+        rows={rows}
+        renderCard={(idx) => <ResearchCard item={items[idx]} />}
+      />
     </section>
   );
 }

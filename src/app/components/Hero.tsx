@@ -64,6 +64,7 @@ export function Hero() {
 
   return (
     <section
+      id="hero"
       onMouseMove={isTouchDevice ? undefined : onMouseMove}
       onMouseLeave={isTouchDevice ? undefined : onMouseLeave}
       onMouseEnter={isTouchDevice ? undefined : onMouseEnterSection}
