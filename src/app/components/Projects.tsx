@@ -511,9 +511,10 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
       <div
         style={{
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
           alignItems: "flex-start",
           justifyContent: "space-between",
-          gap: "0.75rem",
+          gap: isMobile ? "0.5rem" : "0.75rem",
         }}
       >
         <p
@@ -539,7 +540,8 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
             padding: "3px 9px",
             borderRadius: "20px",
             flexShrink: 0,
-            marginTop: "3px",
+            alignSelf: isMobile ? "flex-start" : undefined,
+            marginTop: isMobile ? 0 : "3px",
             color: statusColor,
             border: `1px solid ${statusBorder}`,
             background: statusBg,

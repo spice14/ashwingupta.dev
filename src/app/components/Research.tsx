@@ -182,9 +182,9 @@ function ResearchCard({ item }: { item: ResearchItem }) {
       <div
         style={{
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
           alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
-          flexWrap: "wrap",
           gap: "0.5rem",
         }}
       >
@@ -207,11 +207,11 @@ function ResearchCard({ item }: { item: ResearchItem }) {
             fontSize: "0.52rem",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            whiteSpace: isMobile ? "normal" : "nowrap",
+            whiteSpace: "nowrap",
             padding: "3px 9px",
             borderRadius: "20px",
             flexShrink: 0,
-            maxWidth: isMobile ? "100%" : undefined,
+            alignSelf: isMobile ? "flex-start" : undefined,
             color: TYPE_META[item.type].color,
             border: `1px solid ${TYPE_META[item.type].border}`,
             background: TYPE_META[item.type].bg,
