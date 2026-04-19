@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
-import { useIsMobile, useIsTablet } from "../../hooks/useMediaQuery";
+import { useIsMobile, useIsTablet, useIsDesktop } from "../../hooks/useMediaQuery";
 import { useEqualRows } from "../../hooks/useCollageGrid";
 import { EqualGridRenderer } from "./CollageRenderer";
 import coforgeLogoImg from "../../assets/coforgeLogo.webp?url";
@@ -454,6 +454,7 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
   const [hovered, setHovered] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const isMobile = useIsMobile();
+  const isDesktop = useIsDesktop();
   const showOutcome = hovered || revealed;
 
   const isAward = p.status === "Best Outgoing Project · 2022–23";
@@ -511,10 +512,10 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
       <div
         style={{
           display: "flex",
-          flexDirection: isMobile ? "column" : "row",
+          flexDirection: isDesktop ? "row" : "column",
           alignItems: "flex-start",
           justifyContent: "space-between",
-          gap: isMobile ? "0.5rem" : "0.75rem",
+          gap: isDesktop ? "0.75rem" : "0.5rem",
         }}
       >
         <p
@@ -540,8 +541,8 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
             padding: "3px 9px",
             borderRadius: "20px",
             flexShrink: 0,
-            alignSelf: isMobile ? "flex-start" : undefined,
-            marginTop: isMobile ? 0 : "3px",
+            alignSelf: "flex-start",
+            marginTop: isDesktop ? "3px" : 0,
             color: statusColor,
             border: `1px solid ${statusBorder}`,
             background: statusBg,
