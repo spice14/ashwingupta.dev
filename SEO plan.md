@@ -46,7 +46,7 @@ Add to `BaseLayout.astro` inside `<head>`:
     "Distributed Systems"
   ],
   "sameAs": [
-    "https://github.com/spice14",
+    "https://github.com/ughshwin",
     "https://www.linkedin.com/in/ashwingupta3012/",
     "https://www.kaggle.com/ashwingupta3012"
   ],

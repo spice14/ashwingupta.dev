@@ -439,7 +439,7 @@ export function Hero() {
                   label: "Email",
                 },
                 {
-                  href: "https://github.com/spice14",
+                  href: "https://github.com/ughshwin",
                   icon: <Github size={15} />,
                   label: "GitHub",
                 },

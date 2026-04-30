@@ -1,6 +1,10 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
-import { useIsMobile, useIsTablet, useIsDesktop } from "../../hooks/useMediaQuery";
+import {
+  useIsMobile,
+  useIsTablet,
+  useIsDesktop,
+} from "../../hooks/useMediaQuery";
 import { useEqualRows } from "../../hooks/useCollageGrid";
 import { EqualGridRenderer } from "./CollageRenderer";
 import coforgeLogoImg from "../../assets/coforgeLogo.webp?url";
@@ -80,7 +84,7 @@ export const projects: Project[] = [
       "Scanline texture pre-rendered to offscreen canvas (**1 drawImage vs 270 fillRect/frame**). Edge cache rebuilt every 3 frames. RAF paused on visibility change. Mouse tracking gated behind RAF. **Stable 60 FPS under CPU throttle**.",
       "Image: **2 MB → 211 KB (90%)**. JS bundle: **72% cut**. DOM nodes: **400 CSS-animated eliminated**. Font requests: **3 → 0**. Canvas frame time: **18–25 ms → 4–6 ms**.",
     ],
-    github: "https://github.com/spice14/ashwingupta.dev",
+    github: "https://github.com/ughshwin/ashwingupta.dev",
   },
   {
     index: "02",
@@ -114,7 +118,7 @@ export const projects: Project[] = [
       "Normalized completion contracts prevent finish-reason variations from corrupting **recursive traversal state**. Fallback chunk policies handle **constrained VRAM and RAM**. Structured-output hardening absorbs imperfect model responses without pipeline failure.",
       "**Fully offline tree-RAG** with Ollama — no API keys. Seamless provider switching via stable internal contracts. Regression risk reduced through e2e coverage across document types and model sizes.",
     ],
-    github: "https://github.com/spice14/PageIndexOllama",
+    github: "https://github.com/ughshwin/PageIndexOllama",
   },
   {
     index: "03",
@@ -148,7 +152,7 @@ export const projects: Project[] = [
       "Reproducible index artifacts enable **air-gapped operation**. Context-window and Top-K settings tuned for recall vs. coherence tradeoff. PyMuPDF + BeautifulSoup handle varied PDF quality before indexing — not at query time.",
       "**API-free document QA** across academic sources. Runs on **sub-1GB quantized models**. Designed for air-gapped institutional research.",
     ],
-    github: "https://github.com/spice14/research-it",
+    github: "https://github.com/ughshwin/research-it",
   },
   {
     index: "04",
@@ -411,7 +415,7 @@ export const projects: Project[] = [
       "**100% determinism rate** — identical inputs produce identical outputs; no stochastic processes in the deterministic pipeline. Nine independently testable services with no global state and no inter-service imports — all data flows through the orchestrator, **eliminating hidden state**. Agent reasoning is **explicitly bounded**: max 5 iterations per hypothesis loop with required grounding to source claim identifiers. March 2026 validation: **5,479 chunks processed**, **180 claims extracted**, **76 contradictions detected**.",
       "**Five research output artifacts** — ClusterMap (JSON), Contradiction Report (JSON), Validated Hypotheses (JSON), Research Proposals (Markdown · LaTeX), Extracted Evidence (CSV · JSON). **Fully local and self-hostable** — no external API dependency for any deterministic pipeline stage.",
     ],
-    github: "https://github.com/spice14/ScholarOS",
+    github: "https://github.com/ughshwin/ScholarOS",
   },
   {
     index: "11",
@@ -444,7 +448,7 @@ export const projects: Project[] = [
       "The **scoring engine is stateless and deterministic** — same inputs, same score; all learning lives above it in a versioned **RoutingPolicy** layer. **ReplayEngine** validates every policy candidate against historical data before promotion — gated on p95 latency regression and failure rate delta. **ε-greedy exploration** runs under hard guardrails: capability-matched and VRAM-safe backends only, within configured latency ceilings, on designated traffic buckets.",
       "**19 backends across 7 modalities** — text gen (vLLM · Ollama · TensorRT-LLM · NVIDIA NIM · ExLlamaV2 · LocalAI · AirLLM), STT (faster-whisper · Parakeet · Voxtral · WhisperX), TTS (Kokoro · Fish Audio), image generation (ComfyUI · Automatic1111 · InvokeAI), embeddings (Infinity · TEI), vision (Koboldcpp). Learning state **persists across restarts** via Redis. Routing accuracy compounds with usage.",
     ],
-    github: "https://github.com/spice14/controla",
+    github: "https://github.com/ughshwin/controla",
   },
 ];
 

@@ -1,7 +1,11 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import type React from "react";
-import { useIsMobile, useIsTablet, useIsDesktop } from "../../hooks/useMediaQuery";
+import {
+  useIsMobile,
+  useIsTablet,
+  useIsDesktop,
+} from "../../hooks/useMediaQuery";
 import { useEqualRows } from "../../hooks/useCollageGrid";
 import { EqualGridRenderer } from "./CollageRenderer";
 
@@ -102,7 +106,7 @@ const items: ResearchItem[] = [
     name: "PHYSCLIP",
     title:
       "Contrastive Regime Classification — Symbolic and Observed Space Alignment",
-    link: "https://github.com/spice14/PHYSCLIP",
+    link: "https://github.com/ughshwin/PHYSCLIP",
     bullets: [
       "Physics-informed models assume the governing equation is known — the harder upstream problem is deciding **which regime applies** first.",
       "**Dual encoders** map symbolic descriptions and field states into a **shared latent space**, so regime recognition emerges from cross-modal alignment.",

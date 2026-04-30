@@ -68,8 +68,8 @@ export function Contact() {
     },
     {
       label: "GitHub",
-      value: "github.com/spice14",
-      href: "https://github.com/spice14",
+      value: "github.com/ughshwin",
+      href: "https://github.com/ughshwin",
       icon: <Github size={14} />,
     },
     {
@@ -177,7 +177,6 @@ export function Contact() {
             and interesting problems at the intersection of LLMs, distributed
             systems, and scientific ML.
           </motion.p>
-
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             {links.map(({ label, value, href, icon }, i) => (
@@ -544,7 +543,6 @@ export function Contact() {
           AI Engineer — Bangalore, India
         </span>
       </div>
-
     </section>
   );
 }
