@@ -899,7 +899,6 @@ export function Projects() {
         <div style={{ padding: isMobile ? "2rem 0 0" : "1.5rem 6vw 4rem" }}>
           <EqualGridRenderer
             rows={rows}
-            align="stretch"
             renderCard={(idx) =>
               idx < researchItems.length ? (
                 <ResearchCard item={researchItems[idx]} />
