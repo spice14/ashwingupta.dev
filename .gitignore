@@ -176,3 +176,6 @@ PROJECT_EVOLUTION.md
 VIRTUAL_COSMOS.md
 PERFORMANCE_AUDIT.md
 .perf-check.mjs
+export-vscode-extensions.ps1
+vscode-extensions-export
+runvector.db
